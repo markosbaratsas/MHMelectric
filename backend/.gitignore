@@ -4,5 +4,8 @@ venv/*
 MHMelectric/*/__pycache__/*
 MHMelectric/*/__pycache__
 
-MHMelectric/*/migrations
+MHMelectric/*/migrations/*/*
+MHMelectric/*/migrations/**
 MHMelectric/*/migrations/*
+!MHMelectric/*/migrations/__init__.py
+
