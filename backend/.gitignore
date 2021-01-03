@@ -1,2 +1,8 @@
 venv
 venv/*
+
+MHMelectric/*/__pycache__/*
+MHMelectric/*/__pycache__
+
+MHMelectric/*/migrations
+MHMelectric/*/migrations/*
