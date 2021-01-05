@@ -9,3 +9,5 @@ MHMelectric/*/migrations/**
 MHMelectric/*/migrations/*
 !MHMelectric/*/migrations/__init__.py
 
+MHMelectric/db.sqlite3
+
