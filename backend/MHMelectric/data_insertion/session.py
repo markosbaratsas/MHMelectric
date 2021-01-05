@@ -8,6 +8,7 @@ from rest_api.models import *
 
 path_to_file = "/mnt/c/Users/marak/Downloads/OneDrive_1_1-5-2021/acn_data/caltech_acndata_sessions_12month.json"
 
+s = set()
 with open(path_to_file) as json_file:
     data = json.load(json_file)
     # for i in list(data["_items"]):
@@ -29,4 +30,6 @@ with open(path_to_file) as json_file:
             user_modified_at=i["userInputs"][0]["modifiedAt"]  if i["userInputs"]!=None and i["userInputs"][0]["modifiedAt"]!=None else 0,
             user_payment_required=i["userInputs"][0]["paymentRequired"]  if i["userInputs"]!=None and i["userInputs"][0]["paymentRequired"]!=None else True,
             user_requested_departure=i["userInputs"][0]["requestedDeparture"]  if i["userInputs"]!=None and i["userInputs"][0]["requestedDeparture"]!=None else True)
-        print(i["_id"])
+        s.add(i["userID"])
+        # print(i["userID"])
+    print(s)
