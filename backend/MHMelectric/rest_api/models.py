@@ -16,7 +16,7 @@ class Car_Owner(models.Model):
     # django provides us with an authentication system which we will use
     # so we don't have username-password here, since it exists on the User model
     # We bind this Car_Owner with a specific User instance using a foreign key
-    user = models.OneToOneField(User, on_delete=models.DO_NOTHING, default=None)
+    user = models.OneToOneField(User, on_delete=models.DO_NOTHING, default=None, null=True)
 
     def __str__(self):
         return f'{self.user.username} {self.first_name} {self.last_name}'
@@ -37,7 +37,7 @@ class Car(models.Model):
     energy_average_consumption = models.DecimalField(max_digits=4, decimal_places=1, default=0)
     average_consumption = models.DecimalField(max_digits=5, decimal_places=2, default=0)
 
-    owner = models.ForeignKey(Car_Owner, on_delete=models.DO_NOTHING)
+    owner = models.ForeignKey(Car_Owner, on_delete=models.DO_NOTHING, null=True)
 
     def __str__(self):
         return f'{self.car_id}, owned by {owner.first_name}'
@@ -54,7 +54,7 @@ class Car(models.Model):
 
 class dc_charger_port(models.Model):
     dc_charger_port_id = models.AutoField(primary_key=True)
-    car = models.ForeignKey(Car, on_delete=models.DO_NOTHING)
+    car = models.ForeignKey(Car, on_delete=models.DO_NOTHING, null=True)
     port = models.CharField(max_length=15, default='')
 
     def __str__(self):
@@ -63,7 +63,7 @@ class dc_charger_port(models.Model):
 
 class ac_charger_port(models.Model):
     ac_charger_port_id = models.AutoField(primary_key=True)
-    car = models.ForeignKey(Car, on_delete=models.DO_NOTHING)
+    car = models.ForeignKey(Car, on_delete=models.DO_NOTHING, null=True)
     port = models.CharField(max_length=15, default='')
 
     def __str__(self):
@@ -161,10 +161,10 @@ class Periodic_bill(models.Model):
 class Session(models.Model):
     session_id = models.AutoField(primary_key=True)
     session_id_given = models.CharField(max_length=255, default='')
-    car = models.ForeignKey(Car, on_delete=models.DO_NOTHING)
-    car_owner = models.ForeignKey(Car_Owner, on_delete=models.DO_NOTHING)
-    charging_point = models.ForeignKey(Charging_point, on_delete=models.DO_NOTHING)
-    periodic_bil = models.ForeignKey(Periodic_bill, on_delete=models.DO_NOTHING, default=None)
+    car = models.ForeignKey(Car, on_delete=models.DO_NOTHING, null=True)
+    car_owner = models.ForeignKey(Car_Owner, on_delete=models.DO_NOTHING, null=True)
+    charging_point = models.ForeignKey(Charging_point, on_delete=models.DO_NOTHING, null=True)
+    periodic_bil = models.ForeignKey(Periodic_bill, on_delete=models.DO_NOTHING, default=None, null=True)
     connection_time = models.DateTimeField(auto_now_add=True)
     disconnection_time = models.DateTimeField(auto_now_add=True) # auto_now_add=True and it will change later
     done_charging_time = models.DateTimeField(auto_now_add=True) # auto_now_add=True and it will change later
