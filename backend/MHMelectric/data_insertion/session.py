@@ -3,7 +3,6 @@
 
 import json
 import sys
-from decimal import Decimal
 from rest_api.models import *
 
 path_to_file = "/mnt/c/Users/marak/Downloads/OneDrive_1_1-5-2021/acn_data/caltech_acndata_sessions_12month.json"

@@ -70,14 +70,30 @@ class ac_charger_port(models.Model):
         return f'AC port {self.port} of car {self.car}'
 
 
+class Operator(models.Model):
+    operator_id = models.AutoField(primary_key=True)
+    operator_id_given = models.CharField(max_length=127, default='')
+    title = models.CharField(max_length=127, default='')
+    website_url = models.CharField(max_length=127, default='')
+    comments = models.CharField(max_length=1023, default='')
+    primary_phone = models.DecimalField(max_digits=14, decimal_places=0, default=0)
+    secondary_phone = models.DecimalField(max_digits=14, decimal_places=0, default=0)
+    address_info = models.CharField(max_length=127, default='')
+    email = models.EmailField(max_length=63, default='')
+
+    def __str__(self):
+        return f'{self.operator_id}'
+
+
 class Charging_point(models.Model):
     charging_point_id = models.AutoField(primary_key=True)
+    charging_point_id_given = models.CharField(max_length=127, default='')
     country = models.CharField(max_length=127, default='')
     city = models.CharField(max_length=127, default='')
     street = models.CharField(max_length=127, default='')
-    street_number = models.DecimalField(max_digits=4, decimal_places=0, default=0)
+    street_number = models.CharField(max_length=127, default='')
     postal_code = models.DecimalField(max_digits=5, decimal_places=0, default=0)
-    phone_number = models.DecimalField(max_digits=14, decimal_places=0, default=0)
+    phone_number = models.DecimalField(max_digits=34, decimal_places=0, default=0)
     email = models.EmailField(max_length=63, default='')
 
     operator = models.ForeignKey(Operator, on_delete=models.DO_NOTHING, null=True, default=None)
@@ -103,20 +119,6 @@ class Charge_program_Charging_point(models.Model):
 
     def __str__(self):
         return f'Charging point {self.charging_point} has charge program {self.charge_program}'
-
-
-class Operator(models.Model):
-    operator_id = models.AutoField(primary_key=True)
-    title = models.CharField(max_length=127, default='')
-    website_url = models.CharField(max_length=127, default='')
-    comments = models.CharField(max_length=1023, default='')
-    primary_phone = models.DecimalField(max_digits=14, decimal_places=0, default=0)
-    secondary_phone = models.DecimalField(max_digits=14, decimal_places=0, default=0)
-    address_info = models.CharField(max_length=127, default='')
-    email = models.EmailField(max_length=63, default='')
-
-    def __str__(self):
-        return f'{self.operator_id}'
 
 
 # class Charging_point_Operator(models.Model):

@@ -2,14 +2,17 @@
 # Then I run the following script to get a json that can be loaded...
 
 
-path_to_file = "/mnt/c/Users/markg/Downloads/OneDrive_1_05-01-2021/charging_points_europe_json/used_data.json"
-fw = open("/mnt/c/Users/markg/Downloads/OneDrive_1_05-01-2021/charging_points_europe_json/ready_data.json", "w+")
+path_to_file = "/mnt/c/Users/marak/Downloads/OneDrive_1_1-5-2021/charging_points_europe_json/used_data.json"
+fw = open("/mnt/c/Users/marak/Downloads/OneDrive_1_1-5-2021/charging_points_europe_json/ready_data.json", "w+")
 fw.write('{ "data": [')
 with open(path_to_file) as f:
     data = f.read()
     hello = data.split("\n")
-    for i in hello:
-        fw.write(i + ",\n")
+    for i in hello[:148]:
+        if(i==hello[147]):
+            fw.write(i + "\n")
+        else:
+            fw.write(i + ",\n")
 
 fw.write("]}")
 fw.close()
