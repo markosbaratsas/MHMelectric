@@ -3,12 +3,12 @@ from django.http import HttpResponse
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
+from rest_framework.authtoken.models import Token
 
 from rest_api.models import Car
 from rest_api.serializers import CarSerializer
 from users.serializers import RegistrationSerializer
 
-# Create your views here.
 def index(request):
     return HttpResponse("<h1>We made it so far!</h1>")
 
@@ -37,6 +37,7 @@ def register_user(request):
             data['response'] = 'Successfully created a new user.'
             data['email'] = user.email
             data['username'] = user.username
+            data['token'] = Token.objects.get(user=user).key
         else: 
             data = serializer.errors
             print(data)
