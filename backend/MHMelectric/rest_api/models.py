@@ -19,7 +19,7 @@ class Car_Owner(models.Model):
     user = models.OneToOneField(User, on_delete=models.DO_NOTHING, default=None, null=True)
 
     def __str__(self):
-        return f'{self.user.username} {self.first_name} {self.last_name}'
+        return f'{self.first_name} {self.last_name}'
 
 
 class Car(models.Model):
@@ -69,6 +69,18 @@ class ac_charger_port(models.Model):
     def __str__(self):
         return f'AC port {self.port} of car {self.car}'
 
+class Operator(models.Model):
+    operator_id = models.AutoField(primary_key=True)
+    title = models.CharField(max_length=127, default='')
+    website_url = models.CharField(max_length=127, default='')
+    comments = models.CharField(max_length=1023, default='')
+    primary_phone = models.DecimalField(max_digits=14, decimal_places=0, default=0)
+    secondary_phone = models.DecimalField(max_digits=14, decimal_places=0, default=0)
+    address_info = models.CharField(max_length=127, default='')
+    email = models.EmailField(max_length=63, default='')
+
+    def __str__(self):
+        return f'{self.operator_id}'
 
 class Operator(models.Model):
     operator_id = models.AutoField(primary_key=True)
