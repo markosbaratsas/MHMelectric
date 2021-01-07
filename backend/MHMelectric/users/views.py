@@ -29,7 +29,6 @@ def delete_token(request):
 
     if request.method == "POST":
         try:
-            print(request.body)
             request.user.auth_token.delete()
         except (AttributeError, ObjectDoesNotExist):
             pass
@@ -44,7 +43,6 @@ def admin_create_user(request, username, password):
     if request.user.is_superuser:
         # if user exists get User object, else create it
         user, created = User.objects.get_or_create(username=username)
-        print(user)
         user.set_password(password)
         user.save()
 

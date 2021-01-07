@@ -199,3 +199,10 @@ class Session(models.Model):
 
     def __str__(self):
         return f'{self.session_id}'
+
+class UploadedCSV(models.Model):
+    csv_file_id = models.AutoField(primary_key=True)
+    csv_file = models.FileField(null=True)
+    date_uploaded = models.DateTimeField(auto_now_add=True)
+
+    uploaded_from = models.ForeignKey(User, on_delete=models.DO_NOTHING)

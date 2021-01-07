@@ -11,3 +11,6 @@ MHMelectric/*/migrations/*
 
 MHMelectric/db.sqlite3
 
+MHMelectric/media
+MHMelectric/media/*
+
