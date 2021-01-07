@@ -1,8 +1,10 @@
 from django.shortcuts import render
 from django.http import HttpResponse
+from django.core.exceptions import ObjectDoesNotExist
 from rest_framework import status
 from rest_framework.response import Response
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view, permission_classes
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.authtoken.models import Token
 
 from rest_api.models import Car
@@ -14,6 +16,7 @@ def index(request):
 
 # we could do something like this for the other requests
 @api_view(['GET', ])
+@permission_classes((IsAuthenticated,))
 def get_first_car(request):
     try:
         cars = Car.objects.all()
@@ -42,3 +45,15 @@ def register_user(request):
             data = serializer.errors
             print(data)
         return Response(data)
+
+@api_view(['POST', ])
+def delete_token(request):
+    
+    if request.method == "POST":
+        try:
+            print(request.body)
+            request.user.auth_token.delete()
+        except (AttributeError, ObjectDoesNotExist):
+            pass
+
+        return Response(status=status.HTTP_200_OK)
