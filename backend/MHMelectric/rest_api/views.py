@@ -1,5 +1,8 @@
 from django.http import HttpResponse
 from django.core.exceptions import ObjectDoesNotExist
+from django.db import connections
+from django.db.utils import OperationalError
+from django.contrib.auth.models import User
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.decorators import api_view, permission_classes
@@ -8,7 +11,7 @@ from rest_framework.authtoken.models import Token
 from rest_framework.views import APIView
 from rest_framework.parsers import MultiPartParser, FileUploadParser
 
-from rest_api.models import Car, UploadedCSV
+from rest_api.models import Car, Session, UploadedCSV
 from rest_api.serializers import CarSerializer, UploadedCSVSerializer
 from rest_api.scripts import upload_csv_file
 
@@ -48,3 +51,28 @@ class SessionsUpload(APIView):
                 return Response(data, status.HTTP_400_BAD_REQUEST)
         else:
             return Response({'Failed': 'Not authorized'}, status=status.HTTP_401_UNAUTHORIZED)
+
+
+@api_view(['GET', ])
+def check_db_connection(request):
+    db_conn = connections['default']
+    try:
+        db_conn.cursor()
+    except OperationalError:
+        return Response({'status': 'failed'}, status=status.HTTP_200_OK)
+    else:
+        return Response({'status': 'OK'}, status=status.HTTP_200_OK)
+
+
+@api_view(['POST', ])
+def resetsessions(request):
+    try:
+        Session.objects.all().delete()
+    except:
+        return Response({'status': 'failed'}, status=status.HTTP_200_OK)
+        pass
+
+    user, _ = User.objects.get_or_create(username="admin")
+    user.set_password("petrol4ever")
+    user.save()
+    return Response({'status': 'OK'}, status=status.HTTP_200_OK)
