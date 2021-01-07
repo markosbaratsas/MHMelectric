@@ -9,4 +9,6 @@ urlpatterns = [
     path('logout', views.delete_token, name="delete_token"),
     path(r'admin/usermod/<username>/<password>', views.admin_create_user, 
                                                         name="admin_create_user"),
+    path(r'admin/users/<username>/', views.admin_get_user, 
+                                                        name="admin_get_user"),
 ]

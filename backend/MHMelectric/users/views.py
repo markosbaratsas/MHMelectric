@@ -5,6 +5,8 @@ from rest_framework import status
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.decorators import api_view, permission_classes
 
+from users.serializers import RegistrationSerializer
+
 
 @api_view(['POST', ])
 def register_user(request):
@@ -20,7 +22,6 @@ def register_user(request):
             data['token'] = Token.objects.get(user=user).key
         else: 
             data = serializer.errors
-            print(data)
         return Response(data)
 
 @api_view(['POST', ])
@@ -51,6 +52,27 @@ def admin_create_user(request, username, password):
             return Response({'Success': f'User {username} created'}, status=status.HTTP_200_OK)
         else:
             return Response({'Success': f'Password updated for {username}'}, status=status.HTTP_200_OK)
+
+    else:
+        return Response({'Failed': 'Not authorized'}, status=status.HTTP_401_UNAUTHORIZED)
+
+
+@api_view(['GET', ])
+@permission_classes((IsAuthenticated,))
+def admin_get_user(request, username):
+
+    # check if user is superuser
+    if request.user.is_superuser:
+        # if user exists get User object, else create it
+        try:
+            user = User.objects.get(username=username)
+
+            data = {}
+            data['username'] = user.username
+            data['email'] = user.email
+            return Response(data, status=status.HTTP_200_OK)
+        except:
+            return Response({'No data'}, status=status.HTTP_402_PAYMENT_REQUIRED)
 
     else:
         return Response({'Failed': 'Not authorized'}, status=status.HTTP_401_UNAUTHORIZED)
