@@ -11,7 +11,9 @@ from rest_framework.authtoken.models import Token
 from rest_framework.views import APIView
 from rest_framework.parsers import MultiPartParser, FileUploadParser
 
-from rest_api.models import Car, Session, UploadedCSV
+from datetime import datetime
+
+from rest_api.models import Car, Charging_point, Session, UploadedCSV
 from rest_api.serializers import CarSerializer, UploadedCSVSerializer
 from rest_api.scripts import upload_csv_file
 
@@ -31,6 +33,51 @@ def get_first_car(request):
     if request.method == "GET":
         serializer = CarSerializer(car)
         return Response(serializer.data)
+
+
+@api_view(['GET', ])
+@permission_classes((IsAuthenticated,))
+def sessions_per_point(request, pointID, date_from, date_to):
+    data = {}
+
+    try:
+        charging_point = Charging_point.objects.get(charging_point_id_given=pointID)
+    except:
+        return Response({'Failed': f'There is no charging point with pointID {pointID}'}, status=status.HTTP_400_BAD_REQUEST)
+
+    data['Point'] = charging_point.charging_point_id_given
+    data['PointOperator'] = charging_point.operator
+    data['RequestTimestamp'] = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    data['PeriodFrom'] = date_from[0:4] + "-" + date_from[4:6] + "-" + date_from[6:8] + " 00:00:00"
+    data['PeriodTo'] = date_from[0:4] + "-" + date_from[4:6] + "-" + date_from[6:8] + " 23:59:59"
+
+    sessions = list(Session.objects.filter(
+        charging_point=charging_point,
+        connection_time__range=[data['PeriodFrom'][:8], data['PeriodTo'][:8]]
+    ))
+
+    data['NumberOfChargingSessions'] = int(len(sessions))
+    data['ChargingSessionsList'] = []
+
+    for i in range(len(sessions)):
+        try:
+            car_type = Car.objects.get(car_id=sessions[i].car).car_type
+        except:
+            car_type = ''
+        item = {
+            'SessionIndex': int(i + 1),
+            'SessionID': sessions[i].session_id_given,
+            'StartedOn': sessions[i].connection_time,
+            'FinishedOn': sessions[i].disconnection_time,
+            'Protocol': sessions[i].protocol,
+            'EnergyDelivered': float(sessions[i].kWh_delivered),
+            'Payment': sessions[i].user_payment_method,
+            'VehicleType': car_type
+        }
+
+        data['ChargingSessionsList'].append(item)
+
+    return Response(data, status=status.HTTP_200_OK)
 
 
 @permission_classes((IsAuthenticated,))

@@ -69,18 +69,6 @@ class ac_charger_port(models.Model):
     def __str__(self):
         return f'AC port {self.port} of car {self.car}'
 
-class Operator(models.Model):
-    operator_id = models.AutoField(primary_key=True)
-    title = models.CharField(max_length=127, default='')
-    website_url = models.CharField(max_length=127, default='')
-    comments = models.CharField(max_length=1023, default='')
-    primary_phone = models.DecimalField(max_digits=14, decimal_places=0, default=0)
-    secondary_phone = models.DecimalField(max_digits=14, decimal_places=0, default=0)
-    address_info = models.CharField(max_length=127, default='')
-    email = models.EmailField(max_length=63, default='')
-
-    def __str__(self):
-        return f'{self.operator_id}'
 
 class Operator(models.Model):
     operator_id = models.AutoField(primary_key=True)
@@ -94,7 +82,7 @@ class Operator(models.Model):
     email = models.EmailField(max_length=63, default='')
 
     def __str__(self):
-        return f'{self.operator_id}'
+        return f'{self.operator_id_given}'
 
 
 class Charging_point(models.Model):
@@ -186,6 +174,7 @@ class Session(models.Model):
     done_charging_time = models.DateTimeField(auto_now_add=True) # auto_now_add=True and it will change later
     kWh_delivered = models.DecimalField(max_digits=8, decimal_places=3, default=0)
     timezone = models.CharField(max_length=31, default='')
+    protocol = models.CharField(max_length=63, default='standard')
     user_Wh_per_mile = models.DecimalField(max_digits=4, decimal_places=0, default=0)
     user_kWh_requested = models.DecimalField(max_digits=8, decimal_places=3, default=0)
     user_miles_requested = models.DecimalField(max_digits=4, decimal_places=0, default=0)
