@@ -1,4 +1,4 @@
-# to run the script execute:  python3 manage.py shell < data_insertion/charging_points.py
+# to run the script execute:  python3 manage.py shell < data_insertion/session.py
 # or fix it accordingly based on the directory you are
 
 import json
@@ -16,7 +16,7 @@ with open(path_to_file) as json_file:
             car=None,
             car_owner=None,
             # charging_point==list(Charging_point.objects.filter(charging_point_id=i["stationID"]))[0]
-            periodic_bil=None,
+            periodic_bill=None,
             connection_time=i["connectionTime"], 
             disconnection_time=i["disconnectTime"], 
             done_charging_time=i["doneChargingTime"], 

@@ -1,4 +1,4 @@
-# to run the script execute:  python3 manage.py shell < data_insertion/charging_points.py
+# to run the script execute:  python3 manage.py shell < data_insertion/electric_vehicles.py
 # or fix it accordingly based on the directory you are
 
 import json
