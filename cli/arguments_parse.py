@@ -1,6 +1,7 @@
 import argparse
 import re
 import datetime
+from request import *
 
 def valid_username(s):
     r = re.compile('^(\\w)+$', re.ASCII)
@@ -12,10 +13,11 @@ def valid_username(s):
     
 def valid_date(s):
     try:
-        return datetime.datetime.strptime(s, '%Y%m%d').date()
+        datetime.datetime.strptime(s, '%Y%m%d').date()
     except ValueError:
-        msg = "Not a valid date: '{0}''.".format(s)
+        msg = "Not a valid date: '{0}'.".format(s)
         raise argparse.ArgumentTypeError(msg)
+    return s
 
 def valid_api_key(s):
     r = re.compile('^([a-zA-Z0-9]){4}-([a-zA-Z0-9]){4}-([a-zA-Z0-9]){4}$', re.ASCII)
@@ -43,7 +45,7 @@ def add_help(x):
 
 parser = argparse.ArgumentParser(prog = 'ev_group23', description = 'Provide operations regarding the system',add_help = False)
 
-sub_parsers = parser.add_subparsers(metavar = 'Scope', help = 'Operation to execute', required = True)
+sub_parsers = parser.add_subparsers(metavar = 'Scope', help = 'Operation to execute')
  
 parser_healthcheck = sub_parsers.add_parser('healthcheck', help = 'Check connectivity to database')
 parser_healthcheck.add_argument('healthcheck', action = 'store_true')
@@ -78,6 +80,7 @@ optional.add_argument('--dateto', help = 'Finishing Date', metavar = 'date_to', 
 add_help(optional)
 
 parser_SessionsPerEV = sub_parsers.add_parser('SessionsPerEV', help = 'Show sessions of specific electric vehicle', add_help = False)
+parser_SessionsPerEV.set_defaults(which='perEV')
 required = parser_SessionsPerEV.add_argument_group('required arguments')
 required.add_argument('--ev', help = 'VehicleID', metavar = 'vehicle_id', type = str, required = True)
 required.add_argument('--datefrom', help = 'Starting Date', metavar = 'date_from', type =  valid_date, required = True)
@@ -140,4 +143,6 @@ required.add_argument('--apikey', type = valid_api_key, required = True, metavar
 #it's important to write --format ff --apikey --kk SCOPE in that order
 if __name__ == '__main__':
      args = parser.parse_args()
-     print(args)
+     if args.which == 'perEV':
+         sessionsPerEV(vehicleID=args.ev, yyyymmdd_from=args.datefrom, yyyymmdd_to=args.dateto, api_key=args.apikey)
+    #  print(args)
