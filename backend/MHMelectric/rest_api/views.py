@@ -10,8 +10,10 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.authtoken.models import Token
 from rest_framework.views import APIView
 from rest_framework.parsers import MultiPartParser, FileUploadParser
-
+import pytz
+import traceback
 from datetime import datetime
+import time
 
 from rest_api.models import Car, Charging_point, Session, UploadedCSV
 from rest_api.serializers import CarSerializer, UploadedCSVSerializer
@@ -22,11 +24,11 @@ def index(request):
 
 # we could do something like this for the other requests
 @api_view(['GET', ])
-@permission_classes((IsAuthenticated,))
+#@permission_classes((IsAuthenticated,))
 def get_first_car(request):
     try:
         cars = Car.objects.all()
-    except:
+    except:      
         return Response(status=status.HTTP_404_NOT_FOUND)
     
     car = list(cars)[0]
@@ -36,7 +38,7 @@ def get_first_car(request):
 
 
 @api_view(['GET', ])
-@permission_classes((IsAuthenticated,))
+#@permission_classes((IsAuthenticated,))
 def sessions_per_point(request, pointID, date_from, date_to):
     data = {}
 
@@ -46,19 +48,19 @@ def sessions_per_point(request, pointID, date_from, date_to):
         return Response({'Failed': f'There is no charging point with pointID {pointID}'}, status=status.HTTP_400_BAD_REQUEST)
 
     data['Point'] = charging_point.charging_point_id_given
-    data['PointOperator'] = charging_point.operator
-    data['RequestTimestamp'] = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    data['PointOperator'] = charging_point.operator.title
+    data['RequestTimestamp'] = datetime.now(pytz.timezone('Europe/Athens')).strftime("%Y-%m-%d %H:%M:%S")
     data['PeriodFrom'] = date_from[0:4] + "-" + date_from[4:6] + "-" + date_from[6:8] + " 00:00:00"
-    data['PeriodTo'] = date_from[0:4] + "-" + date_from[4:6] + "-" + date_from[6:8] + " 23:59:59"
+    data['PeriodTo'] = date_to[0:4] + "-" + date_to[4:6] + "-" + date_to[6:8] + " 23:59:59"
 
     sessions = list(Session.objects.filter(
         charging_point=charging_point,
-        connection_time__range=[data['PeriodFrom'][:8], data['PeriodTo'][:8]]
+        connection_time__range=[data['PeriodFrom'][:10], data['PeriodTo'][:10]]
     ))
+    sessions.sort(key=lambda x: x.connection_time)
 
     data['NumberOfChargingSessions'] = int(len(sessions))
     data['ChargingSessionsList'] = []
-
     for i in range(len(sessions)):
         try:
             car_type = Car.objects.get(car_id=sessions[i].car).car_type
@@ -76,7 +78,65 @@ def sessions_per_point(request, pointID, date_from, date_to):
         }
 
         data['ChargingSessionsList'].append(item)
+    return Response(data, status=status.HTTP_200_OK)
 
+@api_view(['GET', ])
+#@permission_classes((IsAuthenticated,))
+def sessions_per_ev(request, vehicleID, date_from, date_to):
+    data = {}
+
+    try:
+        car = Car.objects.get(car_id_given=vehicleID)
+    except:
+        return Response({'Failed': f'There is no charging point with vehicleID {vehicleID}'}, status=status.HTTP_400_BAD_REQUEST)
+
+    data['VehicleID'] = car.car_id_given
+    data['RequestTimestamp'] = datetime.now(pytz.timezone('Europe/Athens')).strftime("%Y-%m-%d %H:%M:%S")
+    data['PeriodFrom'] = date_from[0:4] + "-" + date_from[4:6] + "-" + date_from[6:8] + " 00:00:00"
+    data['PeriodTo'] = date_to[0:4] + "-" + date_to[4:6] + "-" + date_to[6:8] + " 23:59:59"
+
+    sessions = list(Session.objects.filter(
+        #car=car,
+        #connection_time__range=[data['PeriodFrom'][:10], data['PeriodTo'][:10]]
+    ))
+    sessions.sort(key=lambda x: x.connection_time)
+
+    data['TotalEnergyConsumed'] = 0
+    data['NumberOfVisitedPoints'] = 0
+    visited_points = set()
+    data['NumberOfVehicleChargingSessions'] = int(len(sessions))
+    data['ChargingSessionsList'] = []
+    
+    for i in range(len(sessions)):
+        try:
+            session_provider = sessions[i].charging_point.Operator.title
+        except:
+            session_provider = ''
+        try:
+            session_program = sessions[i].sessions[i].charge_program.description
+            session_price = sessions[i].charge_program.price
+            session_cost = round(float(sessions[i].kWh_delivered)*sessions[i].charge_program.price,2)
+        except:
+            session_program = ''
+            session_price = "unknown"
+            session_cost = "unknown"
+        item = {
+            'SessionIndex': int(i + 1),
+            'SessionID': sessions[i].session_id_given,
+            'EnergyProvider': session_provider,
+            'StartedOn': sessions[i].connection_time,
+            'FinishedOn': sessions[i].disconnection_time,
+            'EnergyDelivered': float(sessions[i].kWh_delivered),
+            'PricePolicyRef': session_program,
+            'CostPerkWh':   session_price,
+            'SessionCost': session_cost
+        }
+        if sessions[i].charging_point != None:
+            visited_points.add(sessions[i].charging_point)
+        data['TotalEnergyConsumed'] += float(sessions[i].kWh_delivered)
+        data['TotalEnergyConsumed'] = round(data['TotalEnergyConsumed'], 3)
+        data['ChargingSessionsList'].append(item)
+    data['NumberOfVisitedPoints'] = int(len(visited_points))
     return Response(data, status=status.HTTP_200_OK)
 
 
