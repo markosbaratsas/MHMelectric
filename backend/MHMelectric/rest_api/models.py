@@ -85,6 +85,23 @@ class Operator(models.Model):
         return f'{self.operator_id_given}'
 
 
+class Station(models.Model):
+    station_id = models.AutoField(primary_key=True)
+    station_id_given = models.CharField(max_length=127, default='')
+    country = models.CharField(max_length=127, default='')
+    city = models.CharField(max_length=127, default='')
+    street = models.CharField(max_length=127, default='')
+    street_number = models.CharField(max_length=127, default='')
+    postal_code = models.DecimalField(max_digits=5, decimal_places=0, default=0)
+    phone_number = models.DecimalField(max_digits=34, decimal_places=0, default=0)
+    email = models.EmailField(max_length=63, default='')
+
+    operator = models.ForeignKey(Operator, on_delete=models.DO_NOTHING, null=True, default=None)
+
+    def __str__(self):
+        return f'{self.station_id}'
+
+
 class Charging_point(models.Model):
     charging_point_id = models.AutoField(primary_key=True)
     charging_point_id_given = models.CharField(max_length=127, default='')
@@ -162,12 +179,28 @@ class Periodic_bill(models.Model):
         return f'{self.periodic_bill_id}'
 
 
+class Provider(models.Model):
+    provider_id = models.AutoField(primary_key=True)
+    provider_id_given = models.CharField(max_length=127, default='')
+    title = models.CharField(max_length=127, default='')
+    website_url = models.CharField(max_length=127, default='')
+    comments = models.CharField(max_length=1023, default='')
+    primary_phone = models.DecimalField(max_digits=14, decimal_places=0, default=0)
+    secondary_phone = models.DecimalField(max_digits=14, decimal_places=0, default=0)
+    address_info = models.CharField(max_length=127, default='')
+    email = models.EmailField(max_length=63, default='')
+
+    def __str__(self):
+        return f'{self.provider_id_given}'
+
+
 class Session(models.Model):
     session_id = models.AutoField(primary_key=True)
     session_id_given = models.CharField(max_length=255, default='')
     car = models.ForeignKey(Car, on_delete=models.DO_NOTHING, null=True)
     car_owner = models.ForeignKey(Car_Owner, on_delete=models.DO_NOTHING, null=True)
     charging_point = models.ForeignKey(Charging_point, on_delete=models.DO_NOTHING, null=True)
+    station = models.ForeignKey(Station, on_delete=models.DO_NOTHING, null=True, default=None)
     periodic_bill = models.ForeignKey(Periodic_bill, on_delete=models.DO_NOTHING, default=None, null=True)
     connection_time = models.DateTimeField(auto_now_add=True)
     disconnection_time = models.DateTimeField(auto_now_add=True) # auto_now_add=True and it will change later
@@ -185,9 +218,11 @@ class Session(models.Model):
     user_requested_departure = models.DateTimeField(auto_now_add=True)
 
     charge_program = models.ForeignKey(Charge_program, on_delete=models.DO_NOTHING, null=True, default=None)
+    provider = models.ForeignKey(Provider, on_delete=models.DO_NOTHING, null=True, default=None)
 
     def __str__(self):
         return f'{self.session_id}'
+
 
 class UploadedCSV(models.Model):
     csv_file_id = models.AutoField(primary_key=True)
