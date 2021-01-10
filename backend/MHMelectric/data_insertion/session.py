@@ -17,14 +17,16 @@ with open(path_to_file) as json_file:
         try:
             Session.objects.get(station_id_given==i["_id"])
         except:
-            if(len(list(Charging_point.objects.all()))>0):
-                chargingPointID = randrange(len(list(Charging_point.objects.all())))
+            stationID = randrange(len(list(Station.objects.all())))
+            if(len(list(Charging_point.objects.filter(station=stationID)))>0):
+                chargingPointID = randrange(len(list(Charging_point.objects.filter(station=stationID))))
             else: 
                 chargingPointID = 0
             Session.objects.create(session_id_given=i["_id"], 
                 car=None,
                 car_owner=None,
                 charging_point=list(Charging_point.objects.filter(charging_point_id=chargingPointID))[0] if (len(list(Charging_point.objects.filter(charging_point_id=chargingPointID)))) else None,
+                station=list(Station.objects.filter(station_id=stationID))[0] if (len(list(Station.objects.filter(station_id=stationID)))) else None,
                 periodic_bill=None,
                 connection_time=i["connectionTime"], 
                 disconnection_time=i["disconnectTime"], 

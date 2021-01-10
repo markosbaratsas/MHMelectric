@@ -28,7 +28,7 @@ with open(path_to_file) as json_file:
         try:
             Charging_point.objects.get(charging_point_id_given==i["ID"])
         except:
-            Charging_point.objects.create(charging_point_id_given=i["ID"],
+            Station.objects.create(station_id_given=i["AddressInfo"]["ID"],
                 country=i["AddressInfo"]["Country"]["Title"]  if i["AddressInfo"]!=None and i["AddressInfo"]["Country"]!=None and i["AddressInfo"]["Country"]["Title"]!=None else '',
                 city=i["AddressInfo"]["Town"]  if i["AddressInfo"]!=None and i["AddressInfo"]["Town"]!=None else '',
                 street=' '.join(i["AddressInfo"]["AddressLine1"].split(" ")[1:])  if i["AddressInfo"]!=None and i["AddressInfo"]["AddressLine1"]!=None else '',
@@ -36,4 +36,9 @@ with open(path_to_file) as json_file:
                 postal_code=i["AddressInfo"]["Postcode"]  if i["AddressInfo"]!=None and i["AddressInfo"]["Postcode"]!=None else 0,
                 phone_number=''.join((''.join(i["AddressInfo"]["ContactTelephone1"].split("-"))).split(' '))  if i["AddressInfo"]!=None and i["AddressInfo"]["ContactTelephone1"]!=None and i["AddressInfo"]["ContactTelephone1"]!='' and i["AddressInfo"]["ContactTelephone1"]!='415-392-3434  877-798-3752' else 0,
                 email=i["AddressInfo"]["ContactEmail"]  if i["AddressInfo"]!=None and i["AddressInfo"]["ContactEmail"]!=None else '',
+                operator=list(Operator.objects.filter(operator_id_given=i["OperatorID"]))[0] if len(list(Operator.objects.filter(operator_id_given=i["OperatorID"])))!=0 else None)
+
+
+            Charging_point.objects.create(charging_point_id_given=i["ID"],
+                station=list(Station.objects.filter(station_id_given=i["AddressInfo"]["ID"]))[0] if len(list(Station.objects.filter(station_id_given=i["AddressInfo"]["ID"])))!=0 else None,
                 operator=list(Operator.objects.filter(operator_id_given=i["OperatorID"]))[0] if len(list(Operator.objects.filter(operator_id_given=i["OperatorID"])))!=0 else None)

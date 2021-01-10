@@ -95,7 +95,7 @@ class Station(models.Model):
     postal_code = models.DecimalField(max_digits=5, decimal_places=0, default=0)
     phone_number = models.DecimalField(max_digits=34, decimal_places=0, default=0)
     email = models.EmailField(max_length=63, default='')
-
+    
     operator = models.ForeignKey(Operator, on_delete=models.DO_NOTHING, null=True, default=None)
 
     def __str__(self):
@@ -105,15 +105,9 @@ class Station(models.Model):
 class Charging_point(models.Model):
     charging_point_id = models.AutoField(primary_key=True)
     charging_point_id_given = models.CharField(max_length=127, default='')
-    country = models.CharField(max_length=127, default='')
-    city = models.CharField(max_length=127, default='')
-    street = models.CharField(max_length=127, default='')
-    street_number = models.CharField(max_length=127, default='')
-    postal_code = models.DecimalField(max_digits=5, decimal_places=0, default=0)
-    phone_number = models.DecimalField(max_digits=34, decimal_places=0, default=0)
-    email = models.EmailField(max_length=63, default='')
 
     operator = models.ForeignKey(Operator, on_delete=models.DO_NOTHING, null=True, default=None)
+    station = models.ForeignKey(Station, on_delete=models.DO_NOTHING, null=True, default=None)
 
     def __str__(self):
         return f'{self.charging_point_id}'
