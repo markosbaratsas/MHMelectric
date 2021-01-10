@@ -1,5 +1,6 @@
 # to run the script execute:  python3 manage.py shell < data_insertion/session.py
 # or fix it accordingly based on the directory you are
+# make sure you first add some charging points to the database
 
 import json
 import sys

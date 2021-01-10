@@ -38,6 +38,7 @@ with open(path_to_file) as json_file:
                 email=i["AddressInfo"]["ContactEmail"]  if i["AddressInfo"]!=None and i["AddressInfo"]["ContactEmail"]!=None else '',
                 operator=list(Operator.objects.filter(operator_id_given=i["OperatorID"]))[0] if len(list(Operator.objects.filter(operator_id_given=i["OperatorID"])))!=0 else None)
 
+
             Charging_point.objects.create(charging_point_id_given=i["ID"],
                 station=list(Station.objects.filter(station_id_given=i["AddressInfo"]["ID"]))[0] if len(list(Station.objects.filter(station_id_given=i["AddressInfo"]["ID"])))!=0 else None,
                 operator=list(Operator.objects.filter(operator_id_given=i["OperatorID"]))[0] if len(list(Operator.objects.filter(operator_id_given=i["OperatorID"])))!=0 else None)
