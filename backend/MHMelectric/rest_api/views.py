@@ -24,7 +24,7 @@ def index(request):
 
 # we could do something like this for the other requests
 @api_view(['GET', ])
-#@permission_classes((IsAuthenticated,))
+@permission_classes((IsAuthenticated,))
 def get_first_car(request):
     try:
         cars = Car.objects.all()
@@ -38,7 +38,7 @@ def get_first_car(request):
 
 
 @api_view(['GET', ])
-#@permission_classes((IsAuthenticated,))
+@permission_classes((IsAuthenticated,))
 def sessions_per_point(request, pointID, date_from, date_to):
     data = {}
 
@@ -84,7 +84,7 @@ def sessions_per_point(request, pointID, date_from, date_to):
     return Response(data, status=status.HTTP_200_OK)
 
 @api_view(['GET', ])
-#@permission_classes((IsAuthenticated,))
+@permission_classes((IsAuthenticated,))
 def sessions_per_station(request, stationID, date_from, date_to):
     data = {}
 
@@ -134,7 +134,7 @@ def sessions_per_station(request, stationID, date_from, date_to):
     return Response(data, status=status.HTTP_200_OK)
 
 @api_view(['GET', ])
-#@permission_classes((IsAuthenticated,))
+@permission_classes((IsAuthenticated,))
 def sessions_per_ev(request, vehicleID, date_from, date_to):
     data = {}
 
@@ -149,8 +149,8 @@ def sessions_per_ev(request, vehicleID, date_from, date_to):
     data['PeriodTo'] = date_to[0:4] + "-" + date_to[4:6] + "-" + date_to[6:8] + " 23:59:59"
 
     sessions = list(Session.objects.filter(
-        #car=car,
-        #connection_time__range=[data['PeriodFrom'][:10], data['PeriodTo'][:10]]
+        car=car,
+        connection_time__range=[data['PeriodFrom'][:10], data['PeriodTo'][:10]]
     ))
     sessions.sort(key=lambda x: x.connection_time)
 
@@ -193,7 +193,7 @@ def sessions_per_ev(request, vehicleID, date_from, date_to):
     return Response(data, status=status.HTTP_200_OK)
 
 @api_view(['GET', ])
-#@permission_classes((IsAuthenticated,))
+@permission_classes((IsAuthenticated,))
 def sessions_per_provider(request, providerID, date_from, date_to):
     data = {}
 

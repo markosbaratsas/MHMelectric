@@ -5,7 +5,7 @@ class Car_Owner(models.Model):
     owner_id = models.AutoField(primary_key=True) # this is varchar originally...
     first_name = models.CharField(max_length=63, default='')
     last_name = models.CharField(max_length=63, default='')
-    birthdate = models.DateTimeField(auto_now_add=True) # auto_add now = true and we will change it later...
+    birthdate = models.DateTimeField(default='') # auto_add now = true and we will change it later...
     country = models.CharField(max_length=127, default='')
     city = models.CharField(max_length=127, default='')
     street = models.CharField(max_length=127, default='')
@@ -196,9 +196,9 @@ class Session(models.Model):
     charging_point = models.ForeignKey(Charging_point, on_delete=models.DO_NOTHING, null=True)
     station = models.ForeignKey(Station, on_delete=models.DO_NOTHING, null=True, default=None)
     periodic_bill = models.ForeignKey(Periodic_bill, on_delete=models.DO_NOTHING, default=None, null=True)
-    connection_time = models.DateTimeField(auto_now_add=True)
-    disconnection_time = models.DateTimeField(auto_now_add=True) # auto_now_add=True and it will change later
-    done_charging_time = models.DateTimeField(auto_now_add=True) # auto_now_add=True and it will change later
+    connection_time = models.DateTimeField(default='')
+    disconnection_time = models.DateTimeField(default='')
+    done_charging_time = models.DateTimeField(default='')
     kWh_delivered = models.DecimalField(max_digits=8, decimal_places=3, default=0)
     timezone = models.CharField(max_length=31, default='')
     protocol = models.CharField(max_length=63, default='standard')
@@ -206,10 +206,10 @@ class Session(models.Model):
     user_kWh_requested = models.DecimalField(max_digits=8, decimal_places=3, default=0)
     user_miles_requested = models.DecimalField(max_digits=4, decimal_places=0, default=0)
     user_minutes_available = models.DecimalField(max_digits=4, decimal_places=0, default=0)
-    user_modified_at = models.DateTimeField(auto_now_add=True)
+    user_modified_at = models.DateTimeField(default='')
     user_payment_method = models.CharField(max_length=63, default='')
     user_payment_required = models.BooleanField(default=True)
-    user_requested_departure = models.DateTimeField(auto_now_add=True)
+    user_requested_departure = models.DateTimeField(default='')
 
     charge_program = models.ForeignKey(Charge_program, on_delete=models.DO_NOTHING, null=True, default=None)
     provider = models.ForeignKey(Provider, on_delete=models.DO_NOTHING, null=True, default=None)
