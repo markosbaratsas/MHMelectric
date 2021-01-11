@@ -11,4 +11,9 @@ urlpatterns = [
                                                         name="admin_create_user"),
     path(r'admin/users/<username>/', views.admin_get_user, 
                                                         name="admin_get_user"),
+
+    # CLI
+    path('cli_login', views.ObtainAPIKey.as_view(), name="ObtainAPIKey"),
+    path('cli_logout', views.cli_logout, name="cli_logout"),
+    path('get_token_from_api_key', views.get_token_from_api_key, name="get_token_from_api_key"),
 ]
