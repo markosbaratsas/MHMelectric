@@ -15,7 +15,6 @@ def upload_csv_file(csv_file):
     
     SessionsInUploadedFile = 0
     SessionsImported = 0
-    TotalSessionsInDatabase = len(list(Session.objects.all()))
     firstRow = True
     for i in csv_data:
         if(firstRow == False):
@@ -51,6 +50,7 @@ def upload_csv_file(csv_file):
                 SessionsImported += 1
 
         firstRow = False
+    TotalSessionsInDatabase = len(list(Session.objects.all()))
     return {
         'SessionsInUploadedFile': SessionsInUploadedFile,
         'SessionsImported': SessionsImported,
