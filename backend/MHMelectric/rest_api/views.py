@@ -14,6 +14,7 @@ import pytz
 import traceback
 from datetime import datetime
 import time
+from pytz import timezone
 
 from rest_api.models import Car, Charging_point, Session, UploadedCSV, Operator, Provider, Station
 from rest_api.serializers import CarSerializer, UploadedCSVSerializer
@@ -58,7 +59,9 @@ def sessions_per_point(request, pointID, date_from, date_to):
 
     sessions = list(Session.objects.filter(
         charging_point=charging_point,
-        connection_time__range=[data['PeriodFrom'][:10], data['PeriodTo'][:10]]
+        #connection_time__range=[data['PeriodFrom'][:10], data['PeriodTo'][:10]]
+        connection_time__range=[datetime.strptime(data['PeriodFrom'], "%Y-%m-%d %H:%M:%S").replace(tzinfo=timezone('UTC')),
+                                datetime.strptime(data['PeriodTo'], "%Y-%m-%d %H:%M:%S").replace(tzinfo=timezone('UTC'))]
     ))
     sessions.sort(key=lambda x: x.connection_time)
 
@@ -104,7 +107,8 @@ def sessions_per_station(request, stationID, date_from, date_to):
 
     sessions = list(Session.objects.filter(
         station=station,
-        connection_time__range=[data['PeriodFrom'][:10], data['PeriodTo'][:10]]
+        connection_time__range=[datetime.strptime(data['PeriodFrom'], "%Y-%m-%d %H:%M:%S").replace(tzinfo=timezone('UTC')),
+                                datetime.strptime(data['PeriodTo'], "%Y-%m-%d %H:%M:%S").replace(tzinfo=timezone('UTC'))]
     ))
     sessions.sort(key=lambda x: x.connection_time)
 
@@ -150,7 +154,8 @@ def sessions_per_ev(request, vehicleID, date_from, date_to):
 
     sessions = list(Session.objects.filter(
         car=car,
-        connection_time__range=[data['PeriodFrom'][:10], data['PeriodTo'][:10]]
+        connection_time__range=[datetime.strptime(data['PeriodFrom'], "%Y-%m-%d %H:%M:%S").replace(tzinfo=timezone('UTC')),
+                                datetime.strptime(data['PeriodTo'], "%Y-%m-%d %H:%M:%S").replace(tzinfo=timezone('UTC'))]
     ))
     sessions.sort(key=lambda x: x.connection_time)
 
@@ -209,7 +214,8 @@ def sessions_per_provider(request, providerID, date_from, date_to):
 
     sessions = list(Session.objects.filter(
         provider=provider,
-        connection_time__range=[periodFrom[:10], periodTo[:10]]
+        connection_time__range=[datetime.strptime(data['PeriodFrom'], "%Y-%m-%d %H:%M:%S").replace(tzinfo=timezone('UTC')),
+                                datetime.strptime(data['PeriodTo'], "%Y-%m-%d %H:%M:%S").replace(tzinfo=timezone('UTC'))]
     ))
     sessions.sort(key=lambda x: x.connection_time)
 
