@@ -6,11 +6,12 @@ from django.db.utils import OperationalError
 from django.contrib.auth.models import User
 from rest_framework import status
 from rest_framework.response import Response
-from rest_framework.decorators import api_view, permission_classes
+from rest_framework.decorators import api_view, permission_classes, renderer_classes
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.authtoken.models import Token
 from rest_framework.views import APIView
 from rest_framework.parsers import MultiPartParser, FileUploadParser
+from rest_framework_csv.renderers import CSVRenderer
 import pytz
 import traceback
 import csv
@@ -41,93 +42,101 @@ def get_first_car(request):
 
 
 @api_view(['GET', ])
+@renderer_classes([CSVRenderer])
 # @permission_classes((IsAuthenticated,))
 def sessions_per_point(request, pointID, date_from, date_to):
     print(type(request.GET.get('forma')))
-    format = request.GET.get('forma')
+    format = request.GET.get('format')
+    print('format', format)
     try:
         charging_point = Charging_point.objects.get(charging_point_id_given=pointID)
     except:
         return Response({'Failed': f'There is no charging point with pointID {pointID}'}, status=status.HTTP_400_BAD_REQUEST)
 
-    if(format=='json'):
-        data = {}
-        data['Point'] = charging_point.charging_point_id_given
-        if charging_point.operator == None:
-            data['PointOperator'] = 'None'
-        else:
-            data['PointOperator'] = charging_point.operator.title
-        data['RequestTimestamp'] = datetime.now(pytz.timezone('Europe/Athens')).strftime("%Y-%m-%d %H:%M:%S")
-        data['PeriodFrom'] = date_from[0:4] + "-" + date_from[4:6] + "-" + date_from[6:8] + " 00:00:00"
-        data['PeriodTo'] = date_to[0:4] + "-" + date_to[4:6] + "-" + date_to[6:8] + " 23:59:59"
+    data = {}
+    data['Point'] = charging_point.charging_point_id_given
+    if charging_point.operator == None:
+        data['PointOperator'] = 'None'
+    else:
+        data['PointOperator'] = charging_point.operator.title
+    data['RequestTimestamp'] = datetime.now(pytz.timezone('Europe/Athens')).strftime("%Y-%m-%d %H:%M:%S")
+    data['PeriodFrom'] = date_from[0:4] + "-" + date_from[4:6] + "-" + date_from[6:8] + " 00:00:00"
+    data['PeriodTo'] = date_to[0:4] + "-" + date_to[4:6] + "-" + date_to[6:8] + " 23:59:59"
 
-        sessions = list(Session.objects.filter(
-            charging_point=charging_point,
-            # connection_time__range=[data['PeriodFrom'][:10], data['PeriodTo'][:10]]
-            connection_time__range=[datetime.strptime(data['PeriodFrom'], "%Y-%m-%d %H:%M:%S").replace(tzinfo=timezone('UTC')),
-                        datetime.strptime(data['PeriodTo'], "%Y-%m-%d %H:%M:%S").replace(tzinfo=timezone('UTC'))]
-        ))
-        sessions.sort(key=lambda x: x.connection_time)
+    sessions = list(Session.objects.filter(
+        charging_point=charging_point,
+        # connection_time__range=[data['PeriodFrom'][:10], data['PeriodTo'][:10]]
+        connection_time__range=[datetime.strptime(data['PeriodFrom'], "%Y-%m-%d %H:%M:%S").replace(tzinfo=timezone('UTC')),
+                    datetime.strptime(data['PeriodTo'], "%Y-%m-%d %H:%M:%S").replace(tzinfo=timezone('UTC'))]
+    ))
+    sessions.sort(key=lambda x: x.connection_time)
 
-        data['NumberOfChargingSessions'] = int(len(sessions))
-        data['ChargingSessionsList'] = []
-        for i in range(len(sessions)):
-            try:
-                car_type = Car.objects.get(car_id=sessions[i].car).car_type
-            except:
-                car_type = ''
-            item = {
-                'SessionIndex': int(i + 1),
-                'SessionID': sessions[i].session_id_given,
-                'StartedOn': sessions[i].connection_time,
-                'FinishedOn': sessions[i].disconnection_time,
-                'Protocol': sessions[i].protocol,
-                'EnergyDelivered': float(sessions[i].kWh_delivered),
-                'Payment': sessions[i].user_payment_method,
-                'VehicleType': car_type
-            }
+    data['NumberOfChargingSessions'] = int(len(sessions))
+    data['ChargingSessionsList'] = []
+    for i in range(len(sessions)):
+        try:
+            car_type = Car.objects.get(car_id=sessions[i].car).car_type
+        except:
+            car_type = ''
+        item = {
+            'SessionIndex': int(i + 1),
+            'SessionID': sessions[i].session_id_given,
+            'StartedOn': sessions[i].connection_time,
+            'FinishedOn': sessions[i].disconnection_time,
+            'Protocol': sessions[i].protocol,
+            'EnergyDelivered': float(sessions[i].kWh_delivered),
+            'Payment': sessions[i].user_payment_method,
+            'VehicleType': car_type
+        }
 
-            data['ChargingSessionsList'].append(item)
+        data['ChargingSessionsList'].append(item)
+
+    # Now it just returns CSV .. We need to fix this
+    if format=='json':
         return Response(data, status=status.HTTP_200_OK)
-    if(format=='csv'):
-        response = HttpResponse(content_type='text/csv', status=status.HTTP_200_OK)
-        response['Content-Disposition'] = 'attachment; filename="sessionsPerPoint.csv"'
+    elif format=='csv':
+        return Response(data, status=status.HTTP_200_OK)
 
-        writer = csv.writer(response)
-        writer.writerow(['Point', charging_point.charging_point_id_given])
-        if charging_point.operator == None:
-            writer.writerow(['PointOperator', 'None'])
-        else:
-            writer.writerow(['PointOperator', charging_point.operator.title])
-        writer.writerow(['RequestTimestamp', datetime.now(pytz.timezone('Europe/Athens')).strftime("%Y-%m-%d %H:%M:%S")])
-        periodFrom = date_from[0:4] + "-" + date_from[4:6] + "-" + date_from[6:8] + " 00:00:00"
-        writer.writerow(['PeriodFrom', periodFrom])
-        periodTo = date_to[0:4] + "-" + date_to[4:6] + "-" + date_to[6:8] + " 23:59:59"
-        writer.writerow(['PeriodTo', periodTo])
 
-        sessions = list(Session.objects.filter(
-            charging_point=charging_point,
-            connection_time__range=[datetime.strptime(periodFrom, "%Y-%m-%d %H:%M:%S").replace(tzinfo=timezone('UTC')),
-                        datetime.strptime(periodTo, "%Y-%m-%d %H:%M:%S").replace(tzinfo=timezone('UTC'))]
-        ))
-        sessions.sort(key=lambda x: x.connection_time)
+    # if(format=='csv'):
+    #     response = HttpResponse(content_type='text/csv', status=status.HTTP_200_OK)
+    #     response['Content-Disposition'] = 'attachment; filename="sessionsPerPoint.csv"'
 
-        writer.writerow(['NumberOfChargingSessions', int(len(sessions))])
-        writer.writerow(['SessionIndex', 'SessionID', 'StartedOn', 'FinishedOn', 'Protocol', 'EnergyDelivered', 'Payment', 'VehicleType'])
-        for i in range(len(sessions)):
-            try:
-                car_type = Car.objects.get(car_id=sessions[i].car).car_type
-            except:
-                car_type = ''
-            writer.writerow([int(i + 1), 
-                    sessions[i].session_id_given, 
-                    sessions[i].connection_time, 
-                    sessions[i].disconnection_time, 
-                    sessions[i].protocol, 
-                    float(sessions[i].kWh_delivered), 
-                    sessions[i].user_payment_method, 
-                    car_type])
-        return response
+    #     writer = csv.writer(response)
+    #     writer.writerow(['Point', charging_point.charging_point_id_given])
+    #     if charging_point.operator == None:
+    #         writer.writerow(['PointOperator', 'None'])
+    #     else:
+    #         writer.writerow(['PointOperator', charging_point.operator.title])
+    #     writer.writerow(['RequestTimestamp', datetime.now(pytz.timezone('Europe/Athens')).strftime("%Y-%m-%d %H:%M:%S")])
+    #     periodFrom = date_from[0:4] + "-" + date_from[4:6] + "-" + date_from[6:8] + " 00:00:00"
+    #     writer.writerow(['PeriodFrom', periodFrom])
+    #     periodTo = date_to[0:4] + "-" + date_to[4:6] + "-" + date_to[6:8] + " 23:59:59"
+    #     writer.writerow(['PeriodTo', periodTo])
+
+    #     sessions = list(Session.objects.filter(
+    #         charging_point=charging_point,
+    #         connection_time__range=[datetime.strptime(periodFrom, "%Y-%m-%d %H:%M:%S").replace(tzinfo=timezone('UTC')),
+    #                     datetime.strptime(periodTo, "%Y-%m-%d %H:%M:%S").replace(tzinfo=timezone('UTC'))]
+    #     ))
+    #     sessions.sort(key=lambda x: x.connection_time)
+
+    #     writer.writerow(['NumberOfChargingSessions', int(len(sessions))])
+    #     writer.writerow(['SessionIndex', 'SessionID', 'StartedOn', 'FinishedOn', 'Protocol', 'EnergyDelivered', 'Payment', 'VehicleType'])
+    #     for i in range(len(sessions)):
+    #         try:
+    #             car_type = Car.objects.get(car_id=sessions[i].car).car_type
+    #         except:
+    #             car_type = ''
+    #         writer.writerow([int(i + 1), 
+    #                 sessions[i].session_id_given, 
+    #                 sessions[i].connection_time, 
+    #                 sessions[i].disconnection_time, 
+    #                 sessions[i].protocol, 
+    #                 float(sessions[i].kWh_delivered), 
+    #                 sessions[i].user_payment_method, 
+    #                 car_type])
+    #     return response
 
 @api_view(['GET', ])
 # @permission_classes((IsAuthenticated,))

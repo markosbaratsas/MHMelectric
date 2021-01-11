@@ -50,6 +50,7 @@ REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'users.models.MyAuthentication',
     ],
+    'URL_FORMAT_OVERRIDE': None,
 }
 
 MIDDLEWARE = [
