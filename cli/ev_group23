@@ -1,0 +1,42 @@
+#!/bin/bash
+
+args=""
+count=$#
+if [ $1 = Admin ]
+then
+    args="Admin"
+    case $2 in
+        --resetsession)
+                        args="${args} resetsession"
+                        ;;
+        --healthcheck)
+                        args="${args} healthcheck"
+                        ;;
+        --users)   
+                        args="${args} users"
+                        ;;
+        --usermod)
+                        args="${args} usermod"
+                        ;;
+        --sessionsupd)
+                        args="${args} sessionsupd"
+                        ;;
+        *)          
+                        args="${args} -h"
+                        ;;
+    esac
+    shift 2
+    i=3
+    while [ $i -le $count ]
+    do 
+        args="${args} $1"
+        i=$((i + 1))
+        shift 1 
+    done
+else
+    args="$@"
+fi
+#echo "${args}"
+python3 cli_side.py ${args}
+
+
