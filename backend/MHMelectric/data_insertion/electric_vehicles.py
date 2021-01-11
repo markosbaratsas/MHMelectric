@@ -5,15 +5,13 @@ import json
 import sys
 from rest_api.models import *
 
-path_to_file = "/mnt/c/Users/markg/Downloads/OneDrive_1_05-01-2021/electric_vehicles_data.json"
+path_to_file = "/mnt/c/Users/marak/Downloads/OneDrive_1_05-01-2021/electric_vehicles_data.json"
 # path_to_file = "/mnt/c/Users/marak/Downloads/OneDrive_1_1-5-2021/electric_vehicles_data.json"
 
 with open(path_to_file) as json_file:
     data = json.load(json_file)
     for i in list(data["data"]):
-        try:
-            Car.objects.get(car_id_given==i["id"])
-        except:
+        if(len(list(Car.objects.filter(car_id_given=i["id"])))==0):
             Car.objects.create(car_id_given=i["id"], 
                 brand=i["brand"]  if i["brand"]!=None else '', 
                 car_type=i["type"]  if i["type"]!=None else '', 

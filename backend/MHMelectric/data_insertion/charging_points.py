@@ -10,7 +10,7 @@ import sys
 from decimal import Decimal
 from rest_api.models import *
 
-path_to_file = "/mnt/c/Users/markg/Downloads/OneDrive_1_05-01-2021/charging_points_europe_json/ready_data.json"
+path_to_file = "/mnt/c/Users/marak/Downloads/OneDrive_1_05-01-2021/charging_points_europe_json/ready_data.json"
 
 with open(path_to_file) as json_file:
     data = json.load(json_file)
@@ -25,9 +25,7 @@ with open(path_to_file) as json_file:
                 secondary_phone=''.join(i["OperatorInfo"]["PhoneSecondaryContact"].split("-"))  if i["OperatorInfo"]!=None and i["OperatorInfo"]["PhoneSecondaryContact"]!=None and i["OperatorInfo"]["PhoneSecondaryContact"]!='' else 0,
                 address_info=i["OperatorInfo"]["AddressInfo"]  if i["OperatorInfo"]!=None and i["OperatorInfo"]["AddressInfo"]!=None else '',
                 email=i["OperatorInfo"]["ContactEmail"]  if i["OperatorInfo"]!=None and i["OperatorInfo"]["ContactEmail"]!=None else '')
-        try:
-            Charging_point.objects.get(charging_point_id_given==i["ID"])
-        except:
+        if(len(list(Charging_point.objects.filter(charging_point_id_given=i["ID"])))==0):
             Station.objects.create(station_id_given=i["AddressInfo"]["ID"],
                 country=i["AddressInfo"]["Country"]["Title"]  if i["AddressInfo"]!=None and i["AddressInfo"]["Country"]!=None and i["AddressInfo"]["Country"]["Title"]!=None else '',
                 city=i["AddressInfo"]["Town"]  if i["AddressInfo"]!=None and i["AddressInfo"]["Town"]!=None else '',
