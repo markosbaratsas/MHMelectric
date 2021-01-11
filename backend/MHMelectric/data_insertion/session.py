@@ -16,9 +16,7 @@ with open(path_to_file) as json_file:
     data = json.load(json_file)
     # for i in list(data["_items"]):
     for i in list(data["_items"])[:100]:
-        try:
-            Session.objects.get(station_id_given==i["_id"])
-        except:
+        if(len(list(Session.objects.filter(session_id_given=i["_id"])))==0):
             stationID = randrange(len(list(Station.objects.all())))
             car = list(Car.objects.all())[randrange(len(list(Car.objects.all())))]
             if(len(list(Charging_point.objects.filter(station=stationID)))>0):

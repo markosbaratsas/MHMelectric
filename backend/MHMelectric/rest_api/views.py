@@ -107,7 +107,8 @@ def sessions_per_point(request, pointID, date_from, date_to):
 
         sessions = list(Session.objects.filter(
             charging_point=charging_point,
-            connection_time__range=[periodFrom[:10], periodTo[:10]]
+            connection_time__range=[datetime.strptime(periodFrom, "%Y-%m-%d %H:%M:%S").replace(tzinfo=timezone('UTC')),
+                        datetime.strptime(periodTo, "%Y-%m-%d %H:%M:%S").replace(tzinfo=timezone('UTC'))]
         ))
         sessions.sort(key=lambda x: x.connection_time)
 
@@ -197,7 +198,8 @@ def sessions_per_station(request, stationID, date_from, date_to):
 
         sessions = list(Session.objects.filter(
             station=station,
-            connection_time__range=[periodFrom[:10], periodTo[:10]]
+            connection_time__range=[datetime.strptime(periodFrom, "%Y-%m-%d %H:%M:%S").replace(tzinfo=timezone('UTC')),
+                        datetime.strptime(periodTo, "%Y-%m-%d %H:%M:%S").replace(tzinfo=timezone('UTC'))]
         ))
         sessions.sort(key=lambda x: x.connection_time)
         
@@ -297,7 +299,8 @@ def sessions_per_ev(request, vehicleID, date_from, date_to):
 
         sessions = list(Session.objects.filter(
             car=car,
-            connection_time__range=[periodFrom[:10], periodTo[:10]]
+            connection_time__range=[datetime.strptime(periodFrom, "%Y-%m-%d %H:%M:%S").replace(tzinfo=timezone('UTC')),
+                        datetime.strptime(periodTo, "%Y-%m-%d %H:%M:%S").replace(tzinfo=timezone('UTC'))]
         ))
         sessions.sort(key=lambda x: x.connection_time)
 
@@ -409,7 +412,8 @@ def sessions_per_provider(request, providerID, date_from, date_to):
 
         sessions = list(Session.objects.filter(
             provider=provider,
-            connection_time__range=[periodFrom[:10], periodTo[:10]]
+            connection_time__range=[datetime.strptime(periodFrom, "%Y-%m-%d %H:%M:%S").replace(tzinfo=timezone('UTC')),
+                        datetime.strptime(periodTo, "%Y-%m-%d %H:%M:%S").replace(tzinfo=timezone('UTC'))]
         ))
         sessions.sort(key=lambda x: x.connection_time)
 
