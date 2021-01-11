@@ -51,3 +51,10 @@ def get_authorization_header(request):
         # Work around django test client oddness
         auth = auth.encode(HTTP_HEADER_ENCODING)
     return auth
+
+
+class API_key(models.Model):
+    primary_key_id = models.AutoField(primary_key=True)
+    api_key = models.CharField(max_length=15, default='')
+
+    token = models.OneToOneField(Token, on_delete=models.CASCADE, default=None, null=True)
