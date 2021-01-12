@@ -30,6 +30,9 @@ ALLOWED_HOSTS = []
 
 
 # Application definition
+CORS_ORIGIN_WHITELIST = [
+    'http://localhost:3000'
+]
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -43,7 +46,9 @@ INSTALLED_APPS = [
     'users.apps.UsersConfig',
 
     'rest_framework',
-    'rest_framework.authtoken'    
+    'rest_framework.authtoken',
+     
+    'corsheaders' 
 ]
 
 REST_FRAMEWORK = {
@@ -54,6 +59,8 @@ REST_FRAMEWORK = {
 }
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
+    'django.middleware.common.CommonMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
