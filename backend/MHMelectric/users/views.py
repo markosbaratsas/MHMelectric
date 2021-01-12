@@ -4,15 +4,17 @@ from django.core.exceptions import ObjectDoesNotExist
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.permissions import IsAuthenticated
-from rest_framework.decorators import api_view, permission_classes
+from rest_framework.decorators import api_view, permission_classes, renderer_classes
 from rest_framework.authtoken.views import ObtainAuthToken
 from rest_framework.authtoken.models import Token
+from rest_framework_csv.renderers import CSVRenderer, JSONRenderer
 
 from users.models import API_key
 from users.serializers import RegistrationSerializer
 
 
 @api_view(['POST', ])
+@renderer_classes([JSONRenderer, CSVRenderer])
 def register_user(request):
     
     if request.method == "POST":
@@ -29,6 +31,7 @@ def register_user(request):
         return Response(data)
 
 @api_view(['POST', ])
+@renderer_classes([JSONRenderer, CSVRenderer])
 @permission_classes((IsAuthenticated,))
 def delete_token(request):
 
@@ -41,6 +44,7 @@ def delete_token(request):
         return Response(status=status.HTTP_200_OK)
 
 @api_view(['POST', ])
+@renderer_classes([JSONRenderer, CSVRenderer])
 @permission_classes((IsAuthenticated,))
 def admin_create_user(request, username, password):
 
@@ -61,6 +65,7 @@ def admin_create_user(request, username, password):
 
 
 @api_view(['GET', ])
+@renderer_classes([JSONRenderer, CSVRenderer])
 @permission_classes((IsAuthenticated,))
 def admin_get_user(request, username):
 
@@ -96,6 +101,7 @@ class ObtainAPIKey(ObtainAuthToken):
         return Response({'api_key': api_key}, status=status.HTTP_200_OK)
 
 @api_view(['POST', ])
+@renderer_classes([JSONRenderer, CSVRenderer])
 def cli_logout(request):
 
     if request.method == "POST":
@@ -108,6 +114,7 @@ def cli_logout(request):
         return Response(status=status.HTTP_200_OK)
 
 @api_view(['GET', ])
+@renderer_classes([JSONRenderer, CSVRenderer])
 def get_token_from_api_key(request):
 
     if request.method == "GET":
