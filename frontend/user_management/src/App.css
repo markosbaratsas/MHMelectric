@@ -1,0 +1,88 @@
+@import url('Standard.css');
+@import url('https://fonts.googleapis.com/css2?family=Raleway:wght@300;400&display=swap');
+
+.App {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.login {
+  width: 30%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border-width: 1px;
+}
+
+.App h1 {
+  font-size: 25px;
+  color: #31C7CE;
+  font-family: 'Raleway', sans-serif;
+  font-weight: 400;
+  margin-bottom: 25px;
+}
+
+.App h3 {
+  font-size: 18px;
+  color: #444;
+  font-family: 'Raleway', sans-serif;
+  font-weight: 300;
+}
+
+.input-div {
+  width: 70%;
+}
+
+.App input {
+  width: 100%;
+  display: block;
+  line-height: 35px;
+  margin: 10px 0 20px 0;
+  border-radius: 5px;
+  border-width: 0;
+  box-shadow: 1px 1px 3px #999;
+  font-size: 20px;
+  color: #444;
+  font-family: 'Raleway', sans-serif;
+  padding: 2px;
+}
+
+.App input:focus {
+  outline: none;
+}
+
+.App button {
+  font-family: 'Raleway', sans-serif;
+  font-size: 20px;
+  background-color: #31C7CE;
+  line-height: 20px;
+  color: #ffffff;
+  border-width: 0;
+  padding: 10px 20px;
+  border-radius: 5px;
+  margin: 10px 0 10px 0;
+}
+
+.App button:hover {
+  box-shadow: 1px 1px 3px  #999;
+}
+
+.App button:focus {
+  outline: none;
+}
+
+.App h4 {
+  font-size: 15px;
+  color: #444;
+  font-family: 'Raleway', sans-serif;
+  font-weight: 300;
+}
+
+.App a {
+  color: #31C7CE;
+  text-decoration: underline;
+}
