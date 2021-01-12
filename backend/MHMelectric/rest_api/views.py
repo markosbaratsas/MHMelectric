@@ -70,6 +70,8 @@ def sessions_per_point(request, pointID, date_from, date_to):
 
     data['NumberOfChargingSessions'] = int(len(sessions))
     data['ChargingSessionsList'] = []
+    if len(sessions)==0:
+        return Response({'Failed': f'There is no session in point {pointID}'}, status=status.HTTP_402_PAYMENT_REQUIRED)
     for i in range(len(sessions)):
         try:
             car_type = Car.objects.get(car_id=sessions[i].car).car_type
@@ -118,6 +120,8 @@ def sessions_per_station(request, stationID, date_from, date_to):
 
     totalEnergyDelivered = 0.0
     activePoints = {}
+    if len(sessions)==0:
+        return Response({'Failed': f'There is no session in station {stationID}'}, status=status.HTTP_402_PAYMENT_REQUIRED)
     for i in range(len(sessions)):
         energyDelivered = float(sessions[i].kWh_delivered)
         totalEnergyDelivered += energyDelivered
@@ -169,6 +173,8 @@ def sessions_per_ev(request, vehicleID, date_from, date_to):
     data['NumberOfVehicleChargingSessions'] = int(len(sessions))
     data['ChargingSessionsList'] = []
     
+    if len(sessions)==0:
+        return Response({'Failed': f'There is no session of EV {vehicleID}'}, status=status.HTTP_402_PAYMENT_REQUIRED)
     for i in range(len(sessions)):
         try:
             session_provider = sessions[i].charging_point.Operator.title
@@ -224,6 +230,8 @@ def sessions_per_provider(request, providerID, date_from, date_to):
     sessions.sort(key=lambda x: x.connection_time)
 
     data['Sessions'] = []
+    if len(sessions)==0:
+        return Response({'Failed': f'There is no session of provider {providerID}'}, status=status.HTTP_402_PAYMENT_REQUIRED)
     for i in range(len(sessions)):
         try:
             stationID = Station.objects.get(station_id=sessions[i].station).station_id_given
