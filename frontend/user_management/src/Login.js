@@ -5,11 +5,12 @@ import Header from './Header';
 import axios from 'axios';
 import { useAuth } from "./context/auth";
 
-function Login() {
+function Login(props) {
     // const history = useHistory()
     const [isLoggedIn, setLoggedIn] = useState(false)
     const [user, setUser] = useState({})
     const { setAuthTokens } = useAuth()
+    const referer = props.location.state.referer || '/'
 
     const handleChange = (e) => {
         const { value, name } = e.target
@@ -36,7 +37,7 @@ function Login() {
     }
 
     if (isLoggedIn) {
-        return <Redirect to="/test" />;
+        return <Redirect to={referer} />
     }
 
     return (
