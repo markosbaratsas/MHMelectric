@@ -1,16 +1,15 @@
 import './Login.css'
 import React, { useState } from 'react';
-import { useHistory, Link } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
 import Header from './Header';
 import axios from 'axios';
+import { useAuth } from "./context/auth";
 
 function Login() {
-    const history = useHistory()
+    // const history = useHistory()
+    const [isLoggedIn, setLoggedIn] = useState(false)
     const [user, setUser] = useState({})
-
-    // function handleClick() {
-    //     // history.push('/signup')
-    // }
+    const { setAuthTokens } = useAuth()
 
     const handleChange = (e) => {
         const { value, name } = e.target
@@ -27,12 +26,17 @@ function Login() {
         }
         axios(details)
             .then( (response) => {
-                console.log(response.data)
-                // history.push(response.data)
+                // console.log(response.data);
+                setAuthTokens(response.data);
+                setLoggedIn(true);
             })
             .catch( (error) => {
                 console.log(error)
             })
+    }
+
+    if (isLoggedIn) {
+        return <Redirect to="/test" />;
     }
 
     return (

@@ -1,7 +1,14 @@
 import './Login.css'
 import Header from './Header'
+import { useAuth } from './context/auth'
 
-function Error() {
+function Test() {
+    // const { setAuthTokens } = useAuth();
+
+    // function logOut() {
+    //     setAuthTokens();
+    // }
+
   return (
     <>
       <Header />
@@ -9,9 +16,10 @@ function Error() {
         <div className='login'>
           <h1>You are logged in</h1>
         </div>
+        {/* <button onClick={logOut()} className='link'>Log out</button> */}
       </div>
     </>
   );
 }
 
-export default Error;
+export default Test;
