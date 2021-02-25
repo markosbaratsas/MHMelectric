@@ -1,16 +1,16 @@
-import './Login.css'
-import React, { useState } from 'react'
-import { useHistory } from 'react-router-dom'
-import Header from './Header'
-import axios from 'axios'
+import './Login.css';
+import React, { useState } from 'react';
+import { useHistory, Link } from 'react-router-dom';
+import Header from './Header';
+import axios from 'axios';
 
 function SignUp() {
     const history = useHistory()
     const [ user, setUser] = useState({})
 
-    function handleClick() {
-        history.push('/')
-    }
+    // function handleClick() {
+    //     history.push('/')
+    // }
 
     const handleChange = (e) => {
         const { value, name } = e.target
@@ -57,7 +57,7 @@ function SignUp() {
                         <input type='password' name='password2' id='password2' onChange={handleChange} required />
                     </div>
                     <button type='submit' className='basic-button'>Sign up</button>
-                    <h4>Already have an account yet? <button className='link' onClick={handleClick}>Log in</button></h4>
+                    <h4>Already have an account yet? <Link to='/' className='link'>Log in</Link></h4>
                 </form>
             </div>
         </div>

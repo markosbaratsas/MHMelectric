@@ -1,16 +1,16 @@
 import './Login.css'
-import React, { useState } from 'react'
-import { useHistory } from 'react-router-dom'
-import Header from './Header'
-import axios from 'axios'
+import React, { useState } from 'react';
+import { useHistory, Link } from 'react-router-dom';
+import Header from './Header';
+import axios from 'axios';
 
 function Login() {
     const history = useHistory()
-    const [ user, setUser] = useState({})
+    const [user, setUser] = useState({})
 
-    function handleClick() {
-        history.push('/signup')
-    }
+    // function handleClick() {
+    //     // history.push('/signup')
+    // }
 
     const handleChange = (e) => {
         const { value, name } = e.target
@@ -28,6 +28,7 @@ function Login() {
         axios(details)
             .then( (response) => {
                 console.log(response.data)
+                // history.push(response.data)
             })
             .catch( (error) => {
                 console.log(error)
@@ -51,7 +52,7 @@ function Login() {
                     </div>
                     <button type='submit' className='basic-button'>Log in</button>
                 </form>
-                <h4>Don't have an account yet? <button className='link' onClick={handleClick}>Sign up</button></h4>
+                <h4>Don't have an account yet? <Link to='/signup' className='link'>Sign up</Link></h4>
             </div>
             {/* <h1>{user.password}</h1> */}
         </div>
