@@ -1,16 +1,16 @@
 import './Login.css'
-import React, { useState } from 'react'
-import { useHistory } from 'react-router-dom'
-import Header from './Header'
-import axios from 'axios'
+import React, { useState } from 'react';
+import { Link, Redirect } from 'react-router-dom';
+import Header from './Header';
+import axios from 'axios';
+import { useAuth } from "./context/auth";
 
-function Login() {
-    const history = useHistory()
-    const [ user, setUser] = useState({})
-
-    function handleClick() {
-        history.push('/signup')
-    }
+function Login(props) {
+    // const history = useHistory()
+    const [isLoggedIn, setLoggedIn] = useState(false)
+    const [user, setUser] = useState({})
+    const { setAuthTokens } = useAuth()
+    const referer = props.location.state.referer || '/'
 
     const handleChange = (e) => {
         const { value, name } = e.target
@@ -27,11 +27,17 @@ function Login() {
         }
         axios(details)
             .then( (response) => {
-                console.log(response.data)
+                // console.log(response.data);
+                setAuthTokens(response.data);
+                setLoggedIn(true);
             })
             .catch( (error) => {
                 console.log(error)
             })
+    }
+
+    if (isLoggedIn) {
+        return <Redirect to={referer} />
     }
 
     return (
@@ -51,7 +57,7 @@ function Login() {
                     </div>
                     <button type='submit' className='basic-button'>Log in</button>
                 </form>
-                <h4>Don't have an account yet? <button className='link' onClick={handleClick}>Sign up</button></h4>
+                <h4>Don't have an account yet? <Link to='/signup' className='link'>Sign up</Link></h4>
             </div>
             {/* <h1>{user.password}</h1> */}
         </div>
