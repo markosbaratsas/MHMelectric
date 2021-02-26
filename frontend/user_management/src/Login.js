@@ -27,8 +27,7 @@ function Login(props) {
         }
         axios(details)
             .then( (response) => {
-                // console.log(response.data);
-                setAuthTokens(response.data);
+                setAuthTokens(response.data["token"]);
                 setLoggedIn(true);
             })
             .catch( (error) => {
@@ -38,7 +37,8 @@ function Login(props) {
 
     if (isLoggedIn) {
         // return <Redirect to={referer} />
-        return <Redirect to='/test' />
+        localStorage.setItem("username", user["username"]);
+        return <Redirect to='/test' value='hey'/>
     }
 
     return (
@@ -49,18 +49,15 @@ function Login(props) {
                 <h1>Welcome! Please log in to continue.</h1>
                 <form onSubmit={handleSubmit}>
                     <div className='input-div'>
-                        <h3>username*</h3>
-                        <input type='username' name='username' id='username' onChange={handleChange} required />
+                        <input placeholder='username*' type='text' name='username' id='username' onChange={handleChange} required />
                     </div>
                     <div className='input-div'>
-                        <h3>password*</h3>
-                        <input type='password' name='password' id='password' onChange={handleChange} required />
+                        <input placeholder='password*' type='password' name='password' id='password' onChange={handleChange} required />
                     </div>
-                    <button type='submit' className='basic-button'>Log in</button>
+                    <button type='submit' className='basic-button waves-effect waves-light btn'>Log in</button>
                 </form>
                 <h4>Don't have an account yet? <Link to='/signup' className='link'>Sign up</Link></h4>
             </div>
-            {/* <h1>{user.password}</h1> */}
         </div>
         </>
     );

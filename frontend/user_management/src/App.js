@@ -1,3 +1,4 @@
+import './materialize/css/materialize.min.css'
 import React, { useState } from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import PrivateRoute from './PrivateRoute';
@@ -19,8 +20,6 @@ function App(props) {
 
   return (
     <AuthContext.Provider value={{ authTokens, setAuthTokens: setTokens }}>
-      {console.log(typeof localStorage.getItem("tokens"))}
-      {console.log(localStorage.getItem("tokens"))}
       <Router>
         <Switch>
           <Route exact path='/' component={Login} />
