@@ -6,12 +6,13 @@ from django.db.utils import OperationalError
 from django.contrib.auth.models import User
 from rest_framework import status
 from rest_framework.response import Response
-from rest_framework.decorators import api_view, permission_classes, renderer_classes
+from rest_framework.decorators import api_view, permission_classes, renderer_classes, throttle_classes
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.authtoken.models import Token
 from rest_framework.views import APIView
 from rest_framework.parsers import MultiPartParser, FileUploadParser
 from rest_framework_csv.renderers import CSVRenderer, JSONRenderer
+from rest_framework.throttling import UserRateThrottle
 import pytz
 import traceback
 import csv
@@ -29,6 +30,7 @@ def index(request):
 # we could do something like this for the other requests
 @api_view(['GET', ])
 @permission_classes((IsAuthenticated,))
+@throttle_classes([UserRateThrottle])
 def get_first_car(request):
     try:
         cars = Car.objects.all()
@@ -44,6 +46,7 @@ def get_first_car(request):
 @api_view(['GET', ])
 @renderer_classes([JSONRenderer, CSVRenderer])
 @permission_classes((IsAuthenticated,))
+@throttle_classes([UserRateThrottle])
 def sessions_per_point(request, pointID, date_from, date_to):
     try:
         charging_point = Charging_point.objects.get(charging_point_id_given=pointID)
@@ -96,6 +99,7 @@ def sessions_per_point(request, pointID, date_from, date_to):
 @api_view(['GET', ])
 @renderer_classes([JSONRenderer, CSVRenderer])
 @permission_classes((IsAuthenticated,))
+@throttle_classes([UserRateThrottle])
 def sessions_per_station(request, stationID, date_from, date_to):
     try:
         station = Station.objects.get(station_id_given=stationID)
@@ -149,6 +153,7 @@ def sessions_per_station(request, stationID, date_from, date_to):
 @api_view(['GET', ])
 @renderer_classes([JSONRenderer, CSVRenderer])
 @permission_classes((IsAuthenticated,))
+@throttle_classes([UserRateThrottle])
 def sessions_per_ev(request, vehicleID, date_from, date_to):
     try:
         car = Car.objects.get(car_id_given=vehicleID)
@@ -211,6 +216,7 @@ def sessions_per_ev(request, vehicleID, date_from, date_to):
 @api_view(['GET', ])
 @renderer_classes([JSONRenderer, CSVRenderer])
 @permission_classes((IsAuthenticated,))
+@throttle_classes([UserRateThrottle])
 def sessions_per_provider(request, providerID, date_from, date_to):
     try:
         provider = Provider.objects.get(provider_id_given=providerID)
@@ -268,6 +274,7 @@ def sessions_per_provider(request, providerID, date_from, date_to):
 
 @renderer_classes([JSONRenderer, CSVRenderer])
 @permission_classes((IsAuthenticated,))
+@throttle_classes([UserRateThrottle])
 class SessionsUpload(APIView):
     parser_classes = (MultiPartParser, FileUploadParser,)
     serializer = UploadedCSVSerializer

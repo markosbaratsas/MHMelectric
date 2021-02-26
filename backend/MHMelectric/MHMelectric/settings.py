@@ -50,7 +50,12 @@ REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'users.models.MyAuthentication',
     ],
-    # 'URL_FORMAT_OVERRIDE': None,
+    'DEFAULT_THROTTLE_CLASSES': [
+        'rest_framework.throttling.UserRateThrottle'
+    ],
+    'DEFAULT_THROTTLE_RATES': {
+        'user': '100/day'
+    }
 }
 
 MIDDLEWARE = [
