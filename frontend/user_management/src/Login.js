@@ -10,7 +10,7 @@ function Login(props) {
     const [isLoggedIn, setLoggedIn] = useState(false)
     const [user, setUser] = useState({})
     const { setAuthTokens } = useAuth()
-    const referer = props.location.state.referer || '/'
+    // const referer = props.location.state.referer || '/'
 
     const handleChange = (e) => {
         const { value, name } = e.target
@@ -37,7 +37,8 @@ function Login(props) {
     }
 
     if (isLoggedIn) {
-        return <Redirect to={referer} />
+        // return <Redirect to={referer} />
+        return <Redirect to='/test' />
     }
 
     return (

@@ -8,7 +8,8 @@ import Test from './Test';
 import { AuthContext } from './context/auth';
 
 function App(props) {
-  const existingTokens = JSON.parse(localStorage.getItem("tokens"));
+  const existingTokens = (typeof localStorage.getItem("tokens")==='string' && localStorage.getItem("tokens")==="undefined")
+                          ? null : JSON.parse(localStorage.getItem("tokens"))
   const [authTokens, setAuthTokens] = useState(existingTokens);
   
   const setTokens = (data) => {
@@ -18,6 +19,8 @@ function App(props) {
 
   return (
     <AuthContext.Provider value={{ authTokens, setAuthTokens: setTokens }}>
+      {console.log(typeof localStorage.getItem("tokens"))}
+      {console.log(localStorage.getItem("tokens"))}
       <Router>
         <Switch>
           <Route exact path='/' component={Login} />

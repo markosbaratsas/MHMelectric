@@ -3,11 +3,11 @@ import Header from './Header'
 import { useAuth } from './context/auth'
 
 function Test() {
-    // const { setAuthTokens } = useAuth();
+    const { setAuthTokens } = useAuth();
 
-    // function logOut() {
-    //     setAuthTokens();
-    // }
+    function logOut() {
+        setAuthTokens();
+    }
 
   return (
     <>
@@ -16,7 +16,7 @@ function Test() {
         <div className='login'>
           <h1>You are logged in</h1>
         </div>
-        {/* <button onClick={logOut()} className='link'>Log out</button> */}
+        <button onClick={logOut} className='link'>Log out</button>
       </div>
     </>
   );
