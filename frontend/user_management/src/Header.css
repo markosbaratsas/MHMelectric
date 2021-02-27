@@ -27,3 +27,12 @@ header h6 {
     font-weight: 400;
     font-family: 'Lobster', cursive;
   }
+
+.nav-wrapper {
+    background-color:#31C7CE;
+    font-family: 'Raleway', sans-serif;
+}
+
+.brand-logo {
+  font-family: 'Lobster', cursive;
+}

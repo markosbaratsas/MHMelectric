@@ -1,3 +1,4 @@
+import './materialize/css/materialize.min.css'
 import React, { useState } from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import PrivateRoute from './PrivateRoute';
@@ -8,7 +9,8 @@ import Test from './Test';
 import { AuthContext } from './context/auth';
 
 function App(props) {
-  const existingTokens = JSON.parse(localStorage.getItem("tokens"));
+  const existingTokens = (typeof localStorage.getItem("tokens")==='string' && localStorage.getItem("tokens")==="undefined")
+                          ? null : JSON.parse(localStorage.getItem("tokens"))
   const [authTokens, setAuthTokens] = useState(existingTokens);
   
   const setTokens = (data) => {
