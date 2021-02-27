@@ -16,4 +16,6 @@ urlpatterns = [
     path('cli_login', views.ObtainAPIKey.as_view(), name="ObtainAPIKey"),
     path('cli_logout', views.cli_logout, name="cli_logout"),
     path('get_token_from_api_key', views.get_token_from_api_key, name="get_token_from_api_key"),
+
+    path('get_user_info/', views.get_user_info, name="get_user_info"),
 ]

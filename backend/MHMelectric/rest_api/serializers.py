@@ -1,7 +1,7 @@
 import os
 from rest_framework import serializers
 
-from rest_api.models import Car, UploadedCSV
+from rest_api.models import Car_Owner, Car, UploadedCSV
 
 class CarSerializer(serializers.ModelSerializer):
     class Meta:
@@ -23,3 +23,9 @@ class UploadedCSVSerializer(serializers.Serializer):
         if file_extension != '.csv':
             raise serializers.ValidationError({'File extension': 'Only CSV files are accepted'})
         return True
+
+class Car_OwnerSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Car_Owner
+        fields = ['first_name', 'last_name', 'birthdate', 'country',
+                'city', 'street', 'street_number', 'postal_code', 'bonus_points']
