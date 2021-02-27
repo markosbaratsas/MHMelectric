@@ -18,4 +18,5 @@ urlpatterns = [
     path('get_token_from_api_key', views.get_token_from_api_key, name="get_token_from_api_key"),
 
     path('get_user_info/', views.get_user_info, name="get_user_info"),
+    path('get_car_info_from_user/', views.get_car_info_from_user, name="get_car_info_from_user"),
 ]

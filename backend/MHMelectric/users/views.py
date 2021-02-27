@@ -9,9 +9,9 @@ from rest_framework.authtoken.views import ObtainAuthToken
 from rest_framework.authtoken.models import Token
 from rest_framework_csv.renderers import CSVRenderer, JSONRenderer
 
-from rest_api.models import Car_Owner
+from rest_api.models import Car_Owner, Car
 from users.models import API_key
-from rest_api.serializers import Car_OwnerSerializer
+from rest_api.serializers import CarSerializer, Car_OwnerSerializer
 from users.serializers import RegistrationSerializer
 
 
@@ -149,4 +149,28 @@ def get_user_info(request):
         'username': username,
         'email': email,
         'car_owner': car_owner
+    }, status=status.HTTP_200_OK)
+
+
+@api_view(['GET', ])
+@permission_classes((IsAuthenticated,))
+def get_car_info_from_user(request):
+
+    username = request.user.username
+    email = request.user.email
+
+    try:
+        car_owner = Car_Owner.objects.get(user=request.user)
+        cars = Car.objects.filter(owner=car_owner)
+        print(cars)
+
+        cars = CarSerializer(cars, many=True).data
+        print(cars)
+
+    except:
+        return Response({}, status=status.HTTP_200_OK)
+
+
+    return Response({
+        'cars': cars
     }, status=status.HTTP_200_OK)
