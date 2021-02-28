@@ -1,0 +1,154 @@
+{
+    "car_owners": [
+        {
+            "first_name": "Iliana",
+            "last_name": "Xinou",
+            "birthdate": "12-12-1996",
+            "country": "Greece",
+            "city": "Athens",
+            "street": "Agia Maria",
+            "street_number": "25",
+            "postal_code": "12356",
+            "bonus_points": 0,
+            "user": {
+                "username": "iliana",
+                "password": "testpapapa"
+            }
+        },
+        {
+            "first_name": "Markos",
+            "last_name": "Beratis",
+            "birthdate": "12-12-1990",
+            "country": "Greece",
+            "city": "Ioannina",
+            "street": "Makrygiorgou",
+            "street_number": "12",
+            "postal_code": "12345",
+            "bonus_points": 12,
+            "user": {
+                "username": "markos",
+                "password": "testpapapa"
+            }
+        },
+        {
+            "first_name": "Maria",
+            "last_name": "Resta",
+            "birthdate": "12-12-1993",
+            "country": "Greece",
+            "city": "Athens",
+            "street": "Agia Pempti",
+            "street_number": "11",
+            "postal_code": "11111",
+            "bonus_points": 25,
+            "user": {
+                "username": "maria",
+                "password": "testpapapa"
+            }
+        },
+        {
+            "first_name": "Nikolaos",
+            "last_name": "Papastavrou",
+            "birthdate": "12-12-1976",
+            "country": "Greece",
+            "city": "Athens",
+            "street": "Somestreet",
+            "street_number": "25",
+            "postal_code": "12226",
+            "bonus_points": 100,
+            "user": {
+                "username": "nikolaos",
+                "password": "testpapapa"
+            }
+        },
+        {
+            "first_name": "Vassilios",
+            "last_name": "Vescookies",
+            "birthdate": "12-12-1976",
+            "country": "Greece",
+            "city": "Athens",
+            "street": "Somestreet",
+            "street_number": "11",
+            "postal_code": "14523",
+            "bonus_points": 120,
+            "user": {
+                "username": "vassilios",
+                "password": "testpapapa"
+            }
+        }
+    ],
+    "providers": [
+        {
+            "provider_id_given": "Provider1",
+            "title": "Paroheas1",
+            "website_url": "http://www.provider1.com",
+            "comments": "Comment provider 1",
+            "primary_phone": "00306912345678",
+            "secondary_phone": "",
+            "address_info": "Perioxi 1",
+            "email": "info@provider1.com"
+        },
+        {
+            "provider_id_given": "Provider2",
+            "title": "Paroheas2",
+            "website_url": "http://www.provider2.com",
+            "comments": "Comment provider 2",
+            "primary_phone": "00306922345678",
+            "secondary_phone": "",
+            "address_info": "Perioxi 2",
+            "email": "info@provider2.com"
+        },
+        {
+            "provider_id_given": "Provider3",
+            "title": "Paroheas3",
+            "website_url": "http://www.provider3.com",
+            "comments": "Comment provider 3",
+            "primary_phone": "00306932345678",
+            "secondary_phone": "",
+            "address_info": "Perioxi 3",
+            "email": "info@provider3.com"
+        }
+    ],
+    "connection_types": [
+        {
+            "connection_type": "Type 1 - J1772",
+            "general_type": "AC",
+            "voltage": "1000",
+            "amps": "30A"
+        },
+        {
+            "connection_type": "GB/T",
+            "general_type": "AC",
+            "voltage": "1000",
+            "amps": "30A"
+        },
+        {
+            "connection_type": "CHAdeMO",
+            "general_type": "DC",
+            "voltage": "1000",
+            "amps": "42A"
+        },
+        {
+            "connection_type": "CCS - Type 1",
+            "general_type": "DC",
+            "voltage": "1000",
+            "amps": "42A"
+        }
+    ],
+    "charge_programs": [
+        {
+            "price": 4.30,
+            "duration": 70,
+            "description": "Low cost, but takes time"
+        },
+        {
+            "price": 5.30,
+            "duration": 50,
+            "description": "Medium cost, medium time"
+        },
+        {
+            "price": 7.30,
+            "duration": 25,
+            "description": "Higher cost, less time"
+        }
+    ]
+}
