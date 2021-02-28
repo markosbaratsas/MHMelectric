@@ -29,6 +29,37 @@ function Login(props) {
             .then( (response) => {
                 setAuthTokens(response.data["token"]);
                 setLoggedIn(true);
+
+
+                var details = {
+                    method: 'get',
+                    url: 'http://127.0.0.1:8765/evcharge/api/get_user_info',
+                    headers: {
+                      'X-OBSERVATORY-AUTH': JSON.parse(localStorage["tokens"])
+                    }
+                  }
+                axios(details)
+                    .then( (response) => {
+                    console.log(response.data)
+                    localStorage.setItem("username", response.data["username"])
+                    localStorage.setItem("email", response.data["email"])
+                    localStorage.setItem("first_name", response.data["car_owner"]["first_name"])
+                    localStorage.setItem("last_name", response.data["car_owner"]["last_name"])
+                    localStorage.setItem("birthdate", response.data["car_owner"]["birthdate"])
+                    localStorage.setItem("country", response.data["car_owner"]["country"])
+                    localStorage.setItem("city", response.data["car_owner"]["city"])
+                    localStorage.setItem("street", response.data["car_owner"]["street"])
+                    localStorage.setItem("street_number", response.data["car_owner"]["street_number"])
+                    localStorage.setItem("postal_code", response.data["car_owner"]["postal_code"])
+                    localStorage.setItem("bonus_points", response.data["car_owner"]["bonus_points"])
+                    console.log(localStorage)
+                    })
+                    .catch( (error) => {
+                        console.log(error)
+                    })
+
+
+
             })
             .catch( (error) => {
                 console.log(error)
@@ -37,8 +68,7 @@ function Login(props) {
 
     if (isLoggedIn) {
         // return <Redirect to={referer} />
-        localStorage.setItem("username", user["username"]);
-        return <Redirect to='/test' value='hey'/>
+        return <Redirect to='/home' value='hey'/>
     }
 
     return (

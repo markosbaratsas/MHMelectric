@@ -1,14 +1,9 @@
 import './Login.css'
 import './Header.css'
-import { useAuth } from './context/auth'
+import './Profile.css'
+import Profile from './Profile';
 
 function Test() {
-    const { setAuthTokens } = useAuth();
-    const username = localStorage.getItem("username")
-
-    function logOut() {
-        setAuthTokens();
-    }
 
   return (
     <>
@@ -23,11 +18,8 @@ function Test() {
           </ul>
         </div>
       </nav>
-      <div className='App'>
-        <div className='login'>
-          <h1>Hello {username}</h1>
-        </div>
-        <button onClick={logOut} className='basic-button waves-effect waves-light btn'>Log out</button>
+      <div className='profile-wrapper'>
+        <Profile />
       </div>
     </>
   );

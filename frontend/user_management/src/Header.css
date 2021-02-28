@@ -1,36 +1,14 @@
 @import url('Standard.css');
 @import url('https://fonts.googleapis.com/css2?family=Lobster&display=swap');
 
-header {
-    position: fixed;
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-  }
-
-.header-main {
-    height: 8vh;
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    background-color: #31C7CE;
-}
-
-header h6 {
-    font-size: 4vh;
-    color: #ffffff;
-    font-family: 'Raleway', sans-serif;
-    font-weight: 400;
-    font-family: 'Lobster', cursive;
-  }
-
 .nav-wrapper {
     background-color:#31C7CE;
     font-family: 'Raleway', sans-serif;
+    box-shadow: rgb(116, 116, 116) 0px 3px 5px;
+}
+
+.nav-wrapper a {
+  color: #f7f7f7;
 }
 
 .brand-logo {

@@ -1,4 +1,5 @@
 import './Header.css';
+import './materialize/css/materialize.min.css'
 
 function Header() {
   return (

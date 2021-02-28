@@ -1,0 +1,59 @@
+@import url('Standard.css');
+
+.profile-wrapper {
+    min-height: 90vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.profile-div {
+    display: flex;
+    flex-direction: column;
+    background-color: rgb(253, 253, 253);
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: rgb(173, 173, 173) 1px 2px 7px;
+    min-width: 600px;
+    padding: 20px 40px 20px 40px;
+}
+
+.profile-div h1 {
+    font-family: 'Raleway', sans-serif;
+    font-size: 20px;
+}
+
+.profile-div h2 {
+    font-family: 'Raleway', sans-serif;
+    font-size: 15px;
+    font-weight: 700;
+    margin-bottom: 7px;
+}
+
+.profile-center {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+img {
+    border: solid #6b6e70 1px;
+    border-radius: 50%;
+    height: 100px;
+    margin: 20px 0 15px 0;
+}
+
+hr {
+    color: #333;
+    width: 100%;
+}
+
+.profile-left {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+}
+

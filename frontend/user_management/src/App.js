@@ -19,16 +19,18 @@ function App(props) {
   }
 
   return (
-    <AuthContext.Provider value={{ authTokens, setAuthTokens: setTokens }}>
-      <Router>
-        <Switch>
-          <Route exact path='/' component={Login} />
-          <Route exact path='/signup' component={SignUp} />
-          <PrivateRoute exact path='/test' component={Test} />
-          <Route path='*' component={Error} />
-        </Switch>
-      </Router>
-    </AuthContext.Provider>
+    <div className='total-wrapper'>
+      <AuthContext.Provider value={{ authTokens, setAuthTokens: setTokens }}>
+        <Router>
+          <Switch>
+            <Route exact path='/' component={Login} />
+            <Route exact path='/signup' component={SignUp} />
+            <PrivateRoute exact path='/home' component={Test} />
+            <Route path='*' component={Error} />
+          </Switch>
+        </Router>
+      </AuthContext.Provider>
+    </div>
   );
 }
 
