@@ -75,6 +75,20 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
+CORS_ALLOW_HEADERS = [
+    'accept',
+    'accept-encoding',
+    'authorization',
+    'content-type',
+    'dnt',
+    'origin',
+    'user-agent',
+    'x-csrftoken',
+    'x-requested-with',
+    'X-OBSERVATORY-AUTH',
+]
+
+
 ROOT_URLCONF = 'MHMelectric.urls'
 
 TEMPLATES = [
