@@ -25,7 +25,7 @@ function App(props) {
           <Switch>
             <Route exact path='/' component={Login} />
             <Route exact path='/signup' component={SignUp} />
-            <PrivateRoute exact path='/home' component={Test} />
+            <PrivateRoute exact path='/account' component={Test} />
             <Route path='*' component={Error} />
           </Switch>
         </Router>

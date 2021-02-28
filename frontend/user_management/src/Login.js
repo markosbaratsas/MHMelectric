@@ -28,9 +28,6 @@ function Login(props) {
         axios(details)
             .then( (response) => {
                 setAuthTokens(response.data["token"]);
-                setLoggedIn(true);
-
-
                 var details = {
                     method: 'get',
                     url: 'http://127.0.0.1:8765/evcharge/api/get_user_info',
@@ -45,7 +42,7 @@ function Login(props) {
                     localStorage.setItem("email", response.data["email"])
                     localStorage.setItem("first_name", response.data["car_owner"]["first_name"])
                     localStorage.setItem("last_name", response.data["car_owner"]["last_name"])
-                    localStorage.setItem("birthdate", response.data["car_owner"]["birthdate"])
+                    localStorage.setItem("birthdate", response.data["car_owner"]["birthdate"].substring(0, 10))
                     localStorage.setItem("country", response.data["car_owner"]["country"])
                     localStorage.setItem("city", response.data["car_owner"]["city"])
                     localStorage.setItem("street", response.data["car_owner"]["street"])
@@ -53,13 +50,11 @@ function Login(props) {
                     localStorage.setItem("postal_code", response.data["car_owner"]["postal_code"])
                     localStorage.setItem("bonus_points", response.data["car_owner"]["bonus_points"])
                     console.log(localStorage)
+                    setLoggedIn(true);
                     })
                     .catch( (error) => {
                         console.log(error)
                     })
-
-
-
             })
             .catch( (error) => {
                 console.log(error)
@@ -68,7 +63,7 @@ function Login(props) {
 
     if (isLoggedIn) {
         // return <Redirect to={referer} />
-        return <Redirect to='/home' value='hey'/>
+        return <Redirect to='/account' value='hey'/>
     }
 
     return (
