@@ -36,15 +36,20 @@ function Profile() {
                 localStorage.setItem("street_number", response.data["car_owner"]["street_number"])
                 localStorage.setItem("postal_code", response.data["car_owner"]["postal_code"])
                 localStorage.setItem("bonus_points", response.data["car_owner"]["bonus_points"])
+                setUser({"username": localStorage["username"], "email": localStorage["email"], "first_name": localStorage["first_name"], 
+                "last_name": localStorage["last_name"], "birthdate": localStorage["birthdate"], 
+                "country": localStorage["country"], "city": localStorage["city"], "street": localStorage["street"], 
+                "street_number": localStorage["street_number"], "postal_code": localStorage["postal_code"], "bonus_points": localStorage["bonus_points"]})
                 })
                 .catch( (error) => {
                     console.log(error)
                 })
-        }
-        setUser({"username": localStorage["username"], "email": localStorage["email"], "first_name": localStorage["first_name"], 
+        } else {
+            setUser({"username": localStorage["username"], "email": localStorage["email"], "first_name": localStorage["first_name"], 
                 "last_name": localStorage["last_name"], "birthdate": localStorage["birthdate"], 
                 "country": localStorage["country"], "city": localStorage["city"], "street": localStorage["street"], 
                 "street_number": localStorage["street_number"], "postal_code": localStorage["postal_code"], "bonus_points": localStorage["bonus_points"]})
+        }
     }, [])
 
     return (
