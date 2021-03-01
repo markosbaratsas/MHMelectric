@@ -3,7 +3,7 @@
         {
             "first_name": "Iliana",
             "last_name": "Xinou",
-            "birthdate": "12-12-1996",
+            "birthdate": "Sun, 25 Sep 1999 18:03:47 GMT",
             "country": "Greece",
             "city": "Athens",
             "street": "Agia Maria",
@@ -18,7 +18,7 @@
         {
             "first_name": "Markos",
             "last_name": "Beratis",
-            "birthdate": "12-12-1990",
+            "birthdate": "Mon, 12 Dec 1990 18:03:47 GMT",
             "country": "Greece",
             "city": "Ioannina",
             "street": "Makrygiorgou",
@@ -33,7 +33,7 @@
         {
             "first_name": "Maria",
             "last_name": "Resta",
-            "birthdate": "12-12-1993",
+            "birthdate": "Tue, 23 Apr 1989 18:03:47 GMT",
             "country": "Greece",
             "city": "Athens",
             "street": "Agia Pempti",
@@ -48,7 +48,7 @@
         {
             "first_name": "Nikolaos",
             "last_name": "Papastavrou",
-            "birthdate": "12-12-1976",
+            "birthdate": "Sun, 21 Mar 1975 18:03:47 GMT",
             "country": "Greece",
             "city": "Athens",
             "street": "Somestreet",
@@ -63,7 +63,7 @@
         {
             "first_name": "Vassilios",
             "last_name": "Vescookies",
-            "birthdate": "12-12-1976",
+            "birthdate": "Sun, 01 Sep 1970 18:03:47 GMT",
             "country": "Greece",
             "city": "Athens",
             "street": "Somestreet",
