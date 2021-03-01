@@ -154,7 +154,7 @@ class Connection_type(models.Model):
 
 class Charging_point_Connection_type(models.Model):
     charging_point_connection_type_id = models.AutoField(primary_key=True)
-    connection_type = models.ForeignKey(Charge_program, on_delete=models.DO_NOTHING)
+    connection_type = models.ForeignKey(Connection_type, on_delete=models.DO_NOTHING)
     charging_point = models.ForeignKey(Charging_point, on_delete=models.DO_NOTHING)
 
     def __str__(self):

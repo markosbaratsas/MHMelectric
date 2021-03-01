@@ -9,6 +9,7 @@ import json
 import sys
 from decimal import Decimal
 from rest_api.models import *
+from random import randrange
 
 path_to_file = "/mnt/c/Users/marak/Downloads/OneDrive_1_05-01-2021/charging_points_europe_json/ready_data.json"
 
@@ -37,6 +38,22 @@ with open(path_to_file) as json_file:
                 operator=list(Operator.objects.filter(operator_id_given=i["OperatorID"]))[0] if len(list(Operator.objects.filter(operator_id_given=i["OperatorID"])))!=0 else None)
 
 
-            Charging_point.objects.create(charging_point_id_given=i["ID"],
+            charging_point = Charging_point.objects.create(charging_point_id_given=i["ID"],
                 station=list(Station.objects.filter(station_id_given=i["AddressInfo"]["ID"]))[0] if len(list(Station.objects.filter(station_id_given=i["AddressInfo"]["ID"])))!=0 else None,
                 operator=list(Operator.objects.filter(operator_id_given=i["OperatorID"]))[0] if len(list(Operator.objects.filter(operator_id_given=i["OperatorID"])))!=0 else None)
+
+            charge_programID1 = randrange(1, len(list(Charge_program.objects.all())))
+            charge_programID2 = randrange(1, len(list(Charge_program.objects.all())))
+
+            Charge_program_Charging_point.objects.get_or_create(charging_point=charging_point, 
+                                                                charge_program=list(Charge_program.objects.filter(charge_program_id=charge_programID1))[0])
+            Charge_program_Charging_point.objects.get_or_create(charging_point=charging_point, 
+                                                                charge_program=list(Charge_program.objects.filter(charge_program_id=charge_programID2))[0])
+
+            connection_typeID1 = randrange(1, len(list(Connection_type.objects.all())))
+            connection_typeID2 = randrange(1, len(list(Connection_type.objects.all())))
+
+            Charging_point_Connection_type.objects.get_or_create(charging_point=charging_point, 
+                                                                connection_type=list(Connection_type.objects.filter(connection_type_id=connection_typeID1))[0])
+            Charging_point_Connection_type.objects.get_or_create(charging_point=charging_point, 
+                                                                connection_type=list(Connection_type.objects.filter(connection_type_id=connection_typeID2))[0])
