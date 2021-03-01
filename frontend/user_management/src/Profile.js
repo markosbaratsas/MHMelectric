@@ -1,20 +1,40 @@
 import './Login.css'
 import './Header.css'
 import { useAuth } from './context/auth'
-// import React, { useState, useEffect } from 'react'
-// import axios from 'axios'
+import React, { useState, useEffect } from 'react'
+import axios from 'axios'
 import profile from './context/profile-pic.png'
 
 function Profile() {
     const { setAuthTokens } = useAuth();
-    const user = {"username": localStorage["username"], "email": localStorage["email"], "first_name": localStorage["first_name"], 
-                    "last_name": localStorage["last_name"], "birthdate": localStorage["birthdate"], 
-                    "country": localStorage["country"], "city": localStorage["city"], "street": localStorage["street"], 
-                    "street_number": localStorage["street_number"], "postal_code": localStorage["postal_code"], "bonus_points": localStorage["bonus_points"]}
+    const [ user, setUser ] = useState({})
 
     function logOut() {
+        localStorage.clear();
         setAuthTokens();
     }
+
+    useEffect(() => {
+        var details = {
+            method: 'get',
+            url: 'http://127.0.0.1:8765/evcharge/api/get_user_info',
+            headers: {
+              'X-OBSERVATORY-AUTH': JSON.parse(localStorage["tokens"])
+            }
+          }
+        axios(details)
+            .then( (response) => {
+            console.log(response.data)
+            setUser({"username": response.data["username"], "email": response.data["email"], "first_name": response.data["car_owner"]["first_name"], 
+            "last_name": response.data["car_owner"]["last_name"], "birthdate": response.data["car_owner"]["birthdate"].substring(0, 10), 
+            "country": response.data["car_owner"]["country"], "city": response.data["car_owner"]["city"], "street": response.data["car_owner"]["street"], 
+            "street_number": response.data["car_owner"]["street_number"], "postal_code": response.data["car_owner"]["postal_code"], "bonus_points": response.data["car_owner"]["bonus_points"]})
+            console.log(localStorage)
+            })
+            .catch( (error) => {
+                console.log(error)
+            })
+    }, [])
 
     return (
         <>
