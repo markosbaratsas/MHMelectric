@@ -9,9 +9,13 @@ import json
 import sys
 from decimal import Decimal
 from rest_api.models import *
+from MHMelectric.settings import BASE_DIR
 from random import randrange
 
-path_to_file = "/mnt/c/Users/marak/Downloads/OneDrive_1_05-01-2021/charging_points_europe_json/ready_data.json"
+with open(str(str(BASE_DIR) + "/data_insertion/file_paths.json")) as paths:
+    path_to_file = json.loads(paths.read())["charging_points"]
+
+# path_to_file = "/mnt/c/Users/markg/Downloads/OneDrive_1_05-01-2021/charging_points_europe_json/ready_data.json"
 
 with open(path_to_file) as json_file:
     data = json.load(json_file)
