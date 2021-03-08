@@ -98,6 +98,11 @@ class Station(models.Model):
     
     operator = models.ForeignKey(Operator, on_delete=models.DO_NOTHING, null=True, default=None)
 
+    def get_some_info(self):
+        return {'country': self.country, 'city': self.city, 'street': self.street,
+        'street_number': self.street_number, 'postal_code': int(self.postal_code), 
+        'phone_number': int(self.phone_number), 'email': self.email}
+
     def __str__(self):
         return f'{self.station_id}'
 
@@ -109,6 +114,9 @@ class Charging_point(models.Model):
     operator = models.ForeignKey(Operator, on_delete=models.DO_NOTHING, null=True, default=None)
     station = models.ForeignKey(Station, on_delete=models.DO_NOTHING, null=True, default=None)
 
+    def get_some_info(self):
+        return {'station_info': self.station.get_some_info() }
+
     def __str__(self):
         return f'{self.charging_point_id}'
 
@@ -118,6 +126,9 @@ class Charge_program(models.Model):
     price = models.DecimalField(max_digits=6, decimal_places=2, default=0)
     duration = models.DecimalField(max_digits=6, decimal_places=0, default=0)
     description = models.CharField(max_length=1023, default='')
+
+    def get_some_info(self):
+        return {'price': self.price, 'duration': self.duration, 'description': self.description }
 
     def __str__(self):
         return f'{self.charge_program_id}'
@@ -183,6 +194,11 @@ class Provider(models.Model):
     secondary_phone = models.DecimalField(max_digits=14, decimal_places=0, default=0)
     address_info = models.CharField(max_length=127, default='')
     email = models.EmailField(max_length=63, default='')
+
+    def get_some_info(self):
+        return {'title': self.title, 'website_url': self.website_url, 'comments': self.comments,
+        'primary_phone': int(self.primary_phone), 'secondary_phone': int(self.secondary_phone), 
+        'address_info': self.address_info, 'email': self.email }
 
     def __str__(self):
         return f'{self.provider_id_given}'

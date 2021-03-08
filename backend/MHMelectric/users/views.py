@@ -9,9 +9,9 @@ from rest_framework.authtoken.views import ObtainAuthToken
 from rest_framework.authtoken.models import Token
 from rest_framework_csv.renderers import CSVRenderer, JSONRenderer
 
-from rest_api.models import Car_Owner, Car
+from rest_api.models import Car_Owner, Car, Charging_point, Charge_program, Provider, Station, Periodic_bill, Session
 from users.models import API_key
-from rest_api.serializers import CarSerializer, Car_OwnerSerializer
+from rest_api.serializers import CarSerializer, Car_OwnerSerializer, Periodic_billSerializer, SessionSerializer
 from users.serializers import RegistrationSerializer
 
 
@@ -156,16 +156,11 @@ def get_user_info(request):
 @permission_classes((IsAuthenticated,))
 def get_car_info_from_user(request):
 
-    username = request.user.username
-    email = request.user.email
-
     try:
         car_owner = Car_Owner.objects.get(user=request.user)
         cars = Car.objects.filter(owner=car_owner)
-        print(cars)
 
         cars = CarSerializer(cars, many=True).data
-        print(cars)
 
     except:
         return Response({}, status=status.HTTP_200_OK)
@@ -173,4 +168,70 @@ def get_car_info_from_user(request):
 
     return Response({
         'cars': cars
+    }, status=status.HTTP_200_OK)
+
+
+@api_view(['GET', ])
+@permission_classes((IsAuthenticated,))
+def get_periodic_bills_of_user(request):
+
+    try:
+        car_owner = Car_Owner.objects.get(user=request.user)
+        periodic_bills = Periodic_bill.objects.filter(owner=car_owner)
+
+        periodic_bills = Periodic_billSerializer(periodic_bills, many=True).data
+
+    except:
+        return Response({
+            'periodic_bills': []
+        }, status=status.HTTP_200_OK)
+
+
+    return Response({
+        'periodic_bills': periodic_bills
+    }, status=status.HTTP_200_OK)
+
+
+@api_view(['GET', ])
+@permission_classes((IsAuthenticated,))
+def get_sessions_of_periodic_bill(request, periodic_bill_id):
+
+    try:
+        periodic_bill = Periodic_bill.objects.get(periodic_bill_id=periodic_bill_id)
+        car_owner = Car_Owner.objects.get(user=request.user)
+        sessions = Session.objects.filter(periodic_bill=periodic_bill, car_owner=car_owner)
+
+        sessions = SessionSerializer(sessions, many=True).data
+
+        for i in sessions: # maybe the's a better way to do this...
+
+            try: 
+                specific_car = Car.objects.get(car_id=i["car"])
+                i["car"] = CarSerializer(specific_car).data
+            except:
+                pass
+
+            try: 
+                i["station"] = Station.objects.get(station_id=i["station"]).get_some_info()
+            except:
+                pass
+
+            try: 
+                i["charge_program"] = Charge_program.objects.get(charge_program_id=i["charge_program"]).get_some_info()
+            except:
+                pass
+
+            try: 
+                i["provider"] = Provider.objects.get(provider_id=i["provider"]).get_some_info()
+            except:
+                pass
+
+    except:
+        return Response({
+            'sessions': []
+        }, status=status.HTTP_200_OK)
+
+
+    return Response({
+        'sessions': sessions
     }, status=status.HTTP_200_OK)
