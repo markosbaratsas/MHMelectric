@@ -109,11 +109,20 @@
     outline: none;
   }
 
-  .background-wrapper {
+.background-wrapper {
     backdrop-filter: blur(8px);
     background-position: center;
     min-height: 100vh;
     background-repeat: no-repeat;
     background-size: cover;
     background-image: url("../images/background4.jpg");
+}
+
+.car-div {
+    display: inline-flex;
+    margin-bottom: 20px;
+}
+
+.car-div h2 {
+    margin-right: 10px;
 }
