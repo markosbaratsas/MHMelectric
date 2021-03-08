@@ -7,9 +7,13 @@ import sys
 from random import randrange
 import datetime
 from rest_api.models import *
+from MHMelectric.settings import BASE_DIR
 from pytz import timezone
 
-path_to_file = "/mnt/c/Users/marak/Downloads/OneDrive_1_05-01-2021/acn_data/caltech_acndata_sessions_12month.json"
+with open(str(str(BASE_DIR) + "/data_insertion/file_paths.json")) as paths:
+    path_to_file = json.loads(paths.read())["session"]
+
+# path_to_file = "/mnt/c/Users/markg/Downloads/OneDrive_1_05-01-2021/acn_data/caltech_acndata_sessions_12month.json"
 
 s = set()
 with open(path_to_file) as json_file:

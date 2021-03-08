@@ -2,8 +2,13 @@
 
 import json
 import csv
+from MHMelectric.settings import BASE_DIR
 
-path_to_file = "/mnt/c/Users/marak/Downloads/OneDrive_1_05-01-2021/acn_data/caltech_acndata_sessions_12month.json"
+
+with open(str(str(BASE_DIR) + "/data_insertion/file_paths.json")) as paths:
+    path_to_file = json.loads(paths.read())["json_to_csv"]
+
+# path_to_file = "/mnt/c/Users/marak/Downloads/OneDrive_1_05-01-2021/acn_data/caltech_acndata_sessions_12month.json"
 
 fw = open("/mnt/c/Users/marak/Downloads/OneDrive_1_05-01-2021/acn_data/caltech_acndata_sessions_12month.csv", "w+")
 writer = csv.writer(fw)

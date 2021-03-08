@@ -7,9 +7,14 @@ import sys
 from decimal import Decimal
 import datetime
 from rest_api.models import *
+from MHMelectric.settings import BASE_DIR
 from pytz import timezone
 
-path_to_file = "/mnt/c/Users/marak/Downloads/dummy_data.json"
+
+with open(str(str(BASE_DIR) + "/data_insertion/file_paths.json")) as paths:
+    path_to_file = json.loads(paths.read())["dummy_data"]
+
+# path_to_file = "/mnt/c/Users/marak/Downloads/dummy_data.json"
 
 with open(path_to_file) as json_file:
     data = json.load(json_file)
