@@ -1,9 +1,9 @@
-import './Login.css'
-import './Header.css'
+import './css/Login.css'
+import './css/Header.css'
 import { useAuth } from './context/auth'
 import React, { useState, useEffect } from 'react'
 import axios from 'axios'
-import profile from './context/profile-pic.png'
+import profile from './images/profile-pic.png'
 
 function Profile() {
     const { setAuthTokens } = useAuth();

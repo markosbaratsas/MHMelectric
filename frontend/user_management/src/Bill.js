@@ -1,10 +1,9 @@
 import './css/Login.css';
 import './css/Header.css';
 import './css/Profile.css';
-import Profile from './Profile';
 import { Link } from 'react-router-dom';
 
-function Test() {
+function Bill() {
 
   return (
     <>
@@ -13,19 +12,23 @@ function Test() {
         <div className="nav-wrapper">
           <a href="#!" className="brand-logo center">MHMelectric</a>
           <ul className="left hide-on-med-and-down">
-            <li className="active"><a href="/account">Account</a></li>
-            <li><Link to='/bill'>Periodic Bill</Link></li>
+            <li><a href="/account">Account</a></li>
+            <li className="active"><Link to='/bill'>Periodic Bill</Link></li>
             <li><a href="#!">Previous Charges</a></li>
             <li><a href="#!">Charge</a></li>
           </ul>
         </div>
       </nav>
       <div className='profile-wrapper'>
-        <Profile />
+        <div className='profile-div'>
+          <div className='profile-center'>
+            <button className='basic-button waves-effect waves-light btn'>Pay bill</button>
+          </div>
+        </div>
       </div>
-      </div>
+    </div>
     </>
   );
 }
 
-export default Test;
+export default Bill;

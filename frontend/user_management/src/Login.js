@@ -1,4 +1,4 @@
-import './Login.css'
+import './css/Login.css'
 import React, { useEffect, useState } from 'react';
 import { Link, Redirect } from 'react-router-dom';
 import Header from './Header';
@@ -47,19 +47,21 @@ function Login(props) {
     return (
         <>
         <Header />
-        <div className='App'>
-            <div className='login'>
-                <h1>Welcome! Please log in to continue.</h1>
-                <form onSubmit={handleSubmit}>
-                    <div className='input-div'>
-                        <input placeholder='username*' type='text' name='username' id='username' onChange={handleChange} required />
-                    </div>
-                    <div className='input-div'>
-                        <input placeholder='password*' type='password' name='password' id='password' onChange={handleChange} required />
-                    </div>
-                    <button type='submit' className='basic-button waves-effect waves-light btn'>Log in</button>
-                </form>
-                <h4>Don't have an account yet? <Link to='/signup' className='link'>Sign up</Link></h4>
+        <div className='background-wrapper'>
+            <div className='App'>
+                <div className='login'>
+                    <h1>Welcome! Please log in to continue.</h1>
+                    <form onSubmit={handleSubmit}>
+                        <div className='input-div'>
+                            <input placeholder='username*' type='text' name='username' id='username' onChange={handleChange} required />
+                        </div>
+                        <div className='input-div'>
+                            <input placeholder='password*' type='password' name='password' id='password' onChange={handleChange} required />
+                        </div>
+                        <button type='submit' className='basic-button waves-effect waves-light btn'>Log in</button>
+                    </form>
+                    <h4>Don't have an account yet? <Link to='/signup' className='link'>Sign up</Link></h4>
+                </div>
             </div>
         </div>
         </>

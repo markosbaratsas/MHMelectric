@@ -1,4 +1,4 @@
-import './Login.css';
+import './css/Login.css';
 import React, { useState } from 'react';
 import { Link, Redirect } from 'react-router-dom';
 import Header from './Header';
@@ -42,24 +42,26 @@ function SignUp() {
     return (  
         <>
             <Header />
-            <div className='App'>
-                <div className='login'>
-                    <form onSubmit={handleSubmit}>
-                        <div className='input-div'>
-                            <input placeholder='username*' type='text' name='username' id='username' onChange={handleChange} required />
-                        </div>
-                        <div className='input-div'>
-                            <input placeholder='email*' type='email' name='email' id='email' onChange={handleChange} required />
-                        </div>
-                        <div className='input-div'>
-                            <input placeholder='password*' type='password' name='password' id='password' onChange={handleChange} required />
-                        </div>
-                        <div className='input-div'>
-                            <input placeholder='repeat password*' type='password' name='password2' id='password2' onChange={handleChange} required />
-                        </div>
-                        <button type='submit' className='basic-button waves-effect waves-light btn'>Sign up</button>
-                        <h4>Already have an account yet? <Link to='/' className='link'>Log in</Link></h4>
-                    </form>
+            <div className='background-wrapper'>
+                <div className='App'>
+                    <div className='login'>
+                        <form onSubmit={handleSubmit}>
+                            <div className='input-div'>
+                                <input placeholder='username*' type='text' name='username' id='username' onChange={handleChange} required />
+                            </div>
+                            <div className='input-div'>
+                                <input placeholder='email*' type='email' name='email' id='email' onChange={handleChange} required />
+                            </div>
+                            <div className='input-div'>
+                                <input placeholder='password*' type='password' name='password' id='password' onChange={handleChange} required />
+                            </div>
+                            <div className='input-div'>
+                                <input placeholder='repeat password*' type='password' name='password2' id='password2' onChange={handleChange} required />
+                            </div>
+                            <button type='submit' className='basic-button waves-effect waves-light btn'>Sign up</button>
+                            <h4>Already have an account yet? <Link to='/' className='link'>Log in</Link></h4>
+                        </form>
+                    </div>
                 </div>
             </div>
         </>
