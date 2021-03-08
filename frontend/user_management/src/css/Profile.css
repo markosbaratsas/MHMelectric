@@ -3,12 +3,13 @@
 .profile-wrapper {
     min-height: 90vh;
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     align-items: center;
     justify-content: center;
 }
 
 .profile-div {
+    margin: 70px;
     display: flex;
     flex-direction: column;
     background-color: rgb(253, 253, 253);
@@ -30,6 +31,12 @@
     font-size: 15px;
     font-weight: 700;
     margin-bottom: 7px;
+}
+
+.profile-div h3 {
+    font-family: 'Raleway', sans-serif;
+    font-size: 30px;
+    margin: 10px 0 7px 0;
 }
 
 .profile-center {

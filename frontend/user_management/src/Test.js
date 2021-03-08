@@ -2,6 +2,7 @@ import './css/Login.css';
 import './css/Header.css';
 import './css/Profile.css';
 import Profile from './Profile';
+import Car from './Car';
 import { Link } from 'react-router-dom';
 
 function Test() {
@@ -22,6 +23,7 @@ function Test() {
       </nav>
       <div className='profile-wrapper'>
         <Profile />
+        <Car />
       </div>
       </div>
     </>
