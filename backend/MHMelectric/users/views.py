@@ -257,3 +257,19 @@ def pay_periodic_bill(request, periodic_bill_id):
     return Response({
         'status': 'Success'
     }, status=status.HTTP_200_OK)
+
+
+@api_view(['POST', ])
+@permission_classes((IsAuthenticated,))
+@renderer_classes([JSONRenderer, CSVRenderer])
+def add_session(request):
+    
+    serializer = SessionSerializer(data=request.data)
+    data = {}
+    if serializer.is_valid():
+        session = serializer.save()
+        data['response'] = 'Successfully created a new session.'
+        data['session'] = SessionSerializer(session).data
+    else:
+        data = serializer.errors
+    return Response(data)
