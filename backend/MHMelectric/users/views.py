@@ -235,3 +235,25 @@ def get_sessions_of_periodic_bill(request, periodic_bill_id):
     return Response({
         'sessions': sessions
     }, status=status.HTTP_200_OK)
+
+
+@api_view(['GET', ])
+@permission_classes((IsAuthenticated,))
+def pay_periodic_bill(request, periodic_bill_id):
+
+    try:
+        car_owner = Car_Owner.objects.get(user=request.user)
+
+        periodic_bill = Periodic_bill.objects.get(periodic_bill_id=periodic_bill_id, owner=car_owner)
+        periodic_bill.paid = True
+        periodic_bill.save()
+
+    except:
+        return Response({
+            'status': 'Failed'
+        }, status=status.HTTP_200_OK)
+
+
+    return Response({
+        'status': 'Success'
+    }, status=status.HTTP_200_OK)

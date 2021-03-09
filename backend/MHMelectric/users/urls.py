@@ -21,4 +21,5 @@ urlpatterns = [
     path('get_car_info_from_user/', views.get_car_info_from_user, name="get_car_info_from_user"),
     path('get_periodic_bills_of_user/', views.get_periodic_bills_of_user, name="get_periodic_bills_of_user"),
     path(r'get_sessions_of_periodic_bill/<periodic_bill_id>/', views.get_sessions_of_periodic_bill, name="get_sessions_of_periodic_bill"),
+    path(r'pay_periodic_bill/<periodic_bill_id>/', views.pay_periodic_bill, name="pay_periodic_bill")
 ]
