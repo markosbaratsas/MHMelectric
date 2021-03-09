@@ -36,7 +36,7 @@ function Car() {
             <div className='profile-div'>
                 <h3>Your cars</h3>
             <hr />
-            { car.map( (car) => 
+            {car.map( (car) => 
                 <>
                 <div className='profile-left'>
                     <div className="car-div">
