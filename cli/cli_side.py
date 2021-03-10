@@ -201,27 +201,25 @@ if __name__ == '__main__':
     elif args.scope == 'logout':
         logout(args.apikey)
     elif args.scope == 'resetsessions':
-        resetsessions(args.apikey)
+        resetsessions(args.apikey, args.format)
     elif args.scope == 'healthcheck':
-        healthcheck(args.apikey)
+        healthcheck(args.apikey, args.format)
     elif args.scope == 'perPoint':
-        sessionsPerPoint(args.point, args.datefrom, args.dateto, args.apikey)
+        sessionsPerPoint(args.point, args.datefrom, args.dateto, args.apikey, args.format)
     elif args.scope == 'perStation':
-        sessionsPerStation(args.station, args.datefrom, args.dateto, args.apikey)
+        sessionsPerStation(args.station, args.datefrom, args.dateto, args.apikey, args.format)
     elif args.scope == 'perEV':
-        sessionsPerEV(args.ev, args.datefrom, args.dateto, args.apikey)
+        sessionsPerEV(args.ev, args.datefrom, args.dateto, args.apikey, args.format)
     elif args.scope == 'perProvider':
-        sessionsPerProvider(args.provider, args.datefrom, args.dateto, args.apikey)
+        sessionsPerProvider(args.provider, args.datefrom, args.dateto, args.apikey, args.format)
     else:
         if args.admin_scope == 'usermod':
-            admin_usermod(args.username, args.passw, args.apikey)
+            admin_usermod(args.username, args.passw, args.apikey, args.format)
         elif args.admin_scope == 'users':
-            admin_users(args.username, args.apikey)
+            admin_users(args.username, args.apikey, args.format)
         elif args.admin_scope == 'sessionsupd':
-            admin_sessionsupd(args.source, args.apikey)
+            admin_sessionsupd(args.source, args.apikey, args.format)
         elif args.admin_scope == 'healthcheck':
-            healthcheck(args.apikey)
+            healthcheck(args.apikey,args.format)
         else:
-            resetsessions(args.apikey)
-    
-    #print(args)
+            resetsessions(args.apikey,args.format)

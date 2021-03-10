@@ -17,9 +17,9 @@
     justify-content: center;
     border-width: 1px;
     background-color: #fff;
-    padding: 70px 0 70px 0;
+    padding: 50px 0 50px 0;
     opacity: 0.7;
-    border-radius: 10px;
+    border-radius: 3px;
 }
 
 .App form {
@@ -76,7 +76,7 @@
     color: #f7f7f7;
     border-width: 0;
     padding: 10px 20px;
-    border-radius: 5px;
+    border-radius: 3px;
     margin: 30px 0 20px 0;
 }
 
@@ -107,6 +107,7 @@
 
 .link:focus {
     outline: none;
+    background-color: transparent;
   }
 
 .background-wrapper {
@@ -119,10 +120,10 @@
 }
 
 .car-div {
-    display: inline-flex;
-    margin-bottom: 20px;
+    display: inline-flex !important;
+    margin-bottom: 20px !important;
 }
 
 .car-div h2 {
-    margin-right: 10px;
+    margin-right: 10px !important;
 }
