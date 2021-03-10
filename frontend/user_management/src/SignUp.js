@@ -1,15 +1,18 @@
 import './css/Login.css';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, Redirect } from 'react-router-dom';
 import Header from './Header';
 import axios from 'axios';
 import { useAuth } from "./context/auth";
 
 function SignUp() {
-    // const history = useHistory()
     const [isLoggedIn, setLoggedIn] = useState(false)
     const [ user, setUser] = useState({})
     const { setAuthTokens } = useAuth()
+
+    useEffect(() => {
+        if(localStorage.getItem("username")!==null) setLoggedIn(true)
+    }, [])
 
     const handleChange = (e) => {
         const { value, name } = e.target
@@ -26,7 +29,6 @@ function SignUp() {
         }
         axios(details)
             .then( (response) => {
-                // console.log(response.data)
                 setAuthTokens(response.data);
                 setLoggedIn(true);
             })

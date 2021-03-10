@@ -6,11 +6,9 @@ import axios from 'axios';
 import { useAuth } from "./context/auth";
 
 function Login(props) {
-    // const history = useHistory()
     const [isLoggedIn, setLoggedIn] = useState(false)
     const [user, setUser] = useState({})
     const { setAuthTokens } = useAuth()
-    // const referer = props.location.state.referer || '/'
 
     const handleChange = (e) => {
         const { value, name } = e.target
@@ -19,6 +17,7 @@ function Login(props) {
     }
 
     useEffect(() => {
+        if(localStorage.getItem("username")!==null) setLoggedIn(true)
         console.log(localStorage)
     }, [])
 
@@ -40,7 +39,6 @@ function Login(props) {
     }
 
     if (isLoggedIn) {
-        // return <Redirect to={referer} />
         return <Redirect to='/account' value='hey'/>
     }
 
