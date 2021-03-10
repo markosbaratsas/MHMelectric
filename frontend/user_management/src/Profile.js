@@ -25,8 +25,10 @@ function Profile() {
             }
             axios(details)
                 .then( (response) => {
+                console.log(response.data)
                 localStorage.setItem("username", response.data["username"])
                 localStorage.setItem("email", response.data["email"])
+                localStorage.setItem("owner_id", response.data["car_owner"]["owner_id"])
                 localStorage.setItem("first_name", response.data["car_owner"]["first_name"])
                 localStorage.setItem("last_name", response.data["car_owner"]["last_name"])
                 localStorage.setItem("birthdate", response.data["car_owner"]["birthdate"].substring(0, 10))
