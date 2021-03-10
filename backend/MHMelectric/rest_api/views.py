@@ -225,8 +225,8 @@ def sessions_per_provider(request, providerID, date_from, date_to):
     data = {}
     data['ProviderID'] = provider.provider_id_given
     data['ProviderName'] = provider.title
-    periodFrom = date_from[0:4] + "-" + date_from[4:6] + "-" + date_from[6:8] + " 00:00:00"
-    periodTo = date_to[0:4] + "-" + date_to[4:6] + "-" + date_to[6:8] + " 23:59:59"
+    data['PeriodFrom'] = date_from[0:4] + "-" + date_from[4:6] + "-" + date_from[6:8] + " 00:00:00"
+    data['PeriodTo'] = date_to[0:4] + "-" + date_to[4:6] + "-" + date_to[6:8] + " 23:59:59"
 
     sessions = list(Session.objects.filter(
         provider=provider,
