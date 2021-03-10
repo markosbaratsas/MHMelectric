@@ -44,10 +44,13 @@ def sessionsPerEV(vehicleID, yyyymmdd_from, yyyymmdd_to, api_key,format):
 
 def login(username, password):
     x = requests.post(f'http://127.0.0.1:8765/evcharge/api/cli_login', data = {'username': {username}, 'password': {password}}) 
-    file = open(str(Path.home()) + "/softeng20bAPI.token", 'w+')
-    file.write(json.loads(x.text)['api_key'])
-    file.close()
-    print('Your API-key is: ', json.loads(x.text)['api_key'])    
+    try:
+        print('Your API-key is: ', json.loads(x.text)['api_key'])
+        file = open(str(Path.home()) + "/softeng20bAPI.token", 'w+')
+        file.write(json.loads(x.text)['api_key'])
+        file.close()
+    except:
+        print(json.loads(x.text)['non_field_errors'][0])    
 
 def logout(api_key):
     x = requests.post(f'http://127.0.0.1:8765/evcharge/api/cli_logout', data = {'api_key': {api_key}}) 
