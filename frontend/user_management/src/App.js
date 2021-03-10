@@ -7,6 +7,7 @@ import SignUp from './SignUp';
 import Error from './Error';
 import Test from './Test';
 import Bill from './Bill';
+import Session from './Session';
 import { AuthContext } from './context/auth';
 
 function App(props) {
@@ -28,6 +29,7 @@ function App(props) {
             <Route exact path='/signup' component={SignUp} />
             <PrivateRoute exact path='/account' component={Test} />
             <PrivateRoute exact path='/bill' component={Bill} />
+            <PrivateRoute exact path='/charge' component={Session} />
             <Route path='*' component={Error} />
           </Switch>
         </Router>

@@ -69,8 +69,7 @@ function Bill() {
           <ul className="left hide-on-med-and-down">
             <li><a href="/account">Account</a></li>
             <li className="active"><Link to='/bill'>Periodic Bill</Link></li>
-            <li><a href="#!">Previous Charges</a></li>
-            <li><a href="#!">Charge</a></li>
+            <li><Link to='/charge'>Charge</Link></li>
           </ul>
         </div>
       </nav>
@@ -90,11 +89,11 @@ function Bill() {
                       </div>
                       <div className="car-div">
                           <h2>total:</h2>
-                          <h1>{bill["total"]}</h1>
+                          <h1>{bill["total"]} ‎€</h1>
                       </div>
                       <div className="car-div">
                           <h2>discount:</h2>
-                          <h1>{bill["discount"]}</h1>
+                          <h1>{bill["discount"]} ‎€</h1>
                       </div>
                   </div>
                   <div className='profile-left'>
@@ -165,7 +164,8 @@ function Bill() {
                               </div>
                               <div className="car-div">
                                   <h2>Charging station:</h2>
-                                  <h1>{session["station"]["street"]} {session["station"]["street_number"]}, {session["station"]["postal_code"]}, {session["station"]["city"]}, {session["station"]["country"]}</h1>
+                                  <h1>{session["station"]["street"]} {session["station"]["street_number"]}, {session["station"]["postal_code"]}, {session["station"]["city"]}, 
+                                    {session["station"]["country"]}</h1>
                               </div>
                               <div className="car-div">
                                   <h2>Charging point:</h2>

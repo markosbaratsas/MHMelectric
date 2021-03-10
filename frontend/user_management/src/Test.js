@@ -16,8 +16,7 @@ function Test() {
           <ul className="left hide-on-med-and-down">
             <li className="active"><a href="/account">Account</a></li>
             <li><Link to='/bill'>Periodic Bill</Link></li>
-            <li><a href="#!">Previous Charges</a></li>
-            <li><a href="#!">Charge</a></li>
+            <li><Link to='/charge'>Charge</Link></li>
           </ul>
         </div>
       </nav>

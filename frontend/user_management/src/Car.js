@@ -2,7 +2,6 @@ import './css/Login.css'
 import './css/Header.css'
 import React, { useState, useEffect } from 'react'
 import axios from 'axios'
-import 'materialize-css'
 
 function Car() {
     const [ car, setCar ] = useState([])
