@@ -108,7 +108,26 @@ function Bill() {
                                                     }
                                                 }
                                                 axios(details)
-                                                    .then( (response) => {                                      
+                                                    .then( (response) => {   
+                                                      console.log(response.data["sessions"].length)
+                                                      for(let i = 0; i < response.data["sessions"].length; i++) {       
+                                                        if(response.data["sessions"][i]["charge_program"]===null) 
+                                                          response.data["sessions"][i]["charge_program"] = {'description': ''}
+                                                        if(response.data["sessions"][i]["connection_time"]!==null) 
+                                                          response.data["sessions"][i]["Date"] = response.data["sessions"][i]["connection_time"].substring(0, 10)
+                                                        if(response.data["sessions"][i]["connection_time"]!==null) 
+                                                          response.data["sessions"][i]["connection_time"] = response.data["sessions"][i]["connection_time"].substring(11, 19)
+                                                        if(response.data["sessions"][i]["disconnection_time"]!==null) 
+                                                          response.data["sessions"][i]["disconnection_time"] = response.data["sessions"][i]["disconnection_time"].substring(11, 19)
+                                                        if(response.data["sessions"][i]["done_charging_time"]!==null) 
+                                                          response.data["sessions"][i]["done_charging_time"] = response.data["sessions"][i]["done_charging_time"].substring(11, 19)
+                                                        if(response.data["sessions"][i]["user_requested_departure"]!==null) 
+                                                          response.data["sessions"][i]["user_requested_departure"] = response.data["sessions"][i]["user_requested_departure"].substring(11, 19)
+                                                        if(response.data["sessions"][i]["provider"]===null) 
+                                                          response.data["sessions"][i]["provider"] = {'title': '', 'primary_phone': '', 'email': ''}
+                                                        if(response.data["sessions"][i]["station"]===null)
+                                                          response.data["sessions"][i]["station"] = {'street': '', 'street_number': '', 'postal_code': '', 'city': '', 'country': ''}
+                                                      }        
                                                       setSession(response.data["sessions"])
                                                       setModalIsOpen(true); 
                                                       console.log(response.data)
@@ -121,7 +140,7 @@ function Bill() {
                     See sessions</button>
                   </div>
                   <div className='profile-center'>
-                    <button className={'basic-button waves-effect waves-light btn pay '+JSON.stringify(bill["paid"])} onClick={() => {
+                    <button id={bill["periodic_bill_id"]} className={'basic-button waves-effect waves-light btn pay '+JSON.stringify(bill["paid"])} onClick={() => {
                       if(!bill["paid"]){
                       var details = {
                         method: 'get',
@@ -173,19 +192,19 @@ function Bill() {
                               </div>
                               <div className="car-div">
                                   <h2>Date:</h2>
-                                  <h1>{session["connection_time"].substring(0, 10)}</h1>
+                                  <h1>{session["Date"]}</h1>
                               </div>
                               <div className="car-div">
                                   <h2>Connection time:</h2>
-                                  <h1>{session["connection_time"].substring(11, 19)}</h1>
+                                  <h1>{session["connection_time"]}</h1>
                               </div>
                               <div className="car-div">
                                   <h2>Disconnection time:</h2>
-                                  <h1>{session["disconnection_time"].substring(11, 19)}</h1>
+                                  <h1>{session["disconnection_time"]}</h1>
                               </div>
                               <div className="car-div">
                                   <h2>Done charging:</h2>
-                                  <h1>{session["done_charging_time"].substring(11, 19)}</h1>
+                                  <h1>{session["done_charging_time"]}</h1>
                               </div>
                               <div className="car-div">
                                   <h2>kWh delivered:</h2>
@@ -217,7 +236,7 @@ function Bill() {
                               </div>
                               <div className="car-div">
                                   <h2>Requested departure:</h2>
-                                  <h1>{session["user_requested_departure"].substring(11, 19)}</h1>
+                                  <h1>{session["user_requested_departure"]}</h1>
                               </div>
                               <div className="car-div">
                                   <h2>Provider:</h2>

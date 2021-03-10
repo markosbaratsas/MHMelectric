@@ -92,7 +92,7 @@ function Select() {
 
     useEffect(() => {
         setCar(JSON.parse(localStorage.getItem("cars")))
-        setDataPost({...dataPost, 'car_owner': JSON.parse(localStorage.getItem('owner_id')), 'car': parseInt(JSON.parse(localStorage.getItem("cars"))[0]['car_id'])})
+        setDataPost({'car_owner': JSON.parse(localStorage.getItem('owner_id')), 'car': parseInt(JSON.parse(localStorage.getItem("cars"))[0]['car_id'])})
         if (localStorage.getItem("bill")===null) {
             var details = {
                 method: 'get',
