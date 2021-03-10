@@ -9,9 +9,12 @@ from rest_framework.authtoken.views import ObtainAuthToken
 from rest_framework.authtoken.models import Token
 from rest_framework_csv.renderers import CSVRenderer, JSONRenderer
 
-from rest_api.models import Car_Owner, Car, Charging_point, Charge_program, Provider, Station, Periodic_bill, Session
+from rest_api.models import (Car_Owner, Car, Charging_point, Charge_program,
+Provider, Station, Periodic_bill, Session)
 from users.models import API_key
-from rest_api.serializers import CarSerializer, Car_OwnerSerializer, Periodic_billSerializer, SessionSerializer
+from rest_api.serializers import (CarSerializer, Car_OwnerSerializer,
+Periodic_billSerializer, SessionSerializer, StationSerializer,
+Charging_pointSerializer, Charge_programSerializer, ProviderSerializer)
 from users.serializers import RegistrationSerializer
 
 
@@ -273,3 +276,51 @@ def add_session(request):
     else:
         data = serializer.errors
     return Response(data)
+
+
+@api_view(['GET', ])
+@permission_classes((IsAuthenticated,))
+@renderer_classes([JSONRenderer, CSVRenderer])
+def get_stations_from_city(request, city):
+
+    stations = Station.objects.filter(city=city)
+    stations = StationSerializer(stations, many=True).data
+    return Response({
+        'stations': stations
+    }, status=status.HTTP_200_OK)
+
+
+@api_view(['GET', ])
+@permission_classes((IsAuthenticated,))
+@renderer_classes([JSONRenderer, CSVRenderer])
+def get_charging_points_from_station(request, station):
+
+    charging_points = Charging_point.objects.filter(station=station)
+    charging_points = Charging_pointSerializer(charging_points, many=True).data
+    return Response({
+        'charging_points': charging_points
+    }, status=status.HTTP_200_OK)
+
+
+@api_view(['GET', ])
+@permission_classes((IsAuthenticated,))
+@renderer_classes([JSONRenderer, CSVRenderer])
+def get_charge_programs(request):
+
+    charge_programs = Charge_program.objects.all()
+    charge_programs = Charge_programSerializer(charge_programs, many=True).data
+    return Response({
+        'charge_programs': charge_programs
+    }, status=status.HTTP_200_OK)
+
+
+@api_view(['GET', ])
+@permission_classes((IsAuthenticated,))
+@renderer_classes([JSONRenderer, CSVRenderer])
+def get_providers(request):
+
+    providers = Provider.objects.all()
+    providers = ProviderSerializer(providers, many=True).data
+    return Response({
+        'providers': providers
+    }, status=status.HTTP_200_OK)
