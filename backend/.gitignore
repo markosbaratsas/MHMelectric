@@ -9,6 +9,10 @@ MHMelectric/*/migrations/**
 MHMelectric/*/migrations/*
 !MHMelectric/*/migrations/__init__.py
 
+MHMelectric/*/tests/__pycache__
+MHMelectric/*/tests/__pycache__/*
+MHMelectric/*/tests/__pycache__/**
+
 MHMelectric/db.sqlite3
 
 MHMelectric/media
