@@ -10,6 +10,7 @@ Modal.setAppElement('#root')
 
 function Bill() {
   const [ bill, setBill ] = useState([])
+  const [ previousBill, setPreviousBill ] = useState([])
   const [ session, setSession ] = useState([])
   const [ modalIsOpen, setModalIsOpen ] = useState(false)
   const [ refresh, setRefresh ] = useState(false)
@@ -47,15 +48,37 @@ function Bill() {
         }
         axios(details)
             .then( (response) => {
-            setBill(response.data["periodic_bills"])
             console.log(response.data["periodic_bills"])
             localStorage.setItem("bill", JSON.stringify(response.data["periodic_bills"]))
+            const billArray = []
+            const previousBillArray = []
+
+            for(let i=0; i<response.data["periodic_bills"].length; i++){
+              if(response.data["periodic_bills"][i]['paid']!==true) {
+                billArray.push(response.data["periodic_bills"][i])
+              } else {
+                previousBillArray.push(response.data["periodic_bills"][i])
+              }
+            }
+            setBill(billArray)
+            setPreviousBill(previousBillArray)
             })
             .catch( (error) => {
                 console.log(error)
             })
     } else {
-      setBill(JSON.parse(localStorage.getItem("bill")))
+      const billArray = []
+      const previousBillArray = []
+
+      for(let i=0; i<JSON.parse(localStorage.getItem("bill")).length; i++){
+        if(JSON.parse(localStorage.getItem("bill"))[i]['paid']!==true) {
+          billArray.push(JSON.parse(localStorage.getItem("bill"))[i])
+        } else {
+          previousBillArray.push(JSON.parse(localStorage.getItem("bill"))[i])
+        }
+      }
+      setBill(billArray)
+      setPreviousBill(previousBillArray)
     }
 }, [refresh])
 
@@ -166,11 +189,85 @@ function Bill() {
                       }
                     }}>Pay</button>
                   </div>
-                 
-                 
-                 
-                 
-                    <Modal isOpen={modalIsOpen} onRequestClose={() => setModalIsOpen(false)} style={modalStyle}>
+                  <hr />
+              </>
+              )}
+          <div className='profile-center'>
+            <h3>Previous bills</h3>
+          <hr />
+          </div>
+
+          {previousBill.map( (previousBill) => 
+                  <>
+                  <div className='profile-left'>
+                      <div className="car-div">
+                          <h2>published_on:</h2>
+                          <h1>{previousBill["published_on"].substring(0, 10)}</h1>
+                      </div>
+                      <div className="car-div">
+                          <h2>total:</h2>
+                          <h1>{previousBill["total"]} ‎€</h1>
+                      </div>
+                      <div className="car-div">
+                          <h2>discount:</h2>
+                          <h1>{previousBill["discount"]} ‎€</h1>
+                      </div>
+                  </div>
+                  <div className='profile-left'>
+                    <button className='link' onClick={() => {
+                                                  console.log(previousBill["periodic_bill_id"])
+
+                                                  var details = {
+                                                    method: 'get',
+                                                    url: 'http://127.0.0.1:8765/evcharge/api/get_sessions_of_periodic_bill/'+previousBill["periodic_bill_id"],
+                                                    headers: {
+                                                    'X-OBSERVATORY-AUTH': JSON.parse(localStorage["tokens"])
+                                                    }
+                                                }
+                                                axios(details)
+                                                    .then( (response) => {   
+                                                      console.log(response.data["sessions"].length)
+                                                      for(let i = 0; i < response.data["sessions"].length; i++) {       
+                                                        if(response.data["sessions"][i]["charge_program"]===null) 
+                                                          response.data["sessions"][i]["charge_program"] = {'description': ''}
+                                                        if(response.data["sessions"][i]["connection_time"]!==null) 
+                                                          response.data["sessions"][i]["Date"] = response.data["sessions"][i]["connection_time"].substring(0, 10)
+                                                        if(response.data["sessions"][i]["connection_time"]!==null) 
+                                                          response.data["sessions"][i]["connection_time"] = response.data["sessions"][i]["connection_time"].substring(11, 19)
+                                                        if(response.data["sessions"][i]["disconnection_time"]!==null) 
+                                                          response.data["sessions"][i]["disconnection_time"] = response.data["sessions"][i]["disconnection_time"].substring(11, 19)
+                                                        if(response.data["sessions"][i]["done_charging_time"]!==null) 
+                                                          response.data["sessions"][i]["done_charging_time"] = response.data["sessions"][i]["done_charging_time"].substring(11, 19)
+                                                        if(response.data["sessions"][i]["user_requested_departure"]!==null) 
+                                                          response.data["sessions"][i]["user_requested_departure"] = response.data["sessions"][i]["user_requested_departure"].substring(11, 19)
+                                                        if(response.data["sessions"][i]["provider"]===null) 
+                                                          response.data["sessions"][i]["provider"] = {'title': '', 'primary_phone': '', 'email': ''}
+                                                        if(response.data["sessions"][i]["station"]===null)
+                                                          response.data["sessions"][i]["station"] = {'street': '', 'street_number': '', 'postal_code': '', 'city': '', 'country': ''}
+                                                      }        
+                                                      setSession(response.data["sessions"])
+                                                      setModalIsOpen(true); 
+                                                      console.log(response.data)
+                                                    })
+                                                    .catch( (error) => {
+                                                        console.log(error)
+                                                    })
+                                                }
+                                              }>
+                    See sessions</button>
+                  </div>
+                  <hr />
+              </>
+              )}
+
+        </div>
+      </div>
+    </div>
+
+
+
+
+    <Modal isOpen={modalIsOpen} onRequestClose={() => setModalIsOpen(false)} style={modalStyle}>
                       
                     { session.map( (session) => 
                           <>
@@ -259,12 +356,6 @@ function Bill() {
                         Close</button>
                       </div>
                     </Modal>
-                  <hr />
-              </>
-              )}
-        </div>
-      </div>
-    </div>
     </>
   );
 }
