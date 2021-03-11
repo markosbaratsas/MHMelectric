@@ -1,8 +1,9 @@
 import argparse
 import re
 import datetime
-from request import *
 import urllib3
+import requests
+import sys
 
 def valid_username(s):
     r = re.compile('^(\\w)+$', re.ASCII)
@@ -197,31 +198,42 @@ add_help(optional)
 
 if __name__ == '__main__':
     urllib3.disable_warnings(urllib3.exceptions.SubjectAltNameWarning)
+    try:
+        requests.get(f'http://localhost:8765/evcharge/api/')
+        import request as req
+    except:
+        try:
+            requests.get(f'https://localhost:8765/evcharge/api/',verify = 'cert.pem')
+            import request_ssl as req
+        except:
+            print("There is no connection to server")
+            sys.exit()
+
     args = parser.parse_args()
     if args.scope == 'login':
-        login(args.username, args.passw)
+        req.login(args.username, args.passw)
     elif args.scope == 'logout':
-        logout(args.apikey)
+        req.logout(args.apikey)
     elif args.scope == 'resetsessions':
-        resetsessions(args.apikey, args.format)
+        req.resetsessions(args.apikey, args.format)
     elif args.scope == 'healthcheck':
-        healthcheck(args.apikey, args.format)
+        req.healthcheck(args.apikey, args.format)
     elif args.scope == 'perPoint':
-        sessionsPerPoint(args.point, args.datefrom, args.dateto, args.apikey, args.format)
+        req.sessionsPerPoint(args.point, args.datefrom, args.dateto, args.apikey, args.format)
     elif args.scope == 'perStation':
-        sessionsPerStation(args.station, args.datefrom, args.dateto, args.apikey, args.format)
+        req.sessionsPerStation(args.station, args.datefrom, args.dateto, args.apikey, args.format)
     elif args.scope == 'perEV':
-        sessionsPerEV(args.ev, args.datefrom, args.dateto, args.apikey, args.format)
+        req.sessionsPerEV(args.ev, args.datefrom, args.dateto, args.apikey, args.format)
     elif args.scope == 'perProvider':
-        sessionsPerProvider(args.provider, args.datefrom, args.dateto, args.apikey, args.format)
+        req.sessionsPerProvider(args.provider, args.datefrom, args.dateto, args.apikey, args.format)
     else:
         if args.admin_scope == 'usermod':
-            admin_usermod(args.username, args.passw, args.apikey, args.format)
+            req.admin_usermod(args.username, args.passw, args.apikey, args.format)
         elif args.admin_scope == 'users':
-            admin_users(args.username, args.apikey, args.format)
+            req.admin_users(args.username, args.apikey, args.format)
         elif args.admin_scope == 'sessionsupd':
-            admin_sessionsupd(args.source, args.apikey, args.format)
+            req.admin_sessionsupd(args.source, args.apikey, args.format)
         elif args.admin_scope == 'healthcheck':
-            healthcheck(args.apikey,args.format)
+            req.healthcheck(args.apikey,args.format)
         else:
-            resetsessions(args.apikey,args.format)
+            req.resetsessions(args.apikey,args.format)
