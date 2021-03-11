@@ -2,6 +2,7 @@ import argparse
 import re
 import datetime
 from request import *
+import urllib3
 
 def valid_username(s):
     r = re.compile('^(\\w)+$', re.ASCII)
@@ -195,6 +196,7 @@ add_help(optional)
 
 
 if __name__ == '__main__':
+    urllib3.disable_warnings(urllib3.exceptions.SubjectAltNameWarning)
     args = parser.parse_args()
     if args.scope == 'login':
         login(args.username, args.passw)
