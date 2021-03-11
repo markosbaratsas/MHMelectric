@@ -54,25 +54,24 @@ def sessions_per_point(request, pointID, date_from, date_to):
         return Response({'Failed': f'There is no charging point with pointID {pointID}'}, status=status.HTTP_400_BAD_REQUEST)
 
     data = {}
-    data['Point'] = charging_point.charging_point_id_given
+    Point = charging_point.charging_point_id_given
     if charging_point.operator == None:
-        data['PointOperator'] = 'None'
+        PointOperator = 'None'
     else:
-        data['PointOperator'] = charging_point.operator.title
-    data['RequestTimestamp'] = datetime.now(pytz.timezone('Europe/Athens')).strftime("%Y-%m-%d %H:%M:%S")
-    data['PeriodFrom'] = date_from[0:4] + "-" + date_from[4:6] + "-" + date_from[6:8] + " 00:00:00"
-    data['PeriodTo'] = date_to[0:4] + "-" + date_to[4:6] + "-" + date_to[6:8] + " 23:59:59"
+        PointOperator = charging_point.operator.title
+    RequestTimestamp = datetime.now(pytz.timezone('Europe/Athens')).strftime("%Y-%m-%d %H:%M:%S")
+    PeriodFrom = date_from[0:4] + "-" + date_from[4:6] + "-" + date_from[6:8] + " 00:00:00"
+    PeriodTo = date_to[0:4] + "-" + date_to[4:6] + "-" + date_to[6:8] + " 23:59:59"
 
     sessions = list(Session.objects.filter(
         charging_point=charging_point,
         # connection_time__range=[data['PeriodFrom'][:10], data['PeriodTo'][:10]]
-        connection_time__range=[datetime.strptime(data['PeriodFrom'], "%Y-%m-%d %H:%M:%S").replace(tzinfo=timezone('UTC')),
-                    datetime.strptime(data['PeriodTo'], "%Y-%m-%d %H:%M:%S").replace(tzinfo=timezone('UTC'))]
+        connection_time__range=[datetime.strptime(PeriodFrom, "%Y-%m-%d %H:%M:%S").replace(tzinfo=timezone('UTC')),
+                    datetime.strptime(PeriodTo, "%Y-%m-%d %H:%M:%S").replace(tzinfo=timezone('UTC'))]
     ))
     sessions.sort(key=lambda x: x.connection_time)
 
-    data['NumberOfChargingSessions'] = int(len(sessions))
-    data['ChargingSessionsList'] = []
+    NumberOfChargingSessions = int(len(sessions))
     if len(sessions)==0:
         return Response({'Failed': f'There is no session in point {pointID}'}, status=status.HTTP_402_PAYMENT_REQUIRED)
     for i in range(len(sessions)):
@@ -80,7 +79,14 @@ def sessions_per_point(request, pointID, date_from, date_to):
             car_type = Car.objects.get(car_id=sessions[i].car).car_type
         except:
             car_type = ''
-        item = {
+        data[int(i + 1)] = {
+            'Point': Point,
+            'PointOperator': PointOperator,
+            'RequestTimestamp': RequestTimestamp,
+            'PeriodFrom': PeriodFrom,
+            'PeriodTo': PeriodTo,
+            'NumberOfChargingSessions': NumberOfChargingSessions,
+
             'SessionIndex': int(i + 1),
             'SessionID': sessions[i].session_id_given,
             'StartedOn': sessions[i].connection_time,
@@ -90,8 +96,6 @@ def sessions_per_point(request, pointID, date_from, date_to):
             'Payment': sessions[i].user_payment_method,
             'VehicleType': car_type
         }
-
-        data['ChargingSessionsList'].append(item)
 
     return Response(data, status=status.HTTP_200_OK)
 
@@ -106,19 +110,19 @@ def sessions_per_station(request, stationID, date_from, date_to):
     except:
         return Response({'Failed': f'There is no station with stationID {stationID}'}, status=status.HTTP_400_BAD_REQUEST)
     data = {}
-    data['StationID'] = station.station_id_given
+    StationID = station.station_id_given
     if station.operator == None:
-        data['Operator'] = 'None'
+        Operator = 'None'
     else:
-        data['Operator'] = station.operator.title
-    data['RequestTimestamp'] = datetime.now(pytz.timezone('Europe/Athens')).strftime("%Y-%m-%d %H:%M:%S")
-    data['PeriodFrom'] = date_from[0:4] + "-" + date_from[4:6] + "-" + date_from[6:8] + " 00:00:00"
-    data['PeriodTo'] = date_to[0:4] + "-" + date_to[4:6] + "-" + date_to[6:8] + " 23:59:59"
+        Operator = station.operator.title
+    RequestTimestamp = datetime.now(pytz.timezone('Europe/Athens')).strftime("%Y-%m-%d %H:%M:%S")
+    PeriodFrom = date_from[0:4] + "-" + date_from[4:6] + "-" + date_from[6:8] + " 00:00:00"
+    PeriodTo = date_to[0:4] + "-" + date_to[4:6] + "-" + date_to[6:8] + " 23:59:59"
 
     sessions = list(Session.objects.filter(
         station=station,
-        connection_time__range=[datetime.strptime(data['PeriodFrom'], "%Y-%m-%d %H:%M:%S").replace(tzinfo=timezone('UTC')),
-                    datetime.strptime(data['PeriodTo'], "%Y-%m-%d %H:%M:%S").replace(tzinfo=timezone('UTC'))]
+        connection_time__range=[datetime.strptime(PeriodFrom, "%Y-%m-%d %H:%M:%S").replace(tzinfo=timezone('UTC')),
+                    datetime.strptime(PeriodTo, "%Y-%m-%d %H:%M:%S").replace(tzinfo=timezone('UTC'))]
     ))
     sessions.sort(key=lambda x: x.connection_time)
 
@@ -135,18 +139,24 @@ def sessions_per_station(request, stationID, date_from, date_to):
             activePoints[charging_point][1] += energyDelivered
         else:
             activePoints[charging_point] = [1, energyDelivered]
-    data['TotalEnergyDelivered'] = totalEnergyDelivered
-    data['NumberOfChargingSessions'] = int(len(sessions))
-    data['NumberOfActivePoints'] = len(activePoints)
-    data['SessionsSummaryList'] = []
+    NumberOfChargingSessions = int(len(sessions))
+    NumberOfActivePoints = len(activePoints)
     for i in activePoints.keys():
-        item = {
+        data[i] = {
+            'StationID': StationID,
+            'Operator': Operator,
+            'RequestTimestamp': RequestTimestamp,
+            'PeriodFrom': PeriodFrom,
+            'PeriodTo': PeriodTo,
+            'totalEnergyDelivered': totalEnergyDelivered,
+            'NumberOfChargingSessions': NumberOfChargingSessions,
+            'NumberOfActivePoints': NumberOfActivePoints,
+
             'PointID': i,
             'PointSessions': activePoints[i][0],
-            'EnergyDelivered': activePoints[i][1]
+            'EnergyDelivered': activePoints[i][1],
         }
 
-        data['SessionsSummaryList'].append(item)
     return Response(data, status=status.HTTP_200_OK)
     
 
@@ -158,28 +168,34 @@ def sessions_per_ev(request, vehicleID, date_from, date_to):
     try:
         car = Car.objects.get(car_id_given=vehicleID)
     except:
-        return Response({'Failed': f'There is no charging point with vehicleID {vehicleID}'}, status=status.HTTP_400_BAD_REQUEST)
+        return Response({'Failed': f'There is no vehicle with vehicleID {vehicleID}'}, status=status.HTTP_400_BAD_REQUEST)
     data = {}
-    data['VehicleID'] = car.car_id_given
-    data['RequestTimestamp'] = datetime.now(pytz.timezone('Europe/Athens')).strftime("%Y-%m-%d %H:%M:%S")
-    data['PeriodFrom'] = date_from[0:4] + "-" + date_from[4:6] + "-" + date_from[6:8] + " 00:00:00"
-    data['PeriodTo'] = date_to[0:4] + "-" + date_to[4:6] + "-" + date_to[6:8] + " 23:59:59"
+    VehicleID = car.car_id_given
+    RequestTimestamp = datetime.now(pytz.timezone('Europe/Athens')).strftime("%Y-%m-%d %H:%M:%S")
+    PeriodFrom = date_from[0:4] + "-" + date_from[4:6] + "-" + date_from[6:8] + " 00:00:00"
+    PeriodTo = date_to[0:4] + "-" + date_to[4:6] + "-" + date_to[6:8] + " 23:59:59"
 
     sessions = list(Session.objects.filter(
         car=car,
-        connection_time__range=[datetime.strptime(data['PeriodFrom'], "%Y-%m-%d %H:%M:%S").replace(tzinfo=timezone('UTC')),
-                    datetime.strptime(data['PeriodTo'], "%Y-%m-%d %H:%M:%S").replace(tzinfo=timezone('UTC'))]
+        connection_time__range=[datetime.strptime(PeriodFrom, "%Y-%m-%d %H:%M:%S").replace(tzinfo=timezone('UTC')),
+                    datetime.strptime(PeriodTo, "%Y-%m-%d %H:%M:%S").replace(tzinfo=timezone('UTC'))]
     ))
     sessions.sort(key=lambda x: x.connection_time)
 
-    data['TotalEnergyConsumed'] = 0
-    data['NumberOfVisitedPoints'] = 0
+    TotalEnergyConsumed = 0
+    NumberOfVisitedPoints = 0
     visited_points = set()
-    data['NumberOfVehicleChargingSessions'] = int(len(sessions))
-    data['ChargingSessionsList'] = []
+    NumberOfVehicleChargingSessions = int(len(sessions))
     
     if len(sessions)==0:
         return Response({'Failed': f'There is no session of EV {vehicleID}'}, status=status.HTTP_402_PAYMENT_REQUIRED)
+    for i in range(len(sessions)):
+        if sessions[i].charging_point != None:
+            visited_points.add(sessions[i].charging_point)
+        TotalEnergyConsumed += float(sessions[i].kWh_delivered)
+        TotalEnergyConsumed = round(TotalEnergyConsumed, 3) 
+    NumberOfVisitedPoints = int(len(visited_points))
+
     for i in range(len(sessions)):
         try:
             session_provider = sessions[i].charging_point.Operator.title
@@ -193,8 +209,14 @@ def sessions_per_ev(request, vehicleID, date_from, date_to):
             session_program = ''
             session_price = "unknown"
             session_cost = "unknown"
-        item = {
-            'SessionIndex': int(i + 1),
+        data[int(i + 1)] = {
+            'VehicleID': VehicleID,
+            'PeriodFrom': PeriodFrom,
+            'PeriodTo': PeriodTo,
+            'TotalEnergyConsumed': TotalEnergyConsumed,
+            'NumberOfVisitedPoints': NumberOfVisitedPoints,
+            'NumberOfVehicleChargingSessions': NumberOfVehicleChargingSessions,
+
             'SessionID': sessions[i].session_id_given,
             'EnergyProvider': session_provider,
             'StartedOn': sessions[i].connection_time,
@@ -204,12 +226,7 @@ def sessions_per_ev(request, vehicleID, date_from, date_to):
             'CostPerkWh':   session_price,
             'SessionCost': session_cost
         }
-        if sessions[i].charging_point != None:
-            visited_points.add(sessions[i].charging_point)
-        data['TotalEnergyConsumed'] += float(sessions[i].kWh_delivered)
-        data['TotalEnergyConsumed'] = round(data['TotalEnergyConsumed'], 3)
-        data['ChargingSessionsList'].append(item)
-    data['NumberOfVisitedPoints'] = int(len(visited_points))
+
     return Response(data, status=status.HTTP_200_OK)
     
 
@@ -223,19 +240,18 @@ def sessions_per_provider(request, providerID, date_from, date_to):
     except:
         return Response({'Failed': f'There is no provider with providerID {providerID}'}, status=status.HTTP_400_BAD_REQUEST)
     data = {}
-    data['ProviderID'] = provider.provider_id_given
-    data['ProviderName'] = provider.title
-    data['PeriodFrom'] = date_from[0:4] + "-" + date_from[4:6] + "-" + date_from[6:8] + " 00:00:00"
-    data['PeriodTo'] = date_to[0:4] + "-" + date_to[4:6] + "-" + date_to[6:8] + " 23:59:59"
+    ProviderID = provider.provider_id_given
+    ProviderName = provider.title
+    PeriodFrom = date_from[0:4] + "-" + date_from[4:6] + "-" + date_from[6:8] + " 00:00:00"
+    PeriodTo = date_to[0:4] + "-" + date_to[4:6] + "-" + date_to[6:8] + " 23:59:59"
 
     sessions = list(Session.objects.filter(
         provider=provider,
-        connection_time__range=[datetime.strptime(data['PeriodFrom'], "%Y-%m-%d %H:%M:%S").replace(tzinfo=timezone('UTC')),
-                    datetime.strptime(data['PeriodTo'], "%Y-%m-%d %H:%M:%S").replace(tzinfo=timezone('UTC'))]
+        connection_time__range=[datetime.strptime(PeriodFrom, "%Y-%m-%d %H:%M:%S").replace(tzinfo=timezone('UTC')),
+                    datetime.strptime(PeriodTo, "%Y-%m-%d %H:%M:%S").replace(tzinfo=timezone('UTC'))]
     ))
     sessions.sort(key=lambda x: x.connection_time)
 
-    data['Sessions'] = []
     if len(sessions)==0:
         return Response({'Failed': f'There is no session of provider {providerID}'}, status=status.HTTP_402_PAYMENT_REQUIRED)
     for i in range(len(sessions)):
@@ -255,20 +271,24 @@ def sessions_per_provider(request, providerID, date_from, date_to):
             session_program = ''
             session_price = "unknown"
             session_cost = "unknown"
-        item = {
+        data[int(i + 1)] = {
+            'ProviderID': ProviderID,
+            'ProviderName': ProviderName,
+            'PeriodFrom': PeriodFrom,
+            'PeriodTo': PeriodTo,
+
             'StationID': stationID,
             'SessionID': sessions[i].session_id_given,
             'VehicleID': vehicleID,
             'StartedOn': sessions[i].connection_time,
             'FinishedOn': sessions[i].disconnection_time,
             'Protocol': sessions[i].protocol,
-            'EnergyDelivered': float(sessions[i].kWh_delivered),
+            'EnergyDelivered': sessions[i].kWh_delivered,
             'PricePolicyRef': session_program,
             'CostPerkWh':   session_price,
             'SessionCost': session_cost
         }
 
-        data['Sessions'].append(item)
     return Response(data, status=status.HTTP_200_OK)
     
 
