@@ -21,7 +21,9 @@ function Bill() {
                           backgroundColor: 'rgba(255, 255, 255, 0.1)'
                         },
                         content: { 
-                          top: '10%',
+                          maxHeight: '60%',
+                          overflowY: 'auto',
+                          top: '20%',
                           left: '30%',
                           right: 'auto',
                           bottom: 'auto',
