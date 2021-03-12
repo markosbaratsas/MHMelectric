@@ -10,7 +10,8 @@ def sessionsPerPoint(pointID, yyyymmdd_from, yyyymmdd_to, api_key,format):
     try:
         token = json.loads(x.text)['token']
         x = requests.get(f'http://localhost:8765/evcharge/api/SessionsPerPoint/{pointID}/{yyyymmdd_from}/{yyyymmdd_to}?format={format}', headers={'X-OBSERVATORY-AUTH':f'{token}'})
-        print(json.loads(x.text))
+        json_text = json.loads(x.text)
+        print(json.dumps(json_text, indent=4))
     except:
         print(x.text)
 
@@ -19,7 +20,8 @@ def sessionsPerStation(stationID, yyyymmdd_from, yyyymmdd_to, api_key,format):
     try:
         token = json.loads(x.text)['token']
         x = requests.get(f'http://localhost:8765/evcharge/api/SessionsPerStation/{stationID}/{yyyymmdd_from}/{yyyymmdd_to}?format={format}', headers={'X-OBSERVATORY-AUTH':f'{token}'})
-        print(json.loads(x.text))
+        json_text = json.loads(x.text)
+        print(json.dumps(json_text, indent=4))
     except:
         print(x.text)
 
@@ -28,7 +30,8 @@ def sessionsPerProvider(providerID, yyyymmdd_from, yyyymmdd_to, api_key,format):
     try:
         token = json.loads(x.text)['token']
         x = requests.get(f'http://localhost:8765/evcharge/api/SessionsPerProvider/{providerID}/{yyyymmdd_from}/{yyyymmdd_to}?format={format}', headers={'X-OBSERVATORY-AUTH':f'{token}'})
-        print(json.loads(x.text))
+        json_text = json.loads(x.text)
+        print(json.dumps(json_text, indent=4))
     except:
         print(x.text)
 
@@ -37,7 +40,8 @@ def sessionsPerEV(vehicleID, yyyymmdd_from, yyyymmdd_to, api_key,format):
     try:
         token = json.loads(x.text)['token']
         x = requests.get(f'http://localhost:8765/evcharge/api/SessionsPerEV/{vehicleID}/{yyyymmdd_from}/{yyyymmdd_to}?format={format}', headers={'X-OBSERVATORY-AUTH':f'{token}'})
-        print(json.loads(x.text))
+        json_text = json.loads(x.text)
+        print(json.dumps(json_text, indent=4))
     except:
         print(x.text)
     
@@ -102,7 +106,8 @@ def admin_users(username, api_key, format):
     try:
         token = json.loads(x.text)['token']
         x = requests.get(f'http://localhost:8765/evcharge/api/admin/users/{username}?format={format}',  headers={'X-OBSERVATORY-AUTH':f'{token}'})
-        print(json.loads(x.text))
+        json_text = json.loads(x.text)
+        print(json.dumps(json_text, indent=4))
     except:
         print(x.text)
 
@@ -111,7 +116,8 @@ def admin_usermod(username, password, api_key, format):
     try:
         token = json.loads(x.text)['token']
         x = requests.post(f'http://localhost:8765/evcharge/api/admin/usermod/{username}/{password}?format={format}',  headers={'X-OBSERVATORY-AUTH':f'{token}'})
-        print(json.loads(x.text))
+        json_text = json.loads(x.text)
+        print(json.dumps(json_text, indent=4))
     except:
         print(x.text)
 
@@ -120,6 +126,7 @@ def admin_sessionsupd(source, api_key, format):
     try:
         token = json.loads(x.text)['token']
         x = requests.post(f'http://localhost:8765/evcharge/api/admin/system/sessionsupd?format={format}', files={'file':open(source,'rb')}, headers={'X-OBSERVATORY-AUTH':f'{token}'})
-        print(json.loads(x.text))
+        json_text = json.loads(x.text)
+        print(json.dumps(json_text, indent=4))
     except:
         print(x.text)
