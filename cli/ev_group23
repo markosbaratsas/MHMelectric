@@ -40,9 +40,6 @@ else
     else
         args="$@"
     fi
-    python3 cli_side.py ${args}
+    python3 /mnt/c/Users/ilmar/MHMelectric/cli/cli_side.py ${args}
 
 fi
-
-
-

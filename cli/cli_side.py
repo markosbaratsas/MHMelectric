@@ -4,6 +4,7 @@ import datetime
 import urllib3
 import requests
 import sys
+import pathlib
 
 def valid_username(s):
     r = re.compile('^(\\w)+$', re.ASCII)
@@ -198,18 +199,22 @@ add_help(optional)
 
 if __name__ == '__main__':
     urllib3.disable_warnings(urllib3.exceptions.SubjectAltNameWarning)
+    
+    args = parser.parse_args()
+
+    path = str(pathlib.Path(__file__).parent.absolute())
+
     try:
         requests.get(f'http://localhost:8765/evcharge/api/')
         import request as req
     except:
         try:
-            requests.get(f'https://localhost:8765/evcharge/api/',verify = 'cert.pem')
+            requests.get(f'https://localhost:8765/evcharge/api/',verify = path+'/cert.pem')
             import request_ssl as req
-        except:
+        except:    
             print("There is no connection to server")
             sys.exit()
 
-    args = parser.parse_args()
     if args.scope == 'login':
         req.login(args.username, args.passw)
     elif args.scope == 'logout':
