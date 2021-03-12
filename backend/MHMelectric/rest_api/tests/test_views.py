@@ -70,7 +70,7 @@ class TestViews(TestCase):
         response = self.client.get(self.sessions_per_point_url, HTTP_X_OBSERVATORY_AUTH=token.key)
 
         # should only get 2 sessions and not the 3rd one because it is not on the date range
-        self.assertEquals(len(response.data["ChargingSessionsList"]), 2)
+        self.assertEquals(len(response.data), 2)
 
     def test_sessions_per_station(self):
         user, _ = User.objects.get_or_create(username='some-username')
@@ -78,7 +78,7 @@ class TestViews(TestCase):
         response = self.client.get(self.sessions_per_station_url, HTTP_X_OBSERVATORY_AUTH=token.key)
 
         # should only get 2 sessions and not the 3rd one because it is not on the date range
-        self.assertEquals(response.data["SessionsSummaryList"][0]["PointSessions"], 2)
+        self.assertEquals(response.data["1"]["NumberOfChargingSessions"], 2)
 
     def test_sessions_per_ev(self):
         user, _ = User.objects.get_or_create(username='some-username')
@@ -86,7 +86,7 @@ class TestViews(TestCase):
         response = self.client.get(self.sessions_per_ev_url, HTTP_X_OBSERVATORY_AUTH=token.key)
 
         # should only get 2 sessions and not the 3rd one because it is not on the date range
-        self.assertEquals(len(response.data["ChargingSessionsList"]), 2)
+        self.assertEquals(len(response.data), 2)
 
     def test_sessions_per_provider(self):
         user, _ = User.objects.get_or_create(username='some-username')
@@ -94,7 +94,7 @@ class TestViews(TestCase):
         response = self.client.get(self.sessions_per_provider_url, HTTP_X_OBSERVATORY_AUTH=token.key)
 
         # should only get 2 sessions and not the 3rd one because it is not on the date range
-        self.assertEquals(len(response.data["Sessions"]), 2)
+        self.assertEquals(len(response.data), 2)
 
     def test_check_db_connection(self):
         response = self.client.get(self.check_db_connection_url)
