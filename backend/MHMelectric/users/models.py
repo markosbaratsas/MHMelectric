@@ -8,6 +8,7 @@ from django.utils.translation import gettext_lazy as _
 from rest_framework import HTTP_HEADER_ENCODING, exceptions
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.authtoken.models import Token
+from rest_api.models import Car_Owner
 
 
 
@@ -15,6 +16,7 @@ from rest_framework.authtoken.models import Token
 def create_auth_token(sender, instance=None, created=False, **kwargs):
     if created:
         Token.objects.create(user=instance)
+        Car_Owner.objects.create(user=instance)
 
 # subbclass the TokenAuthentication class in order to fullfil the API's specifications
 # with the custom HTTP_HEADER
