@@ -5,7 +5,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios'
 
 function Select() {
-    const [ dataPost, setDataPost ] = useState({})
+    const [ dataPost, setDataPost ] = useState({car: null, car_owner: null})
     const [ car, setCar ] = useState([])
     const [ station, setStation ] = useState([])
     const [ point, setPoint ] = useState([])
@@ -72,6 +72,7 @@ function Select() {
     }
 
     function sendPost() {
+        console.log("dataPost")
         console.log(dataPost)
         var details = {
             method: 'post',

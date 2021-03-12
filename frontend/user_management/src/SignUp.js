@@ -29,12 +29,16 @@ function SignUp() {
         }
         axios(details)
             .then( (response) => {
-                setAuthTokens(response.data);
-                console.log(response)
-                setLoggedIn(true);
+                if(response.data["username"][0]==="A user with that username already exists.") alert("A user with that username already exists.")
+                else {
+                    setAuthTokens(response.data["token"]);
+                    console.log(response)
+                    setLoggedIn(true);
+                }
             })
             .catch( (error) => {
                 console.log(error)
+                alert(JSON.stringify(error.response.data))
             })
     }
 

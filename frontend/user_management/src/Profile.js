@@ -15,6 +15,8 @@ function Profile() {
     }
 
     useEffect(() => {
+        console.log("tokens")
+        console.log(localStorage)
         if (localStorage.getItem("username")===null) {
             var details = {
                 method: 'get',
