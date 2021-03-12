@@ -84,6 +84,8 @@ function Select() {
         axios(details)
             .then( (response) => {
                 console.log(response.data)
+                alert(response.data["response"])
+                window.location.reload(false)
             })
             .catch( (error) => {
                 console.log(error)
@@ -92,7 +94,7 @@ function Select() {
 
     useEffect(() => {
         setCar(JSON.parse(localStorage.getItem("cars")))
-        setDataPost({'car_owner': JSON.parse(localStorage.getItem('owner_id')), 'car': parseInt(JSON.parse(localStorage.getItem("cars"))[0]['car_id'])})
+        if(JSON.parse(localStorage.getItem("cars")).length!==0) setDataPost({'car_owner': JSON.parse(localStorage.getItem('owner_id')), 'car': parseInt(JSON.parse(localStorage.getItem("cars"))[0]['car_id'])})
         if (localStorage.getItem("bill")===null) {
             var details = {
                 method: 'get',
@@ -195,7 +197,7 @@ function Select() {
                 {provider.map( (provider) => 
                 <option value={provider['provider_id']}>{provider['title']}</option>)}
             </select>
-            <label htmlFor="connection_time">Provide connection time in in yy-mm-dd hh:mm:ss format format:</label>
+            <label htmlFor="connection_time">Provide connection time in yy-mm-dd hh:mm:ss format:</label>
             <input placeholder='Type connection time' type='connection_time' name='connection_time' id='connection_time' 
                                     onChange={handleChange} className='input-city-select-width' required />
             <label htmlFor="disconnection_time">Provide disconnection time in yy-mm-dd hh:mm:ss format:</label>

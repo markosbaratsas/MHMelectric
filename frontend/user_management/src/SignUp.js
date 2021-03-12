@@ -30,6 +30,7 @@ function SignUp() {
         axios(details)
             .then( (response) => {
                 setAuthTokens(response.data);
+                console.log(response)
                 setLoggedIn(true);
             })
             .catch( (error) => {
@@ -38,7 +39,7 @@ function SignUp() {
     }
 
     if (isLoggedIn) {
-        return <Redirect to="/test" />;
+        return <Redirect to="/account" />;
     }
 
     return (  
