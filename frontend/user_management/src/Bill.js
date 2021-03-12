@@ -37,49 +37,34 @@ function Bill() {
 
 
   useEffect(() => {
-    if (localStorage.getItem("bill")===null || refresh) {
-        setRefresh(false)
-        var details = {
-            method: 'get',
-            url: 'http://127.0.0.1:8765/evcharge/api/get_periodic_bills_of_user',
-            headers: {
-            'X-OBSERVATORY-AUTH': JSON.parse(localStorage["tokens"])
-            }
+    setRefresh(false)
+    var details = {
+        method: 'get',
+        url: 'http://127.0.0.1:8765/evcharge/api/get_periodic_bills_of_user',
+        headers: {
+        'X-OBSERVATORY-AUTH': JSON.parse(localStorage["tokens"])
         }
-        axios(details)
-            .then( (response) => {
-            localStorage.setItem("bill", JSON.stringify(response.data["periodic_bills"]))
-            const billArray = []
-            const previousBillArray = []
-
-            for(let i=0; i<response.data["periodic_bills"].length; i++){
-              if(response.data["periodic_bills"][i]['paid']!==true) {
-                billArray.push(response.data["periodic_bills"][i])
-              } else {
-                previousBillArray.push(response.data["periodic_bills"][i])
-              }
-            }
-            setBill(billArray)
-            setPreviousBill(previousBillArray)
-            })
-            .catch( (error) => {
-                console.log(error)
-            })
-    } else {
-      const billArray = []
-      const previousBillArray = []
-
-      for(let i=0; i<JSON.parse(localStorage.getItem("bill")).length; i++){
-        if(JSON.parse(localStorage.getItem("bill"))[i]['paid']!==true) {
-          billArray.push(JSON.parse(localStorage.getItem("bill"))[i])
-        } else {
-          previousBillArray.push(JSON.parse(localStorage.getItem("bill"))[i])
-        }
-      }
-      setBill(billArray)
-      setPreviousBill(previousBillArray)
     }
-}, [refresh])
+    axios(details)
+        .then( (response) => {
+        localStorage.setItem("bill", JSON.stringify(response.data["periodic_bills"]))
+        const billArray = []
+        const previousBillArray = []
+
+        for(let i=0; i<response.data["periodic_bills"].length; i++){
+          if(response.data["periodic_bills"][i]['paid']!==true) {
+            billArray.push(response.data["periodic_bills"][i])
+          } else {
+            previousBillArray.push(response.data["periodic_bills"][i])
+          }
+        }
+        setBill(billArray)
+        setPreviousBill(previousBillArray)
+        })
+        .catch( (error) => {
+            console.log(error)
+        })
+  }, [refresh])
 
 
 
@@ -130,7 +115,7 @@ function Bill() {
                                                     }
                                                 }
                                                 axios(details)
-                                                    .then( (response) => {   
+                                                    .then( (response) => {
                                                       for(let i = 0; i < response.data["sessions"].length; i++) {       
                                                         if(response.data["sessions"][i]["charge_program"]===null) 
                                                           response.data["sessions"][i]["charge_program"] = {'description': ''}
@@ -148,6 +133,8 @@ function Bill() {
                                                           response.data["sessions"][i]["provider"] = {'title': '', 'primary_phone': '', 'email': ''}
                                                         if(response.data["sessions"][i]["station"]===null)
                                                           response.data["sessions"][i]["station"] = {'street': '', 'street_number': '', 'postal_code': '', 'city': '', 'country': ''}
+                                                        if(response.data["sessions"][i]["car"]===null)
+                                                          response.data["sessions"][i]["car"] = {'brand': '', 'model': '', 'type': '', 'release_year': ''}
                                                       }        
                                                       setSession(response.data["sessions"])
                                                       setModalIsOpen(true);
@@ -236,7 +223,9 @@ function Bill() {
                                                           response.data["sessions"][i]["provider"] = {'title': '', 'primary_phone': '', 'email': ''}
                                                         if(response.data["sessions"][i]["station"]===null)
                                                           response.data["sessions"][i]["station"] = {'street': '', 'street_number': '', 'postal_code': '', 'city': '', 'country': ''}
-                                                      }        
+                                                        if(response.data["sessions"][i]["car"]===null)
+                                                          response.data["sessions"][i]["car"] = {'brand': '', 'model': '', 'type': '', 'release_year': ''}
+                                                      }
                                                       setSession(response.data["sessions"])
                                                       setModalIsOpen(true);
                                                     })

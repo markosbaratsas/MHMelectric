@@ -82,7 +82,7 @@ function Select() {
         axios(details)
             .then( (response) => {
                 alert(response.data["response"])
-                window.location.reload(false)
+                window.location.replace("/bill")
             })
             .catch( (error) => {
                 console.log(error)

@@ -49,7 +49,15 @@ class SessionSerializer(serializers.ModelSerializer):
                 'user_modified_at', 'user_payment_method', 'user_payment_required',
                 'user_requested_departure', 'charge_program', 'provider']
 
-    def save(self):
+    def save(self, car_owner=None):
+
+        periodic_bill = None
+
+        if ('periodic_bill' not in self.validated_data or self.validated_data['periodic_bill'] != None) and car_owner != None:
+            if len(Periodic_bill.objects.filter(owner=car_owner, paid=False)) == 0:
+                periodic_bill = Periodic_bill.objects.create(owner=car_owner)
+            else:
+                periodic_bill = Periodic_bill.objects.filter(owner=car_owner, paid=False)
 
         try:
             session = Session.objects.create(
@@ -57,7 +65,7 @@ class SessionSerializer(serializers.ModelSerializer):
                 car_owner=self.validated_data['car_owner'],
                 charging_point=self.validated_data['charging_point'] if 'charging_point' in self.validated_data else None,
                 station=self.validated_data['station'] if 'station' in self.validated_data else None,
-                periodic_bill=self.validated_data['periodic_bill'] if 'periodic_bill' in self.validated_data else None,
+                periodic_bill=self.validated_data['periodic_bill'] if 'periodic_bill' in self.validated_data else periodic_bill,
                 charge_program=self.validated_data['charge_program'] if 'charge_program' in self.validated_data else None,
                 provider=self.validated_data['provider'] if 'provider' in self.validated_data else None,
                 connection_time=self.validated_data['connection_time'] if 'connection_time' in self.validated_data else None,

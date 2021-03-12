@@ -202,7 +202,7 @@ def get_sessions_of_periodic_bill(request, periodic_bill_id):
     try:
         periodic_bill = Periodic_bill.objects.get(periodic_bill_id=periodic_bill_id)
         car_owner = Car_Owner.objects.get(user=request.user)
-        sessions = Session.objects.filter(periodic_bill=periodic_bill, car_owner=car_owner)
+        sessions = Session.objects.filter(periodic_bill=periodic_bill)
 
         sessions = SessionSerializer(sessions, many=True).data
 
@@ -269,8 +269,14 @@ def add_session(request):
     
     serializer = SessionSerializer(data=request.data)
     data = {}
+
+    try:
+        car_owner = Car_Owner.objects.get(user=request.user)
+    except:
+        car_owner = None
+
     if serializer.is_valid():
-        session = serializer.save()
+        session = serializer.save(car_owner=car_owner)
         data['response'] = 'Successfully created a new session.'
         data['session'] = SessionSerializer(session).data
     else:
