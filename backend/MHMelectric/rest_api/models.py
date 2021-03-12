@@ -1,11 +1,12 @@
 from django.db import models
 from django.contrib.auth.models import User
+import datetime
 
 class Car_Owner(models.Model):
     owner_id = models.AutoField(primary_key=True) # this is varchar originally...
     first_name = models.CharField(max_length=63, default='')
     last_name = models.CharField(max_length=63, default='')
-    birthdate = models.DateTimeField(default='') # auto_add now = true and we will change it later...
+    birthdate = models.DateTimeField(default=datetime.datetime(1966, 8, 8, 0, 0, 0, 0), blank=True) # auto_add now = true and we will change it later...
     country = models.CharField(max_length=127, default='')
     city = models.CharField(max_length=127, default='')
     street = models.CharField(max_length=127, default='')
