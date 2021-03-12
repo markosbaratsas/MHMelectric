@@ -19,7 +19,6 @@ function Car() {
             }
             axios(details)
                 .then( (response) => {
-                    console.log(response.data)
                     setCar(response.data["cars"])
                     localStorage.setItem("cars", JSON.stringify(response.data["cars"]))
                 })

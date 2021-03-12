@@ -17,7 +17,6 @@ function Select() {
     const handleChange = (e) => {
         const { value, name } = e.target
         setDataPost({...dataPost, [name]: value})
-        console.log(dataPost)
     }
 
     const handleChangeInt = (e) => {
@@ -72,8 +71,6 @@ function Select() {
     }
 
     function sendPost() {
-        console.log("dataPost")
-        console.log(dataPost)
         var details = {
             method: 'post',
             url: 'http://127.0.0.1:8765/evcharge/api/add_session',
@@ -84,7 +81,6 @@ function Select() {
         }
         axios(details)
             .then( (response) => {
-                console.log(response.data)
                 alert(response.data["response"])
                 window.location.reload(false)
             })

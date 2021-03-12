@@ -48,7 +48,6 @@ function Bill() {
         }
         axios(details)
             .then( (response) => {
-            console.log(response.data["periodic_bills"])
             localStorage.setItem("bill", JSON.stringify(response.data["periodic_bills"]))
             const billArray = []
             const previousBillArray = []
@@ -123,8 +122,6 @@ function Bill() {
                   </div>
                   <div className='profile-left'>
                     <button className='link' onClick={() => {
-                                                  console.log(bill["periodic_bill_id"])
-
                                                   var details = {
                                                     method: 'get',
                                                     url: 'http://127.0.0.1:8765/evcharge/api/get_sessions_of_periodic_bill/'+bill["periodic_bill_id"],
@@ -134,7 +131,6 @@ function Bill() {
                                                 }
                                                 axios(details)
                                                     .then( (response) => {   
-                                                      console.log(response.data["sessions"].length)
                                                       for(let i = 0; i < response.data["sessions"].length; i++) {       
                                                         if(response.data["sessions"][i]["charge_program"]===null) 
                                                           response.data["sessions"][i]["charge_program"] = {'description': ''}
@@ -154,8 +150,7 @@ function Bill() {
                                                           response.data["sessions"][i]["station"] = {'street': '', 'street_number': '', 'postal_code': '', 'city': '', 'country': ''}
                                                       }        
                                                       setSession(response.data["sessions"])
-                                                      setModalIsOpen(true); 
-                                                      console.log(response.data)
+                                                      setModalIsOpen(true);
                                                     })
                                                     .catch( (error) => {
                                                         console.log(error)
@@ -175,8 +170,8 @@ function Bill() {
                         }
                       }
                       axios(details)
-                        .then( (response) => {       
-                          console.log(response)
+                        // .then( (response) => {
+                        .then( () => {
                           setRefresh(true)
                           alert("Bill paid!")
                         })
@@ -215,8 +210,6 @@ function Bill() {
                   </div>
                   <div className='profile-left'>
                     <button className='link' onClick={() => {
-                                                  console.log(previousBill["periodic_bill_id"])
-
                                                   var details = {
                                                     method: 'get',
                                                     url: 'http://127.0.0.1:8765/evcharge/api/get_sessions_of_periodic_bill/'+previousBill["periodic_bill_id"],
@@ -225,8 +218,7 @@ function Bill() {
                                                     }
                                                 }
                                                 axios(details)
-                                                    .then( (response) => {   
-                                                      console.log(response.data["sessions"].length)
+                                                    .then( (response) => {
                                                       for(let i = 0; i < response.data["sessions"].length; i++) {       
                                                         if(response.data["sessions"][i]["charge_program"]===null) 
                                                           response.data["sessions"][i]["charge_program"] = {'description': ''}
@@ -246,8 +238,7 @@ function Bill() {
                                                           response.data["sessions"][i]["station"] = {'street': '', 'street_number': '', 'postal_code': '', 'city': '', 'country': ''}
                                                       }        
                                                       setSession(response.data["sessions"])
-                                                      setModalIsOpen(true); 
-                                                      console.log(response.data)
+                                                      setModalIsOpen(true);
                                                     })
                                                     .catch( (error) => {
                                                         console.log(error)

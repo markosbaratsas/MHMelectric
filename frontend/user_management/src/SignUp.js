@@ -32,7 +32,6 @@ function SignUp() {
                 if(response.data["username"][0]==="A user with that username already exists.") alert("A user with that username already exists.")
                 else {
                     setAuthTokens(response.data["token"]);
-                    console.log(response)
                     setLoggedIn(true);
                 }
             })

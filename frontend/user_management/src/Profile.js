@@ -15,8 +15,6 @@ function Profile() {
     }
 
     useEffect(() => {
-        console.log("tokens")
-        console.log(localStorage)
         if (localStorage.getItem("username")===null) {
             var details = {
                 method: 'get',
@@ -27,7 +25,6 @@ function Profile() {
             }
             axios(details)
                 .then( (response) => {
-                console.log(response.data)
                 localStorage.setItem("username", response.data["username"])
                 localStorage.setItem("email", response.data["email"])
                 localStorage.setItem("owner_id", response.data["car_owner"]["owner_id"])

@@ -18,7 +18,6 @@ function Login(props) {
 
     useEffect(() => {
         if(localStorage.getItem("username")!==null) setLoggedIn(true)
-        console.log(localStorage)
     }, [])
 
     const handleSubmit = (e) => {
