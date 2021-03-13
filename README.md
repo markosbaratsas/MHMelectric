@@ -17,3 +17,7 @@ The MHMelectric system consists of 3 components: backend, frontend and cli. Of c
 ## CLI
 
 [Python Argparse](https://docs.python.org/3/library/argparse.html) module was used for the development of the CLI. The CLI consumes the REST API developed in the backend.
+
+## Installation
+
+In each of these 3 directories (backend, frontend, cli), there is a `README.md` file that provides documentation regarding the installation of these 3 different components. Of course, frontend and CLI are clients of the backend system, which means that in order to use CLI or frontend, it is required that backend system is up and running.

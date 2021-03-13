@@ -1,10 +1,14 @@
-# Setup Frontend on localhost
+# Frontend
 
-## Requirements
+[React JS](https://reactjs.org/) was used for the development of the frontend system.
+
+## Installation
+
+### Requirements
 * Node >= 8.10 on your machine
 * npm >= 5.6 on your machine
 
-## Instructions
+### Instructions
 1. First start the backend (since the frontend consumes the backend's API). There is information on how to start the backend environment on the backend/installation.md file.
 
 2. On a new terminal (different than the previous that runs the Django server), cd into the frontend/user_management/ directory, and install the npm package:

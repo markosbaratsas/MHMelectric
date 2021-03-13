@@ -1,10 +1,14 @@
-# Simple guide to get started with the CLI on your (linux) PC
+# MHMelectric CLI
 
-## Requirements:
+[Python Argparse](https://docs.python.org/3/library/argparse.html) module was used for the development of the CLI. The CLI consumes the REST API developed in the backend.
+
+## Installation
+
+### Requirements:
 * `pip3` installed
 * `python3` installed
 
-## Instructions
+### Instructions
 After cloning this repo and going into the `cli` directory, you can run the following commands to get this cli running.
 
 1. First, run the django server, that exists on the backend folder of this repo (since the CLI communicates with the backend API)
@@ -32,5 +36,5 @@ python3
 ev_group23 --help
 ```
 
-## Notes:
+### Notes:
 In order to be able to run the `ev_group23` directly, you need to have activated the virtual environment (since the ev_group23 bash script is in the venv/bin directory and it needs to be in the $PATH ).
