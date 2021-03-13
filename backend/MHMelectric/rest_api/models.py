@@ -4,7 +4,7 @@ import datetime
 
 class Car_Owner(models.Model):
     owner_id = models.AutoField(primary_key=True) # this is varchar originally...
-    first_name = models.CharField(max_length=63, default='')
+    first_name = models.CharField(max_length=63, default='Not specified')
     last_name = models.CharField(max_length=63, default='')
     birthdate = models.DateTimeField(default=datetime.datetime(1966, 8, 8, 0, 0, 0, 0), blank=True) # auto_add now = true and we will change it later...
     country = models.CharField(max_length=127, default='Not specified')

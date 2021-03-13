@@ -16,7 +16,7 @@ from rest_api.models import Car_Owner
 def create_auth_token(sender, instance=None, created=False, **kwargs):
     if created:
         Token.objects.create(user=instance)
-        Car_Owner.objects.create(user=instance)
+        Car_Owner.objects.create(user=instance, first_name=instance.username)
 
 # subbclass the TokenAuthentication class in order to fullfil the API's specifications
 # with the custom HTTP_HEADER
