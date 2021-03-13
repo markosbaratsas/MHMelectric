@@ -57,7 +57,6 @@ function Car() {
     }
 
     useEffect(() => {
-        if (localStorage.getItem("cars")===null) {
             var details = {
                 method: 'get',
                 url: 'http://127.0.0.1:8765/evcharge/api/get_car_info_from_user',
@@ -73,9 +72,6 @@ function Car() {
                 .catch( (error) => {
                     console.log(error)
                 })
-        } else {
-            setCar(JSON.parse(localStorage.getItem("cars")))
-        }
     }, [])
 
     return (
