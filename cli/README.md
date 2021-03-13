@@ -28,7 +28,7 @@ pip3 install requirements.txt
 
 3. Then, run the following, in order to set up the CLI (into the cli/ directory):
 ```
-python3 
+python3 setup_cli.py
 ```
 
 4. The CLI is ready, you can run the following to see the available commands:
