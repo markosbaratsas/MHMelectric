@@ -45,6 +45,11 @@ def add_help(x):
         default=argparse.SUPPRESS,
         help='show this help message and exit'
     )   
+    x.add_argument(
+        '--test',
+        action='store_true',
+        help=argparse.SUPPRESS
+    )
 
 parser = argparse.ArgumentParser(prog = 'ev_group23', description = 'Provide operations regarding the system')
 
@@ -197,48 +202,56 @@ optional = parser_admin_resetsessions.add_argument_group('optional arguments')
 add_help(optional)
 
 
-if __name__ == '__main__':
+def main(args=None):
     urllib3.disable_warnings(urllib3.exceptions.SubjectAltNameWarning)
-    
-    args = parser.parse_args()
-
+    if not args:
+        args = sys.argv[1:]
+    args = parser.parse_args(args)
     path = str(pathlib.Path(__file__).parent.absolute())
-
-    try:
-        requests.get(f'http://localhost:8765/evcharge/api/')
+    if args.test:
         import request as req
-    except:
-        try:
-            requests.get(f'https://localhost:8765/evcharge/api/',verify = path+'/cert.pem')
-            import request_ssl as req
-        except:    
-            print("There is no connection to server")
-            sys.exit()
-
-    if args.scope == 'login':
-        req.login(args.username, args.passw)
-    elif args.scope == 'logout':
-        req.logout(args.apikey)
-    elif args.scope == 'resetsessions':
-        req.resetsessions(args.apikey, args.format)
-    elif args.scope == 'healthcheck':
-        req.healthcheck(args.apikey, args.format)
-    elif args.scope == 'perPoint':
-        req.sessionsPerPoint(args.point, args.datefrom, args.dateto, args.apikey, args.format)
-    elif args.scope == 'perStation':
-        req.sessionsPerStation(args.station, args.datefrom, args.dateto, args.apikey, args.format)
-    elif args.scope == 'perEV':
-        req.sessionsPerEV(args.ev, args.datefrom, args.dateto, args.apikey, args.format)
-    elif args.scope == 'perProvider':
-        req.sessionsPerProvider(args.provider, args.datefrom, args.dateto, args.apikey, args.format)
     else:
-        if args.admin_scope == 'usermod':
-            req.admin_usermod(args.username, args.passw, args.apikey, args.format)
-        elif args.admin_scope == 'users':
-            req.admin_users(args.username, args.apikey, args.format)
-        elif args.admin_scope == 'sessionsupd':
-            req.admin_sessionsupd(args.source, args.apikey, args.format)
-        elif args.admin_scope == 'healthcheck':
-            req.healthcheck(args.apikey,args.format)
+        try:
+            requests.get(f'http://localhost:8765/evcharge/api/')
+            import request as req
+        except:
+            try:
+                requests.get(f'https://localhost:8765/evcharge/api/',verify = path+'/cert.pem')
+                import request_ssl as req
+            except:    
+                print("There is no connection to server")
+                sys.exit()
+    try:
+        if args.scope == 'login':
+            req.login(args.username, args.passw)
+        elif args.scope == 'logout':
+            req.logout(args.apikey)
+        elif args.scope == 'resetsessions':
+            req.resetsessions(args.apikey, args.format)
+        elif args.scope == 'healthcheck':
+            req.healthcheck(args.apikey, args.format)
+        elif args.scope == 'perPoint':
+            req.sessionsPerPoint(args.point, args.datefrom, args.dateto, args.apikey, args.format)
+        elif args.scope == 'perStation':
+            req.sessionsPerStation(args.station, args.datefrom, args.dateto, args.apikey, args.format)
+        elif args.scope == 'perEV':
+            req.sessionsPerEV(args.ev, args.datefrom, args.dateto, args.apikey, args.format)
+        elif args.scope == 'perProvider':
+            req.sessionsPerProvider(args.provider, args.datefrom, args.dateto, args.apikey, args.format)
         else:
-            req.resetsessions(args.apikey,args.format)
+            if args.admin_scope == 'usermod':
+                req.admin_usermod(args.username, args.passw, args.apikey, args.format)
+            elif args.admin_scope == 'users':
+                req.admin_users(args.username, args.apikey, args.format)
+            elif args.admin_scope == 'sessionsupd':
+                req.admin_sessionsupd(args.source, args.apikey, args.format)
+            elif args.admin_scope == 'healthcheck':
+                req.healthcheck(args.apikey,args.format)
+            else:
+                req.resetsessions(args.apikey,args.format)
+    except Exception as e:
+        print(e)
+        print("i hope you are testing")
+
+if __name__ == '__main__':
+    main()
