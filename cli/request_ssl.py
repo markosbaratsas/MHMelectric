@@ -3,6 +3,7 @@ import json
 from pathlib import Path
 import pathlib
 import os
+import sys
 
 from requests import api
 
@@ -126,10 +127,16 @@ def admin_usermod(username, password, api_key, format):
         print(x.text)
 
 def admin_sessionsupd(source, api_key, format):
+    try:
+        file_to_send = open(source,'rb')
+    except:
+        print("Cannot find or open file.")
+        sys.exit()
     x = requests.get(f'https://localhost:8765/evcharge/api/get_token_from_api_key', data = {'api_key': {api_key}},verify = path) #
     try:
         token = json.loads(x.text)['token']
-        x = requests.post(f'https://localhost:8765/evcharge/api/admin/system/sessionsupd?format={format}', files={'file':open(source,'rb')}, headers={'X-OBSERVATORY-AUTH':f'{token}'},verify = path)
+        x = requests.post(f'https://localhost:8765/evcharge/api/admin/system/sessionsupd?format={format}', files={'file':file_to_send}, headers={'X-OBSERVATORY-AUTH':f'{token}'},verify = path)
+        file_to_send.close()
         json_text = json.loads(x.text)
         print(json.dumps(json_text, indent=4))
     except:

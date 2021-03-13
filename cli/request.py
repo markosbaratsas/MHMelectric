@@ -160,6 +160,7 @@ def admin_sessionsupd(source, api_key, format):
     try:
         token = json.loads(x.text)['token']
         x = requests.post(url_to_send, files={'file':file_to_send}, headers={'X-OBSERVATORY-AUTH':f'{token}'})
+        file_to_send.close()
         json_text = json.loads(x.text)
         print(json.dumps(json_text, indent=4))
     except:
