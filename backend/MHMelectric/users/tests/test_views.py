@@ -4,7 +4,7 @@ from django.urls import reverse
 from rest_framework.authtoken.models import Token
 from urllib.parse import urlencode
 
-from users.views import register_user, delete_token, admin_create_user, admin_get_user, get_token_from_api_key, get_user_info, get_car_info_from_user
+from users.views import register_user, delete_token, admin_create_user, admin_get_user, get_token_from_api_key, get_car_info_from_user
 
 
 class TestViews(TestCase):

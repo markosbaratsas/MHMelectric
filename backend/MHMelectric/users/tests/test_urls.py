@@ -2,7 +2,7 @@ from django.test import SimpleTestCase
 from django.urls import reverse, resolve
 from rest_framework.authtoken.views import obtain_auth_token
 
-from users.views import register_user, delete_token, admin_create_user, admin_get_user, ObtainAPIKey, cli_logout, get_token_from_api_key, get_user_info, get_car_info_from_user
+from users.views import register_user, delete_token, admin_create_user, admin_get_user, ObtainAPIKey, cli_logout, get_token_from_api_key, user_info, get_car_info_from_user
 
 
 class TestUserUrls(SimpleTestCase):
@@ -41,7 +41,7 @@ class TestUserUrls(SimpleTestCase):
 
     def test_get_user_info(self):
         url = reverse('get_user_info')
-        self.assertEquals(resolve(url).func, get_user_info)
+        self.assertEquals(resolve(url).func, user_info)
 
     def test_get_car_info_from_user(self):
         url = reverse('get_car_info_from_user')
