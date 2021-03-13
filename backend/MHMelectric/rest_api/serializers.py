@@ -10,6 +10,33 @@ class CarSerializer(serializers.ModelSerializer):
         fields = ['car_id', 'brand', 'car_type', 'car_model', 
                 'release_year', 'variant', 'usable_battery_size']
 
+class CarSerializerFrontendAdd(serializers.ModelSerializer):
+    class Meta:
+        model = Car
+        fields = ['brand', 'car_type', 'car_model',
+                'release_year', 'variant', 'usable_battery_size']
+
+    def save(self, car_owner=None):
+
+        try:
+            car = Car.objects.create(
+                brand=self.validated_data['brand'] if 'brand' in self.validated_data else '',
+                car_type=self.validated_data['car_type'] if 'car_type' in self.validated_data else '',
+                car_model=self.validated_data['car_model'] if 'car_model' in self.validated_data else '',
+                release_year=self.validated_data['release_year'] if 'release_year' in self.validated_data else '',
+                variant=self.validated_data['variant'] if 'variant' in self.validated_data else '',
+                usable_battery_size=self.validated_data['usable_battery_size'] if 'usable_battery_size' in self.validated_data else 0,
+                owner=car_owner
+            )
+
+            car.car_id_given = car.car_id
+
+            car.save()
+        except:
+            car = None
+
+        return car
+
 
 class UploadedCSVSerializer(serializers.Serializer):
     file = serializers.FileField()

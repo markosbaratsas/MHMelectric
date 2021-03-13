@@ -12,8 +12,8 @@ from rest_framework_csv.renderers import CSVRenderer, JSONRenderer
 from rest_api.models import (Car_Owner, Car, Charging_point, Charge_program,
 Provider, Station, Periodic_bill, Session)
 from users.models import API_key
-from rest_api.serializers import (CarSerializer, Car_OwnerSerializer,
-Periodic_billSerializer, SessionSerializer, StationSerializer,
+from rest_api.serializers import (CarSerializer, CarSerializerFrontendAdd,
+Car_OwnerSerializer, Periodic_billSerializer, SessionSerializer, StationSerializer,
 Charging_pointSerializer, Charge_programSerializer, ProviderSerializer)
 from users.serializers import RegistrationSerializer
 
@@ -330,3 +330,30 @@ def get_providers(request):
     return Response({
         'providers': providers
     }, status=status.HTTP_200_OK)
+
+
+@api_view(['POST', ])
+@permission_classes((IsAuthenticated,))
+@renderer_classes([JSONRenderer, CSVRenderer])
+def add_car(request):
+
+    serializer = CarSerializerFrontendAdd(data=request.data)
+    data = {}
+    if serializer.is_valid():
+
+        car_owner, _ = Car_Owner.objects.get_or_create(user=request.user)
+
+        car = serializer.save(car_owner=car_owner)
+
+        if car != None:
+            car = CarSerializerFrontendAdd(car).data
+            data['response'] = 'Successfully added a new car.'
+            data['car'] = car
+
+        else:
+            data['response'] = 'Car not created.'
+
+    else:
+        data = serializer.errors
+
+    return Response(data)

@@ -28,4 +28,5 @@ urlpatterns = [
     path(r'get_charging_points_from_station/<station>/', views.get_charging_points_from_station, name="get_charging_points_from_station"),
     path('get_charge_programs/', views.get_charge_programs, name="get_charge_programs"),
     path('get_providers/', views.get_providers, name="get_providers"),
+    path('add_car', views.add_car, name="add_car"),
 ]
