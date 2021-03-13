@@ -35,22 +35,23 @@ function Profile() {
 
     const modalStyle = {
         overlay: {
-          position: 'fixed',
-          backdropFilter: 'blur(3px)',
-          backgroundColor: 'rgba(255, 255, 255, 0.1)'
+            position: 'fixed',
+            backdropFilter: 'blur(3px)',
+            backgroundColor: 'rgba(255, 255, 255, 0.1)'
         },
         content: { 
-          maxHeight: '76%',
-          overflowY: 'auto',
-          top: '12%',
-          left: '33%',
-          right: 'auto',
-          bottom: 'auto',
-          position: 'absolute', 
-          width: '34%', 
-          borderWidth: '1px',
-          paddingLeft: '30px',
-          paddingTop: '0px'
+            opacity: '1',
+            maxHeight: '76%',
+            overflowY: 'auto',
+            top: '12%',
+            left: '33%',
+            right: 'auto',
+            bottom: 'auto',
+            position: 'absolute', 
+            width: '34%', 
+            borderWidth: '1px',
+            paddingLeft: '30px',
+            paddingTop: '0px'
         }}
 
     function openModal() {
@@ -158,8 +159,8 @@ function Profile() {
                 </div>
                 <div className='modal-row'>
                     <div className='modal-input-div'>
-                        <label htmlFor="birthdate">Edit birthdate in yyyy-mm-dd format:</label>
-                        <input type='birthdate' value={userEdit["birthdate"]} name='birthdate' className='input-city-select modal-input-div' onChange={handleChangeUser} required />
+                        <label htmlFor="birthdate">Edit birthdate:</label>
+                        <input type='date' value={userEdit["birthdate"]} name='birthdate' className='input-city-select input-city-select-width' onChange={handleChangeUser} required />
                     </div>
                 </div>
                 <div className='modal-row'>
