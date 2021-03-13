@@ -61,10 +61,18 @@ def admin_create_user(request, username, password):
         user.set_password(password)
         user.save()
 
+        token, _ = Token.objects.get_or_create(user=user)
+
         if created:
-            return Response({'Success': f'User {username} created'}, status=status.HTTP_200_OK)
+            return Response({
+                'Success': f'User {username} created',
+                'api_key': token.key[0:4] + "-" + token.key[4:8] + "-" + token.key[8:12]
+            }, status=status.HTTP_200_OK)
         else:
-            return Response({'Success': f'Password updated for {username}'}, status=status.HTTP_200_OK)
+            return Response({
+                'Success': f'Password updated for {username}',
+                'api_key': token.key[0:4] + "-" + token.key[4:8] + "-" + token.key[8:12]
+            }, status=status.HTTP_200_OK)
 
     else:
         return Response({'Failed': 'Not authorized'}, status=status.HTTP_401_UNAUTHORIZED)

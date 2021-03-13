@@ -1,12 +1,16 @@
-from django.db import models
 from django.contrib.auth.models import User
+from django.conf import settings
+from django.db.models.signals import post_save
+from django.dispatch import receiver
+from django.db import models
 import datetime
+from pytz import timezone
 
 class Car_Owner(models.Model):
     owner_id = models.AutoField(primary_key=True) # this is varchar originally...
     first_name = models.CharField(max_length=63, default='Not specified')
     last_name = models.CharField(max_length=63, default='')
-    birthdate = models.DateTimeField(default=datetime.datetime(1966, 8, 8, 0, 0, 0, 0), blank=True) # auto_add now = true and we will change it later...
+    birthdate = models.DateTimeField(default=datetime.datetime.strptime("1966-08-08 00:00:00", "%Y-%m-%d %H:%M:%S").replace(tzinfo=timezone('UTC')), blank=True) # auto_add now = true and we will change it later...
     country = models.CharField(max_length=127, default='Not specified')
     city = models.CharField(max_length=127, default='')
     street = models.CharField(max_length=127, default='')
@@ -241,3 +245,22 @@ class UploadedCSV(models.Model):
     date_uploaded = models.DateTimeField(auto_now_add=True)
 
     uploaded_from = models.ForeignKey(User, on_delete=models.DO_NOTHING)
+
+
+@receiver(post_save, sender=Session)
+def update_periodic_bill(sender, instance=None, created=False, **kwargs):
+    print(instance.periodic_bill)
+    if created:
+        periodic_bill = instance.periodic_bill
+        if instance.charge_program == None:
+            periodic_bill.total += 5
+        elif instance.charge_program.description == "Higher cost, less time":
+            periodic_bill.total += 20
+        elif instance.charge_program.description == "Medium cost, medium time":
+            periodic_bill.total += 15
+        elif instance.charge_program.description == "Low cost, but takes time":
+            periodic_bill.total += 10
+
+        periodic_bill.discount = periodic_bill.total / 10
+
+        periodic_bill.save()
