@@ -249,8 +249,7 @@ class UploadedCSV(models.Model):
 
 @receiver(post_save, sender=Session)
 def update_periodic_bill(sender, instance=None, created=False, **kwargs):
-    print(instance.periodic_bill)
-    if created:
+    if created and instance.periodic_bill != None:
         periodic_bill = instance.periodic_bill
         if instance.charge_program == None:
             periodic_bill.total += 5
