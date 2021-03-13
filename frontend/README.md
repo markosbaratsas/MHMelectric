@@ -1,4 +1,4 @@
-# Frontend
+# MHMelectric Frontend
 
 [React JS](https://reactjs.org/) was used for the development of the frontend system.
 
