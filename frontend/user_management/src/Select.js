@@ -157,7 +157,7 @@ function Select() {
             <select name="car" id="car" onChange={handleChangeInt} className='select-div'>
                 <option disabled selected value>-</option>
                 {car.map( (car) => 
-                <option value={car['car_id']}>{car["brand"]}, {car["type"]}, {car["model"]}, {car["release_year"]}</option>)}
+                <option value={car['car_id']}>{car["brand"]}, {car["car_type"]}, {car["car_model"]}, {car["release_year"]}</option>)}
             </select>
             <label htmlFor="city">Choose city:</label>
             <div className='input-city'>

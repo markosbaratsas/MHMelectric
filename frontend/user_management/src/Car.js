@@ -57,21 +57,21 @@ function Car() {
     }
 
     useEffect(() => {
-            var details = {
-                method: 'get',
-                url: 'http://127.0.0.1:8765/evcharge/api/get_car_info_from_user',
-                headers: {
-                'X-OBSERVATORY-AUTH': JSON.parse(localStorage["tokens"])
-                }
+        var details = {
+            method: 'get',
+            url: 'http://127.0.0.1:8765/evcharge/api/get_car_info_from_user',
+            headers: {
+            'X-OBSERVATORY-AUTH': JSON.parse(localStorage["tokens"])
             }
-            axios(details)
-                .then( (response) => {
-                    setCar(response.data["cars"])
-                    localStorage.setItem("cars", JSON.stringify(response.data["cars"]))
-                })
-                .catch( (error) => {
-                    console.log(error)
-                })
+        }
+        axios(details)
+            .then( (response) => {
+                setCar(response.data["cars"])
+                localStorage.setItem("cars", JSON.stringify(response.data["cars"]))
+            })
+            .catch( (error) => {
+                console.log(error)
+            })
     }, [])
 
     return (
