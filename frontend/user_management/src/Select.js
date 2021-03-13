@@ -194,13 +194,13 @@ function Select() {
                 {provider.map( (provider) => 
                 <option value={provider['provider_id']}>{provider['title']}</option>)}
             </select>
-            <label htmlFor="connection_time">Provide connection time in yy-mm-dd hh:mm:ss format:</label>
+            <label htmlFor="connection_time">Provide connection time in yyyy-mm-dd hh:mm:ss format:</label>
             <input placeholder='Type connection time' type='connection_time' name='connection_time' id='connection_time' 
                                     onChange={handleChange} className='input-city-select-width' required />
-            <label htmlFor="disconnection_time">Provide disconnection time in yy-mm-dd hh:mm:ss format:</label>
+            <label htmlFor="disconnection_time">Provide disconnection time in yyy-mm-dd hh:mm:ss format:</label>
             <input placeholder='Type disconnection time' type='disconnection_time' name='disconnection_time' id='disconnection_time' 
                                     onChange={handleChange} className='input-city-select-width' required />
-            <label htmlFor="done_charging_time">Provide done charging time in yy-mm-dd hh:mm:ss format:</label>
+            <label htmlFor="done_charging_time">Provide done charging time in yyyy-mm-dd hh:mm:ss format:</label>
             <input placeholder='Type done charging time' type='done_charging_time' name='done_charging_time' id='done_charging_time' 
                                     onChange={handleChange} className='input-city-select-width' required />
             <label htmlFor="user_payment_method">Type payment method:</label>
