@@ -4,7 +4,7 @@
     min-height: 90vh;
     display: flex;
     flex-direction: row;
-    align-items: center;
+    /* align-items: center; */
     justify-content: center;
 }
 
@@ -17,9 +17,9 @@
     border-radius: 3px;
     padding: 20px;
     box-shadow: rgb(173, 173, 173) 1px 2px 7px;
-    /* min-width: 700px; */
     min-width: 35%;
     padding: 20px 40px 20px 40px;
+    height: 50%;
 }
 
 .profile-div h1 {
@@ -109,16 +109,16 @@ hr {
 
 .input-city-select {
     display: inline-block;
-    margin: 5px 0 30px 0;
-    border: 1px solid rgba(224, 224, 224, 0.5);
+    margin: 5px 0 30px 0 !important;
+    border: 1px solid rgba(224, 224, 224, 0.5) !important;
     line-height: 45px;
     padding-left: 9px;
     width: 76%;
 }
 
 .input-city-select:focus {
-    outline: none;
-    border: 1px solid rgba(49, 199, 206, 0.3);
+    outline: none !important;
+    border: 1px solid rgba(49, 199, 206, 0.3) !important;
 }
 
 .city-button {
@@ -152,14 +152,19 @@ hr {
 
 .edit {
     margin-right: 40px;
-    background-color: azure;
+    background-color: rgb(255, 255, 255);
     color: #999;
     padding: 5px;
 }
 
 .edit:hover {
-    background-color: #777;
-    color: rgb(255, 255, 255);
+    background-color: rgb(255, 255, 255);
+    color: #999;
+}
+
+.edit:focus {
+    background-color: rgb(255, 255, 255);
+    color: #999;
 }
 
 .inside-modal-div {

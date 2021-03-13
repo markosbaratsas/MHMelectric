@@ -153,62 +153,64 @@ function Select() {
 
     return (
         <>
+        <form className='profile-div inside-modal-div' onSubmit={sendPost}>
             <label htmlFor="car">Choose car:</label>
-            <select name="car" id="car" onChange={handleChangeInt} className='select-div'>
+            <select name="car" onChange={handleChangeInt} className='select-div'>
                 <option disabled selected value>-</option>
                 {car.map( (car) => 
                 <option value={car['car_id']}>{car["brand"]}, {car["car_type"]}, {car["car_model"]}, {car["release_year"]}</option>)}
             </select>
             <label htmlFor="city">Choose city:</label>
             <div className='input-city'>
-                <input placeholder='Type city' type='city' name='city' id='city' onChange={handleChangeCity} className='input-city-select' required />
-                <button className='basic-button waves-effect waves-light btn city-button' onClick={searchStation}>Search stations</button>
+                <input placeholder='Type city' type='city' name='city' onChange={handleChangeCity} className='input-city-select' required />
+                <button type="button" className='basic-button waves-effect waves-light btn city-button' onClick={searchStation}>Search stations</button>
             </div>
             <label htmlFor="station">Choose station:</label>
-            <select name="station" id="station" className='select-div' onChange={handleChangeStation}>
+            <select name="station" className='select-div' onChange={handleChangeStation}>
                 <option disabled selected value>-</option>
                 {station.map( (station) => 
                 <option value={station['station_id']}>{station["street"]} {station["street_number"]}, {station["postal_code"]}, {station["city"]}, {station["country"]}</option>)}
             </select>
             <label htmlFor="charging_point">Choose charging point:</label>
-            <select name="charging_point" id="charging_point" onChange={handleChangeInt} className='select-div'>
+            <select name="charging_point" onChange={handleChangeInt} className='select-div'>
                 <option disabled selected value>-</option>
                 {point.map( (point) => 
                 <option value={point['charging_point_id']}>{point['charging_point_id_given']}</option>)}
             </select>
             <label htmlFor="periodic_bill">Choose periodic bill:</label>
-            <select name="periodic_bill" id="periodic_bill" onChange={handleChangeInt} className='select-div'>
+            <select name="periodic_bill" onChange={handleChangeInt} className='select-div'>
                 <option disabled selected value>-</option>
                 {bill.map( (bill) => 
                 <option value={bill['periodic_bill_id']}>Periodic bill {bill['periodic_bill_id']} published on {bill["published_on"].substring(0, 10)}</option>)}
             </select>
             <label htmlFor="charge_program">Choose charge program:</label>
-            <select name="charge_program" id="charge_program" onChange={handleChangeInt} className='select-div'>
+            <select name="charge_program" onChange={handleChangeInt} className='select-div'>
                 <option disabled selected value>-</option>
                 {chargeProgram.map( (chargeProgram) => 
                 <option value={chargeProgram['charge_program_id']}>{chargeProgram['description']}, price: {chargeProgram["price"]}‎€, duration: {chargeProgram["duration"]} min</option>)}
             </select>
             <label htmlFor="provider">Choose provider:</label>
-            <select name="provider" id="provider" onChange={handleChangeInt} className='select-div'>
+            <select name="provider" onChange={handleChangeInt} className='select-div'>
                 <option disabled selected value>-</option>
                 {provider.map( (provider) => 
                 <option value={provider['provider_id']}>{provider['title']}</option>)}
             </select>
-            <label htmlFor="connection_time">Provide connection time in yyyy-mm-dd hh:mm:ss format:</label>
-            <input placeholder='Type connection time' type='connection_time' name='connection_time' id='connection_time' 
-                                    onChange={handleChange} className='input-city-select-width' required />
-            <label htmlFor="disconnection_time">Provide disconnection time in yyy-mm-dd hh:mm:ss format:</label>
-            <input placeholder='Type disconnection time' type='disconnection_time' name='disconnection_time' id='disconnection_time' 
-                                    onChange={handleChange} className='input-city-select-width' required />
-            <label htmlFor="done_charging_time">Provide done charging time in yyyy-mm-dd hh:mm:ss format:</label>
-            <input placeholder='Type done charging time' type='done_charging_time' name='done_charging_time' id='done_charging_time' 
-                                    onChange={handleChange} className='input-city-select-width' required />
+            <label htmlFor="connection_time">Provide connection time:</label>
+            <input placeholder='Type connection time' type='datetime-local' name='connection_time' 
+                                    onChange={handleChange} className='input-city-select-width input-city-select' required />
+            <label htmlFor="disconnection_time">Provide disconnection time:</label>
+            <input placeholder='Type disconnection time' type='datetime-local' name='disconnection_time' 
+                                    onChange={handleChange} className='input-city-select-width input-city-select' required />
+            <label htmlFor="done_charging_time">Provide done charging time:</label>
+            <input placeholder='Type done charging time' type='datetime-local' name='done_charging_time'
+                                    onChange={handleChange} className='input-city-select-width input-city-select' required />
             <label htmlFor="user_payment_method">Type payment method:</label>
-            <input placeholder='Type payment method' type='user_payment_method' name='user_payment_method' id='user_payment_method' 
-                                    onChange={handleChange} className='input-city-select-width' required />
-                <div className='profile-right'>
-                    <button className='basic-button waves-effect waves-light btn pay' onClick={sendPost}>Charge</button>
-                </div>
+            <input placeholder='Type payment method' type='user_payment_method' name='user_payment_method' 
+                                    onChange={handleChange} className='input-city-select-width input-city-select' required />
+            <div className='profile-right'>
+                <button className='basic-button waves-effect waves-light btn pay' type='submit'>Charge</button>
+            </div>
+            </form>
         </>
     );
 }

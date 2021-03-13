@@ -31,8 +31,8 @@ function Bill() {
                           position: 'absolute', 
                           width: '40%', 
                           borderWidth: '1px',
-                          paddingLeft: '60px',
-                          paddingTop: '60px'
+                          paddingLeft: '20px',
+                          paddingTop: '20px'
                         }}
 
 
@@ -147,7 +147,7 @@ function Bill() {
                     See sessions</button>
                   </div>
                   <div className='profile-center'>
-                    <button id={bill["periodic_bill_id"]} className={'basic-button waves-effect waves-light btn pay '+JSON.stringify(bill["paid"])} onClick={() => {
+                    <button className={'basic-button waves-effect waves-light btn pay '+JSON.stringify(bill["paid"])} onClick={() => {
                       if(!bill["paid"]){
                       var details = {
                         method: 'get',
@@ -247,95 +247,93 @@ function Bill() {
 
 
 
-    <Modal isOpen={modalIsOpen} onRequestClose={() => setModalIsOpen(false)} style={modalStyle}>
-                      
-                    { session.map( (session) => 
-                          <>
-                          <div className='profile-left'>
-                              <div className="car-div">
-                                  <h2>Car charged:</h2>
-                                  <h1>{session["car"]["brand"]}, {session["car"]["model"]}, {session["car"]["type"]}, {session["car"]["release_year"]}</h1>
-                              </div>
-                               <div className="car-div">
-                                  <h2>Charging program:</h2>
-                                  <h1>{session["charge_program"]["description"]}</h1>
-                              </div>
-                              <div className="car-div">
-                                  <h2>Charging station:</h2>
-                                  <h1>{session["station"]["street"]} {session["station"]["street_number"]}, {session["station"]["postal_code"]}, {session["station"]["city"]}, 
-                                    {session["station"]["country"]}</h1>
-                              </div>
-                              <div className="car-div">
-                                  <h2>Charging point:</h2>
-                                  <h1>{session["charging_point"]}</h1>
-                              </div>
-                              <div className="car-div">
-                                  <h2>Date:</h2>
-                                  <h1>{session["Date"]}</h1>
-                              </div>
-                              <div className="car-div">
-                                  <h2>Connection time:</h2>
-                                  <h1>{session["connection_time"]}</h1>
-                              </div>
-                              <div className="car-div">
-                                  <h2>Disconnection time:</h2>
-                                  <h1>{session["disconnection_time"]}</h1>
-                              </div>
-                              <div className="car-div">
-                                  <h2>Done charging:</h2>
-                                  <h1>{session["done_charging_time"]}</h1>
-                              </div>
-                              <div className="car-div">
-                                  <h2>kWh delivered:</h2>
-                                  <h1>{session["kWh_delivered"]}</h1>
-                              </div>
-                              <div className="car-div">
-                                  <h2>Protocol:</h2>
-                                  <h1>{session["protocol"]}</h1>
-                              </div>
-                              <div className="car-div">
-                                  <h2>Payment method:</h2>
-                                  <h1>{session["user_payment_method"]}</h1>
-                              </div>
-                              <div className="car-div">
-                                  <h2>Wh per mile:</h2>
-                                  <h1>{session["user_Wh_per_mile"]}</h1>
-                              </div>
-                              <div className="car-div">
-                                  <h2>kWh requested:</h2>
-                                  <h1>{session["user_kWh_requested"]}</h1>
-                              </div>
-                              <div className="car-div">
-                                  <h2>Miles requested:</h2>
-                                  <h1>{session["user_miles_requested"]}</h1>
-                              </div>
-                              <div className="car-div">
-                                  <h2>Minutes available:</h2>
-                                  <h1>{session["user_minutes_available"]}</h1>
-                              </div>
-                              <div className="car-div">
-                                  <h2>Requested departure:</h2>
-                                  <h1>{session["user_requested_departure"]}</h1>
-                              </div>
-                              <div className="car-div">
-                                  <h2>Provider:</h2>
-                                  <h1>{session["provider"]["title"]}, {session["provider"]["primary_phone"]}, {session["provider"]["email"]}</h1>
-                              </div>
-                          </div>
-                          <hr />
-                      </>
-                      )}
-
-
-
-                      <div className='profile-right'>
-                        <button className='basic-button waves-effect waves-light btn pay' onClick={() => {
-                                                                                                    setModalIsOpen(false); 
-                                                                                                    setSession([])
-                                                                                                    }}>
-                        Close</button>
-                      </div>
-                    </Modal>
+      <Modal isOpen={modalIsOpen} onRequestClose={() => setModalIsOpen(false)} style={modalStyle}> 
+      <div className='profile-div inside-modal-div'>
+      { session.map( (session) => 
+            <>
+            <div className='profile-left'>
+                <div className="car-div">
+                    <h2>Car charged:</h2>
+                    <h1>{session["car"]["brand"]}, {session["car"]["model"]}, {session["car"]["type"]}, {session["car"]["release_year"]}</h1>
+                </div>
+                  <div className="car-div">
+                    <h2>Charging program:</h2>
+                    <h1>{session["charge_program"]["description"]}</h1>
+                </div>
+                <div className="car-div">
+                    <h2>Charging station:</h2>
+                    <h1>{session["station"]["street"]} {session["station"]["street_number"]}, {session["station"]["postal_code"]}, {session["station"]["city"]}, 
+                      {session["station"]["country"]}</h1>
+                </div>
+                <div className="car-div">
+                    <h2>Charging point:</h2>
+                    <h1>{session["charging_point"]}</h1>
+                </div>
+                <div className="car-div">
+                    <h2>Date:</h2>
+                    <h1>{session["Date"]}</h1>
+                </div>
+                <div className="car-div">
+                    <h2>Connection time:</h2>
+                    <h1>{session["connection_time"]}</h1>
+                </div>
+                <div className="car-div">
+                    <h2>Disconnection time:</h2>
+                    <h1>{session["disconnection_time"]}</h1>
+                </div>
+                <div className="car-div">
+                    <h2>Done charging:</h2>
+                    <h1>{session["done_charging_time"]}</h1>
+                </div>
+                <div className="car-div">
+                    <h2>kWh delivered:</h2>
+                    <h1>{session["kWh_delivered"]}</h1>
+                </div>
+                <div className="car-div">
+                    <h2>Protocol:</h2>
+                    <h1>{session["protocol"]}</h1>
+                </div>
+                <div className="car-div">
+                    <h2>Payment method:</h2>
+                    <h1>{session["user_payment_method"]}</h1>
+                </div>
+                <div className="car-div">
+                    <h2>Wh per mile:</h2>
+                    <h1>{session["user_Wh_per_mile"]}</h1>
+                </div>
+                <div className="car-div">
+                    <h2>kWh requested:</h2>
+                    <h1>{session["user_kWh_requested"]}</h1>
+                </div>
+                <div className="car-div">
+                    <h2>Miles requested:</h2>
+                    <h1>{session["user_miles_requested"]}</h1>
+                </div>
+                <div className="car-div">
+                    <h2>Minutes available:</h2>
+                    <h1>{session["user_minutes_available"]}</h1>
+                </div>
+                <div className="car-div">
+                    <h2>Requested departure:</h2>
+                    <h1>{session["user_requested_departure"]}</h1>
+                </div>
+                <div className="car-div">
+                    <h2>Provider:</h2>
+                    <h1>{session["provider"]["title"]}, {session["provider"]["primary_phone"]}, {session["provider"]["email"]}</h1>
+                </div>
+            </div>
+            <hr />
+        </>
+        )}
+        <div className='profile-right'>
+          <button className='basic-button waves-effect waves-light btn pay' onClick={() => {
+                                                                                      setModalIsOpen(false); 
+                                                                                      setSession([])
+                                                                                      }}>
+          Close</button>
+        </div>
+        </div>
+      </Modal>
     </>
   );
 }
