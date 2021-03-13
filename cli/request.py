@@ -7,6 +7,7 @@ import sys
 from requests import api
 
 global url_to_send 
+global data_to_send
 
 def sessionsPerPoint(pointID, yyyymmdd_from, yyyymmdd_to, api_key,format):
     global url_to_send 
@@ -59,8 +60,10 @@ def sessionsPerEV(vehicleID, yyyymmdd_from, yyyymmdd_to, api_key,format):
 
 def login(username, password):
     global url_to_send 
+    global data_to_send
+    data_to_send = {'username': {username}, 'password': {password}}
     url_to_send = f'http://localhost:8765/evcharge/api/cli_login'
-    x = requests.post(url_to_send, data = {'username': {username}, 'password': {password}}) 
+    x = requests.post(url_to_send, data = data_to_send) 
     try:
         print('Your API-key is: ', json.loads(x.text)['api_key'])
         file = open(str(Path.home()) + "/softeng20bAPI.token", 'w+')

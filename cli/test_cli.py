@@ -7,6 +7,7 @@ import request
 def test_login(capsys):
     main(['login','--username','some_name','--passw','some_passw','--format','json','--test'])
     assert request.url_to_send == "http://localhost:8765/evcharge/api/cli_login"
+    assert request.data_to_send == {"username": {"some_name"}, "password": {"some_passw"}}
     
 
 def test_logout():
