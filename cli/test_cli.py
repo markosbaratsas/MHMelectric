@@ -59,10 +59,6 @@ def test_sessions_upd_fail():
     assert e.type == SystemExit
     assert request.url_to_send == "http://localhost:8765/evcharge/api/admin/system/sessionsupd?format=csv"
 
-def test_sessions_upd_success():
-    main(['Admin','sessionsupd','--source','skata.csv','--format','csv','--apikey','1234-1234-1234','--test'])
-    assert request.url_to_send == "http://localhost:8765/evcharge/api/admin/system/sessionsupd?format=csv"
-
 def test_bad_arguments():
     with pytest.raises(SystemExit) as e:
         main(['Admin','sessionsupd','--source','--format','csv','--apikey','1234-1234-1234','--test'])
