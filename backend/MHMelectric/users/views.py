@@ -14,7 +14,8 @@ Provider, Station, Periodic_bill, Session)
 from users.models import API_key
 from rest_api.serializers import (CarSerializer, CarSerializerFrontendAdd,
 Car_OwnerSerializer, Periodic_billSerializer, SessionSerializer, StationSerializer,
-Charging_pointSerializer, Charge_programSerializer, ProviderSerializer)
+Charging_pointSerializer, Charge_programSerializer, ProviderSerializer,
+Car_OwnerChangeCredentialsFrontend)
 from users.serializers import RegistrationSerializer
 
 
@@ -130,29 +131,56 @@ def get_token_from_api_key(request):
             return Response({'Failed': 'API key not found'}, status=status.HTTP_200_OK)
 
 
-@api_view(['GET', ])
+@api_view(['GET', 'POST', ])
 @permission_classes((IsAuthenticated,))
-def get_user_info(request):
+def user_info(request):
 
-    username = request.user.username
-    email = request.user.email
+    if request.method == "GET":
 
-    try:
-        car_owner = Car_Owner.objects.get(user=request.user)
+        username = request.user.username
+        email = request.user.email
 
-    except:
+        try:
+            car_owner = Car_Owner.objects.get(user=request.user)
+
+        except:
+            return Response({
+                'username': username,
+                'email': email
+            }, status=status.HTTP_200_OK)
+
+
+        car_owner = Car_OwnerSerializer(car_owner).data
         return Response({
             'username': username,
-            'email': email
+            'email': email,
+            'car_owner': car_owner
         }, status=status.HTTP_200_OK)
 
+    if request.method == "POST":
 
-    car_owner = Car_OwnerSerializer(car_owner).data
-    return Response({
-        'username': username,
-        'email': email,
-        'car_owner': car_owner
-    }, status=status.HTTP_200_OK)
+        serializer = Car_OwnerChangeCredentialsFrontend(data=request.data)
+        data = {}
+        if serializer.is_valid():
+
+            car_owner, _ = Car_Owner.objects.get_or_create(user=request.user)
+
+            car_owner = serializer.save(car_owner=car_owner, user=request.user)
+
+            if car_owner != None:
+                car_owner = Car_OwnerChangeCredentialsFrontend(car_owner).data
+                print("hello", car_owner)
+                data['response'] = 'Successfully changed personal information.'
+                data['car_owner'] = car_owner
+                data['car_owner']['email'] = request.user.email
+
+            else:
+                data['response'] = 'Car_owner information not valid.'
+
+        else:
+            data = serializer.errors
+
+        return Response(data)
 
 
 @api_view(['GET', ])

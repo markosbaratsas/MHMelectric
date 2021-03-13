@@ -138,3 +138,48 @@ class ProviderSerializer(serializers.ModelSerializer):
     class Meta:
         model = Provider
         fields = ['provider_id', 'provider_id_given', 'title', 'website_url', 'comments', 'primary_phone', 'secondary_phone', 'address_info', 'email']
+
+
+
+class Car_OwnerChangeCredentialsFrontend(serializers.ModelSerializer):
+
+    email = serializers.EmailField(max_length=63, default='test@gmail.com')
+
+    class Meta:
+        model = Car_Owner
+        fields = ['first_name', 'last_name', 'birthdate',
+                'country', 'city', 'street', 'street_number', 'postal_code', 'email']
+
+    def save(self, car_owner=None, user=None):
+
+        try:
+
+            if 'first_name' in self.validated_data:
+                car_owner.first_name = self.validated_data['first_name']
+            if 'last_name' in self.validated_data:
+                car_owner.last_name = self.validated_data['last_name']
+            if 'birthdate' in self.validated_data:
+                car_owner.birthdate = self.validated_data['birthdate']
+            if 'country' in self.validated_data:
+                car_owner.country = self.validated_data['country']
+            if 'city' in self.validated_data:
+                car_owner.city = self.validated_data['city']
+            if 'street' in self.validated_data:
+                car_owner.street = self.validated_data['street']
+            if 'street_number' in self.validated_data:
+                car_owner.street_number = self.validated_data['street_number']
+            if 'postal_code' in self.validated_data:
+                car_owner.postal_code = self.validated_data['postal_code']
+            if user != None and 'email' in self.validated_data:
+                print("HOLAAAA USER", user)
+                print(self.validated_data['email'])
+                user.email = self.validated_data['email']
+                user.save()
+                print(user.email)
+
+            car_owner.save()
+
+        except:
+            car_owner = None
+
+        return car_owner
