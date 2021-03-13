@@ -155,8 +155,8 @@ function Select() {
         <>
         <form className='profile-div inside-modal-div' onSubmit={sendPost}>
             <label htmlFor="car">Choose car:</label>
-            <select name="car" onChange={handleChangeInt} className='select-div' value='-'>
-                <option disabled defaultValue>-</option>
+            <select name="car" onChange={handleChangeInt} className='select-div'>
+                <option disabled selected value>-</option>
                 {car.map( (car) => 
                 <option value={car['car_id']}>{car["brand"]}, {car["car_type"]}, {car["car_model"]}, {car["release_year"]}</option>)}
             </select>
@@ -166,32 +166,32 @@ function Select() {
                 <button type="button" className='basic-button waves-effect waves-light btn city-button' onClick={searchStation}>Search stations</button>
             </div>
             <label htmlFor="station">Choose station:</label>
-            <select name="station" className='select-div' onChange={handleChangeStation} value='-'>
-                <option disabled defaultValue>-</option>
+            <select name="station" className='select-div' onChange={handleChangeStation}>
+                <option disabled selected value>-</option>
                 {station.map( (station) => 
                 <option value={station['station_id']}>{station["street"]} {station["street_number"]}, {station["postal_code"]}, {station["city"]}, {station["country"]}</option>)}
             </select>
             <label htmlFor="charging_point">Choose charging point:</label>
-            <select name="charging_point" onChange={handleChangeInt} className='select-div' value='-'>
-                <option disabled defaultValue>-</option>
+            <select name="charging_point" onChange={handleChangeInt} className='select-div'>
+                <option disabled selected value>-</option>
                 {point.map( (point) => 
                 <option value={point['charging_point_id']}>{point['charging_point_id_given']}</option>)}
             </select>
             <label htmlFor="periodic_bill">Choose periodic bill:</label>
-            <select name="periodic_bill" onChange={handleChangeInt} className='select-div' value='-'>
-                <option disabled defaultValue>-</option>
+            <select name="periodic_bill" onChange={handleChangeInt} className='select-div'>
+                <option disabled selected value>-</option>
                 {bill.map( (bill) => 
                 <option value={bill['periodic_bill_id']}>Periodic bill {bill['periodic_bill_id']} published on {bill["published_on"].substring(0, 10)}</option>)}
             </select>
             <label htmlFor="charge_program">Choose charge program:</label>
-            <select name="charge_program" onChange={handleChangeInt} className='select-div' value='-'>
-                <option disabled defaultValue>-</option>
+            <select name="charge_program" onChange={handleChangeInt} className='select-div'>
+                <option disabled selected value>-</option>
                 {chargeProgram.map( (chargeProgram) => 
                 <option value={chargeProgram['charge_program_id']}>{chargeProgram['description']}, price: {chargeProgram["price"]}‎€, duration: {chargeProgram["duration"]} min</option>)}
             </select>
             <label htmlFor="provider">Choose provider:</label>
-            <select name="provider" onChange={handleChangeInt} className='select-div' value='-'>
-                <option disabled defaultValue>-</option>
+            <select name="provider" onChange={handleChangeInt} className='select-div'>
+                <option disabled selected value>-</option>
                 {provider.map( (provider) => 
                 <option value={provider['provider_id']}>{provider['title']}</option>)}
             </select>
