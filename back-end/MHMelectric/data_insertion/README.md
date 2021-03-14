@@ -41,10 +41,10 @@ python3 manage.py shell < data_insertion/insert_dummy.py
 python3 manage.py shell < data_insertion/electric_vehicles.py
 ```
 ```
-python3 manage.py shell < data_insertion/session.py
-```
-```
 python3 manage.py shell < data_insertion/charging_points.py
+```
+```
+python3 manage.py shell < data_insertion/session.py
 ```
 
 
