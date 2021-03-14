@@ -8,7 +8,6 @@ from .models import *
 from pytz import timezone
 
 def upload_csv_file(csv_file):
-    # print(type(csv_file))
     file = csv_file.read().decode('utf-8')
     csv_data = csv.reader(StringIO(file), delimiter=',')
     
@@ -18,7 +17,6 @@ def upload_csv_file(csv_file):
     for i in csv_data:
         if(firstRow == False):
             SessionsInUploadedFile += 1
-            print(i[0])
             if(len(list(Session.objects.filter(session_id_given=i[0])))==0):
                 stationID = randrange(len(list(Station.objects.all())))
                 charge_programID = randrange(1, len(list(Charge_program.objects.all())))
@@ -26,14 +24,13 @@ def upload_csv_file(csv_file):
                 car = list(Car.objects.all())[randrange(len(list(Car.objects.all())))]
                 if(len(list(Charging_point.objects.filter(station=stationID)))>0):
                     chargingPointID = list(Charging_point.objects.filter(station=stationID))[randrange(len(Charging_point.objects.filter(station=stationID)))]
-                    #print(chargingPointID)
                 else:
                     chargingPointID = None
                 Periodic_bill.objects.get_or_create(owner=car.owner)
                 bill = list(Periodic_bill.objects.filter(owner=car.owner))[0]
                 Session.objects.create(session_id_given=i[0],
-                    car=car.owner,
-                    car_owner=None,
+                    car=car,
+                    car_owner=car.owner,
                     charging_point=chargingPointID,
                     station=list(Station.objects.filter(station_id=stationID))[0] if (len(list(Station.objects.filter(station_id=stationID)))) else None,
                     periodic_bill=bill,
