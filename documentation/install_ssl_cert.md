@@ -20,7 +20,12 @@ mkdir cert
 cd cert
 ```
 
-4. Issue the certificates:
+4. Install mkcert:
+```
+mkcert -install
+```
+
+5. Issue the certificates:
 ```
 mkcert -key-file ./key.pem -cert-file ./cert.pem "localhost"
 
@@ -31,13 +36,13 @@ Created a new certificate valid for the following names 📜 - "localhost"
 The certificate is .....
 ```
 
-5. You are done with the PowerShell. Open WSL and cd into `MHMelectric/front-end/user_management` and do the following commands:
+6. You are done with the PowerShell. Open WSL and cd into `MHMelectric/front-end/user_management` and do the following commands:
 ```
 mkdir .cert
 cp /mnt/c/Users/YOUR_USER/Desktop/cert/* ./.cert
 ```
 
-6. Make sure that inside the `package.json` file the starting script looks like that:
+7. Make sure that inside the `package.json` file the starting script looks like that:
 ```
 "scripts": {
     "start": "HTTPS=true SSL_CRT_FILE=./.cert/cert.pem SSL_KEY_FILE=./.cert/key.pem react-scripts start",
