@@ -10,8 +10,8 @@ else
     then
         args="Admin"
         case $2 in
-            --resetsession)
-                            args="${args} resetsession"
+            --resetsessions)
+                            args="${args} resetsessions"
                             ;;
             --healthcheck)
                             args="${args} healthcheck"
@@ -40,6 +40,6 @@ else
     else
         args="$@"
     fi
-    python3 /mnt/c/Users/ilmar/MHMelectric/cli/cli_side.py ${args}
+    python3 /mnt/c/Users/ilmar/softeng/MHMelectric/cli-client/cli_side.py ${args}
 
 fi

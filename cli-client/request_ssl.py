@@ -140,4 +140,5 @@ def admin_sessionsupd(source, api_key, format):
         json_text = json.loads(x.text)
         print(json.dumps(json_text, indent=4))
     except:
+        file_to_send.close()
         print(x.text)
