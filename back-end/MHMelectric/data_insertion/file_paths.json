@@ -4,5 +4,6 @@
     "charging_points": "INSERT_YOUR_PATH", 
     "electric_vehicles": "INSERT_YOUR_PATH", 
     "session": "INSERT_YOUR_PATH",
-    "json_to_csv": "INSERT_YOUR_PATH"
+    "json_to_csv": "INSERT_YOUR_PATH",
+    "json_to_csv_to_be_created": "INSERT_YOUR_PATH"
 }

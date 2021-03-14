@@ -6,11 +6,13 @@ from MHMelectric.settings import BASE_DIR
 
 
 with open(str(str(BASE_DIR) + "/data_insertion/file_paths.json")) as paths:
-    path_to_file = json.loads(paths.read())["json_to_csv"]
+    data = json.loads(paths.read())
+    path_to_file = data["json_to_csv"]
+    fw = open(data["json_to_csv_to_be_created"], "w+")
 
 # path_to_file = "/mnt/c/Users/marak/Downloads/OneDrive_1_05-01-2021/acn_data/caltech_acndata_sessions_12month.json"
+# fw = open("/mnt/c/Users/markg/Downloads/OneDrive_1_05-01-2021/acn_data/caltech_acndata_sessions_12month.csv", "w+")
 
-fw = open("/mnt/c/Users/marak/Downloads/OneDrive_1_05-01-2021/acn_data/caltech_acndata_sessions_12month.csv", "w+")
 writer = csv.writer(fw)
 writer.writerow(["_id",
       "clusterID",
@@ -77,6 +79,5 @@ with open(path_to_file) as json_file:
                     'null',
                     'null',
                     'null'])
-        print(i["_id"])
 
 fw.close()

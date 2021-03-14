@@ -22,16 +22,19 @@ with open(path_to_file) as json_file:
         user, created = User.objects.get_or_create(username=i["user"]["username"])
         user.set_password(i["user"]["password"])
         user.save()
-        Car_Owner.objects.get_or_create(first_name=i["first_name"],
-                                last_name=i["last_name"],
-                                birthdate=datetime.datetime.strptime(i["birthdate"], "%a, %d %b %Y %H:%M:%S GMT").replace(tzinfo=timezone('UTC')),
-                                country=i["country"],
-                                city=i["city"],
-                                street=i["street"],
-                                street_number=Decimal(i["street_number"]),
-                                postal_code=Decimal(i["postal_code"]),
-                                bonus_points=Decimal(i["bonus_points"]),
-                                user=user)
+
+        car_owner, _ = Car_Owner.objects.get_or_create(user=user)
+
+        car_owner.first_name=i["first_name"]
+        car_owner.last_name=i["last_name"]
+        car_owner.birthdate=datetime.datetime.strptime(i["birthdate"], "%a, %d %b %Y %H:%M:%S GMT").replace(tzinfo=timezone('UTC'))
+        car_owner.country=i["country"]
+        car_owner.city=i["city"]
+        car_owner.street=i["street"]
+        car_owner.street_number=Decimal(i["street_number"])
+        car_owner.postal_code=Decimal(i["postal_code"])
+        car_owner.bonus_points=Decimal(i["bonus_points"])
+        car_owner.save()
 
     for i in list(data["providers"]):
         Provider.objects.get_or_create(provider_id_given=i["provider_id_given"],

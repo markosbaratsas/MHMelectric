@@ -18,3 +18,4 @@ MHMelectric/db.sqlite3
 MHMelectric/media
 MHMelectric/media/*
 
+MHMelectric/data_insertion/file_paths.json
