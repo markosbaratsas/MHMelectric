@@ -91,7 +91,8 @@ function Select() {
 
     useEffect(() => {
         setCar(JSON.parse(localStorage.getItem("cars")))
-        if(JSON.parse(localStorage.getItem("cars")).length!==0) setDataPost({'car_owner': JSON.parse(localStorage.getItem('owner_id')), 'car': parseInt(JSON.parse(localStorage.getItem("cars"))[0]['car_id'])})
+        if(JSON.parse(localStorage.getItem("cars")).length!==0) setDataPost({'car_owner': JSON.parse(localStorage.getItem('owner_id')), 
+                                                                            'car': parseInt(JSON.parse(localStorage.getItem("cars"))[0]['car_id'])})
         if (localStorage.getItem("bill")===null) {
             var details = {
                 method: 'get',
@@ -102,14 +103,26 @@ function Select() {
             }
             axios(details)
                 .then( (response) => {
-                setBill(response.data["periodic_bills"])
                 localStorage.setItem("bill", JSON.stringify(response.data["periodic_bills"]))
+                const billArray = []
+                for(let i=0; i<response.data["periodic_bills"].length; i++){
+                    if(response.data["periodic_bills"][i]['paid']!==true) {
+                        billArray.push(response.data["periodic_bills"][i])
+                    }
+                }
+                setBill(billArray)
                 })
                 .catch( (error) => {
                     console.log(error)
                 })
         } else {
-          setBill(JSON.parse(localStorage.getItem("bill")))
+          const billArray = []
+          for(let i=0; i<JSON.parse(localStorage.getItem("bill")).length; i++){
+              if(JSON.parse(localStorage.getItem("bill"))[i]['paid']!==true) {
+                  billArray.push(JSON.parse(localStorage.getItem("bill"))[i])
+              }
+          }
+          setBill(billArray)
         }
         if (localStorage.getItem("charge_programs")===null) {
             details = {
