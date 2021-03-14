@@ -53,7 +53,7 @@ def sessions_per_point(request, pointID, date_from, date_to):
     except:
         return Response({'Failed': f'There is no charging point with pointID {pointID}'}, status=status.HTTP_400_BAD_REQUEST)
 
-    data = {}
+    data = []
     Point = charging_point.charging_point_id_given
     if charging_point.operator == None:
         PointOperator = 'None'
@@ -79,7 +79,7 @@ def sessions_per_point(request, pointID, date_from, date_to):
             car_type = Car.objects.get(car_id=sessions[i].car).car_type
         except:
             car_type = ''
-        data[int(i + 1)] = {
+        data.append({
             'Point': Point,
             'PointOperator': PointOperator,
             'RequestTimestamp': RequestTimestamp,
@@ -95,7 +95,7 @@ def sessions_per_point(request, pointID, date_from, date_to):
             'EnergyDelivered': float(sessions[i].kWh_delivered),
             'Payment': sessions[i].user_payment_method,
             'VehicleType': car_type
-        }
+        })
 
     return Response(data, status=status.HTTP_200_OK)
 
@@ -109,7 +109,7 @@ def sessions_per_station(request, stationID, date_from, date_to):
         station = Station.objects.get(station_id_given=stationID)
     except:
         return Response({'Failed': f'There is no station with stationID {stationID}'}, status=status.HTTP_400_BAD_REQUEST)
-    data = {}
+    data = []
     StationID = station.station_id_given
     if station.operator == None:
         Operator = 'None'
@@ -142,7 +142,7 @@ def sessions_per_station(request, stationID, date_from, date_to):
     NumberOfChargingSessions = int(len(sessions))
     NumberOfActivePoints = len(activePoints)
     for i in activePoints.keys():
-        data[i] = {
+        data.append({
             'StationID': StationID,
             'Operator': Operator,
             'RequestTimestamp': RequestTimestamp,
@@ -155,7 +155,7 @@ def sessions_per_station(request, stationID, date_from, date_to):
             'PointID': i,
             'PointSessions': activePoints[i][0],
             'EnergyDelivered': activePoints[i][1],
-        }
+        })
 
     return Response(data, status=status.HTTP_200_OK)
     
@@ -169,7 +169,7 @@ def sessions_per_ev(request, vehicleID, date_from, date_to):
         car = Car.objects.get(car_id_given=vehicleID)
     except:
         return Response({'Failed': f'There is no vehicle with vehicleID {vehicleID}'}, status=status.HTTP_400_BAD_REQUEST)
-    data = {}
+    data = []
     VehicleID = car.car_id_given
     RequestTimestamp = datetime.now(pytz.timezone('Europe/Athens')).strftime("%Y-%m-%d %H:%M:%S")
     PeriodFrom = date_from[0:4] + "-" + date_from[4:6] + "-" + date_from[6:8] + " 00:00:00"
@@ -209,7 +209,7 @@ def sessions_per_ev(request, vehicleID, date_from, date_to):
             session_program = ''
             session_price = "unknown"
             session_cost = "unknown"
-        data[int(i + 1)] = {
+        data.append({
             'VehicleID': VehicleID,
             'PeriodFrom': PeriodFrom,
             'PeriodTo': PeriodTo,
@@ -225,7 +225,7 @@ def sessions_per_ev(request, vehicleID, date_from, date_to):
             'PricePolicyRef': session_program,
             'CostPerkWh':   session_price,
             'SessionCost': session_cost
-        }
+        })
 
     return Response(data, status=status.HTTP_200_OK)
     
@@ -239,7 +239,7 @@ def sessions_per_provider(request, providerID, date_from, date_to):
         provider = Provider.objects.get(provider_id_given=providerID)
     except:
         return Response({'Failed': f'There is no provider with providerID {providerID}'}, status=status.HTTP_400_BAD_REQUEST)
-    data = {}
+    data = []
     ProviderID = provider.provider_id_given
     ProviderName = provider.title
     PeriodFrom = date_from[0:4] + "-" + date_from[4:6] + "-" + date_from[6:8] + " 00:00:00"
@@ -271,7 +271,7 @@ def sessions_per_provider(request, providerID, date_from, date_to):
             session_program = ''
             session_price = "unknown"
             session_cost = "unknown"
-        data[int(i + 1)] = {
+        data.append({
             'ProviderID': ProviderID,
             'ProviderName': ProviderName,
             'PeriodFrom': PeriodFrom,
@@ -287,7 +287,7 @@ def sessions_per_provider(request, providerID, date_from, date_to):
             'PricePolicyRef': session_program,
             'CostPerkWh':   session_price,
             'SessionCost': session_cost
-        }
+        })
 
     return Response(data, status=status.HTTP_200_OK)
     
@@ -335,7 +335,8 @@ def resetsessions(request):
         return Response({'status': 'failed'}, status=status.HTTP_200_OK)
         pass
 
-    user, _ = User.objects.get_or_create(username="admin")
+    user, _ = User.objects.get_or_create(username="admin",
+                    is_superuser=True)
     user.set_password("petrol4ever")
     user.save()
     return Response({'status': 'OK'}, status=status.HTTP_200_OK)
