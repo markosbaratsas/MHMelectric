@@ -40,7 +40,7 @@ function Bill() {
     setRefresh(false)
     var details = {
         method: 'get',
-        url: 'http://127.0.0.1:8765/evcharge/api/get_periodic_bills_of_user',
+        url: 'http://172.105.248.124:8765/evcharge/api/get_periodic_bills_of_user',
         headers: {
         'X-OBSERVATORY-AUTH': JSON.parse(localStorage["tokens"])
         }
@@ -109,7 +109,7 @@ function Bill() {
                     <button className='link' onClick={() => {
                                                   var details = {
                                                     method: 'get',
-                                                    url: 'http://127.0.0.1:8765/evcharge/api/get_sessions_of_periodic_bill/'+bill["periodic_bill_id"],
+                                                    url: 'http://172.105.248.124:8765/evcharge/api/get_sessions_of_periodic_bill/'+bill["periodic_bill_id"],
                                                     headers: {
                                                     'X-OBSERVATORY-AUTH': JSON.parse(localStorage["tokens"])
                                                     }
@@ -151,7 +151,7 @@ function Bill() {
                       if(!bill["paid"]){
                       var details = {
                         method: 'get',
-                        url: 'http://127.0.0.1:8765/evcharge/api/pay_periodic_bill/'+bill["periodic_bill_id"],
+                        url: 'http://172.105.248.124:8765/evcharge/api/pay_periodic_bill/'+bill["periodic_bill_id"],
                         headers: {
                         'X-OBSERVATORY-AUTH': JSON.parse(localStorage["tokens"])
                         }
@@ -199,7 +199,7 @@ function Bill() {
                     <button className='link' onClick={() => {
                                                   var details = {
                                                     method: 'get',
-                                                    url: 'http://127.0.0.1:8765/evcharge/api/get_sessions_of_periodic_bill/'+previousBill["periodic_bill_id"],
+                                                    url: 'http://172.105.248.124:8765/evcharge/api/get_sessions_of_periodic_bill/'+previousBill["periodic_bill_id"],
                                                     headers: {
                                                     'X-OBSERVATORY-AUTH': JSON.parse(localStorage["tokens"])
                                                     }

@@ -35,7 +35,7 @@ function Select() {
         setPoint([])
         var details = {
             method: 'get',
-            url: 'http://127.0.0.1:8765/evcharge/api/get_charging_points_from_station/'+value,
+            url: 'http://172.105.248.124:8765/evcharge/api/get_charging_points_from_station/'+value,
             headers: {
             'X-OBSERVATORY-AUTH': JSON.parse(localStorage["tokens"])
             }
@@ -55,7 +55,7 @@ function Select() {
         setStation([])
         var details = {
             method: 'get',
-            url: 'http://127.0.0.1:8765/evcharge/api/get_stations_from_city/'+city,
+            url: 'http://172.105.248.124:8765/evcharge/api/get_stations_from_city/'+city,
             headers: {
             'X-OBSERVATORY-AUTH': JSON.parse(localStorage["tokens"])
             }
@@ -73,7 +73,7 @@ function Select() {
     function sendPost() {
         var details = {
             method: 'post',
-            url: 'http://127.0.0.1:8765/evcharge/api/add_session',
+            url: 'http://172.105.248.124:8765/evcharge/api/add_session',
             headers: {
             'X-OBSERVATORY-AUTH': JSON.parse(localStorage["tokens"])
             },
@@ -95,7 +95,7 @@ function Select() {
         if (localStorage.getItem("bill")===null) {
             var details = {
                 method: 'get',
-                url: 'http://127.0.0.1:8765/evcharge/api/get_periodic_bills_of_user',
+                url: 'http://172.105.248.124:8765/evcharge/api/get_periodic_bills_of_user',
                 headers: {
                 'X-OBSERVATORY-AUTH': JSON.parse(localStorage["tokens"])
                 }
@@ -114,7 +114,7 @@ function Select() {
         if (localStorage.getItem("charge_programs")===null) {
             details = {
                 method: 'get',
-                url: 'http://127.0.0.1:8765/evcharge/api/get_charge_programs',
+                url: 'http://172.105.248.124:8765/evcharge/api/get_charge_programs',
                 headers: {
                 'X-OBSERVATORY-AUTH': JSON.parse(localStorage["tokens"])
                 }
@@ -133,7 +133,7 @@ function Select() {
         if (localStorage.getItem("providers")===null) {
             details = {
                 method: 'get',
-                url: 'http://127.0.0.1:8765/evcharge/api/get_providers',
+                url: 'http://172.105.248.124:8765/evcharge/api/get_providers',
                 headers: {
                 'X-OBSERVATORY-AUTH': JSON.parse(localStorage["tokens"])
                 }

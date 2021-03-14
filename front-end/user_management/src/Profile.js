@@ -20,7 +20,7 @@ function Profile() {
     function submitUser() {
         var details = {
             method: 'post',
-            url: 'http://127.0.0.1:8765/evcharge/api/change_user_info',
+            url: 'http://172.105.248.124:8765/evcharge/api/change_user_info',
             headers: {
             'X-OBSERVATORY-AUTH': JSON.parse(localStorage["tokens"])
             },
@@ -67,7 +67,7 @@ function Profile() {
     useEffect(() => {
         var details = {
             method: 'get',
-            url: 'http://127.0.0.1:8765/evcharge/api/get_user_info',
+            url: 'http://172.105.248.124:8765/evcharge/api/get_user_info',
             headers: {
             'X-OBSERVATORY-AUTH': JSON.parse(localStorage["tokens"])
             }

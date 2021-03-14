@@ -24,7 +24,7 @@ function Login(props) {
         e.preventDefault()
         var details = {
             method: 'post',
-            url: 'http://127.0.0.1:8765/evcharge/api/login',
+            url: 'http://172.105.248.124:8765/evcharge/api/login',
             data: user,
         }
         axios(details)

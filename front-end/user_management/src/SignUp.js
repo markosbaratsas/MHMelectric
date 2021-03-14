@@ -24,7 +24,7 @@ function SignUp() {
         e.preventDefault()
         var details = {
             method: 'post',
-            url: 'http://127.0.0.1:8765/evcharge/api/register',
+            url: 'http://172.105.248.124:8765/evcharge/api/register',
             data: user,
         }
         axios(details)
